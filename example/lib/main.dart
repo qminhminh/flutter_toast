@@ -45,6 +45,199 @@ class ToastDemoPage extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
+              const Text(
+                'Toast Style Types (Giống ToastificationStyle):',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Flat Style
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.flat,
+                  );
+                },
+                child: const Text('Flat Style - Success'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.flat,
+                  );
+                },
+                child: const Text('Flat Style - Info'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.flat,
+                  );
+                },
+                child: const Text('Flat Style - Warning'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.flat,
+                  );
+                },
+                child: const Text('Flat Style - Error'),
+              ),
+              const SizedBox(height: 16),
+
+              // Fill Colored Style
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.fillColored,
+                  );
+                },
+                child: const Text('Fill Colored - Success'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.fillColored,
+                  );
+                },
+                child: const Text('Fill Colored - Info'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.fillColored,
+                  );
+                },
+                child: const Text('Fill Colored - Warning'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.fillColored,
+                  );
+                },
+                child: const Text('Fill Colored - Error'),
+              ),
+              const SizedBox(height: 16),
+
+              // Flat Colored Style
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.flatColored,
+                  );
+                },
+                child: const Text('Flat Colored - Success'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.flatColored,
+                  );
+                },
+                child: const Text('Flat Colored - Info'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.flatColored,
+                  );
+                },
+                child: const Text('Flat Colored - Warning'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.flatColored,
+                  );
+                },
+                child: const Text('Flat Colored - Error'),
+              ),
+              const SizedBox(height: 16),
+
+              // Minimal Style
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.minimal,
+                  );
+                },
+                child: const Text('Minimal - Success'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.minimal,
+                  );
+                },
+                child: const Text('Minimal - Info'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.minimal,
+                  );
+                },
+                child: const Text('Minimal - Warning'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Component updates available.',
+                    styleType: ToastStyleType.minimal,
+                  );
+                },
+                child: const Text('Minimal - Error'),
+              ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
               // Success Toast
               ElevatedButton.icon(
                 onPressed: () {

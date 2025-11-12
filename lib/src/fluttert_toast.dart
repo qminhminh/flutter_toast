@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttert_toast/src/toast_position.dart';
 import 'package:fluttert_toast/src/toast_type.dart';
 import 'package:fluttert_toast/src/toast_style.dart';
+import 'package:fluttert_toast/src/toast_style_type.dart';
 import 'package:fluttert_toast/src/icon_position.dart';
 
 /// Class chính để hiển thị toast messages
@@ -35,6 +36,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text (nếu null sẽ dùng từ style)
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   ///   Nếu builder được cung cấp, nó sẽ được sử dụng thay vì widget mặc định
   ///   Builder nhận các tham số: (BuildContext context, String message, IconData? icon, Color backgroundColor, Color textColor, Color iconColor, double iconSize, IconPosition iconPosition)
@@ -45,6 +47,7 @@ class FlutterToast {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    ToastStyleType? styleType,
     IconData? icon,
     Color? backgroundColor,
     Color? textColor,
@@ -82,8 +85,11 @@ class FlutterToast {
     // Ẩn toast hiện tại nếu có
     hide();
 
-    // Tạo style
-    final toastStyle = style ?? const ToastStyle();
+    // Tạo style - nếu có styleType thì dùng nó, nếu không thì dùng style được truyền vào
+    final toastStyle =
+        styleType != null
+            ? ToastStyle.fromStyleType(styleType, type)
+            : (style ?? const ToastStyle());
     // Ưu tiên màu người dùng chọn, nếu không có thì dùng màu mặc định
     final bgColor =
         backgroundColor ??
@@ -156,6 +162,7 @@ class FlutterToast {
           boxShadow: toastStyle.boxShadow,
           showIcon: showIconValue,
           showText: showTextValue,
+          styleType: toastStyle.styleType,
         );
       },
     );
@@ -184,6 +191,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showSuccess(
     BuildContext context,
@@ -191,6 +199,7 @@ class FlutterToast {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    ToastStyleType? styleType,
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
@@ -231,6 +240,7 @@ class FlutterToast {
       duration: duration,
       position: position,
       style: style,
+      styleType: styleType,
       backgroundColor: backgroundColor,
       textColor: textColor,
       iconColor: iconColor,
@@ -261,6 +271,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showError(
     BuildContext context,
@@ -268,6 +279,7 @@ class FlutterToast {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    ToastStyleType? styleType,
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
@@ -308,6 +320,7 @@ class FlutterToast {
       duration: duration,
       position: position,
       style: style,
+      styleType: styleType,
       backgroundColor: backgroundColor,
       textColor: textColor,
       iconColor: iconColor,
@@ -338,6 +351,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showWarning(
     BuildContext context,
@@ -345,6 +359,7 @@ class FlutterToast {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    ToastStyleType? styleType,
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
@@ -385,6 +400,7 @@ class FlutterToast {
       duration: duration,
       position: position,
       style: style,
+      styleType: styleType,
       backgroundColor: backgroundColor,
       textColor: textColor,
       iconColor: iconColor,
@@ -415,6 +431,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showInfo(
     BuildContext context,
@@ -422,6 +439,7 @@ class FlutterToast {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    ToastStyleType? styleType,
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
@@ -462,6 +480,7 @@ class FlutterToast {
       duration: duration,
       position: position,
       style: style,
+      styleType: styleType,
       backgroundColor: backgroundColor,
       textColor: textColor,
       iconColor: iconColor,
@@ -819,6 +838,7 @@ class _ToastWidget extends StatefulWidget {
   final List<BoxShadow>? boxShadow;
   final bool showIcon;
   final bool showText;
+  final ToastStyleType? styleType;
 
   const _ToastWidget({
     required this.message,
@@ -842,6 +862,7 @@ class _ToastWidget extends StatefulWidget {
     this.boxShadow,
     required this.showIcon,
     required this.showText,
+    this.styleType,
   });
 
   @override
@@ -990,13 +1011,56 @@ class _ToastWidgetState extends State<_ToastWidget>
     }
 
     // Icon widget với padding và margin (chỉ hiển thị nếu showIcon = true)
+    // Nếu có styleType, icon sẽ được bọc trong circle như trong ảnh
     Widget? iconWidget;
     if (widget.showIcon && widget.icon != null) {
-      iconWidget = Icon(
+      Widget icon = Icon(
         widget.icon,
         color: widget.iconColor,
         size: widget.iconSize,
       );
+
+      // Nếu có styleType, bọc icon trong circle (giống trong ảnh)
+      if (widget.styleType != null) {
+        // Màu nền của circle phụ thuộc vào styleType
+        Color circleBackgroundColor;
+        switch (widget.styleType!) {
+          case ToastStyleType.flat:
+            // Flat: circle với màu nhạt của icon
+            circleBackgroundColor = widget.iconColor.withOpacity(0.15);
+            break;
+          case ToastStyleType.fillColored:
+            // Fill colored: circle với màu trắng nhạt (vì icon màu trắng)
+            circleBackgroundColor = Colors.white.withOpacity(0.2);
+            break;
+          case ToastStyleType.flatColored:
+            // Flat colored: circle với màu nhạt của icon
+            circleBackgroundColor = widget.iconColor.withOpacity(0.15);
+            break;
+          case ToastStyleType.minimal:
+            // Minimal: circle với màu nhạt của icon
+            circleBackgroundColor = widget.iconColor.withOpacity(0.15);
+            break;
+        }
+
+        icon = Container(
+          width: widget.iconSize + 12,
+          height: widget.iconSize + 12,
+          decoration: BoxDecoration(
+            color: circleBackgroundColor,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Icon(
+              widget.icon,
+              color: widget.iconColor,
+              size: widget.iconSize,
+            ),
+          ),
+        );
+      }
+
+      iconWidget = icon;
 
       // Áp dụng padding cho icon
       if (widget.iconPadding != null) {
@@ -1019,7 +1083,7 @@ class _ToastWidgetState extends State<_ToastWidget>
           fontSize: responsiveFontSize,
           fontWeight: widget.fontWeight,
         ),
-        textAlign: TextAlign.center,
+        textAlign: widget.styleType != null ? TextAlign.left : TextAlign.center,
         maxLines: 5,
         overflow: TextOverflow.ellipsis,
       );
@@ -1068,8 +1132,9 @@ class _ToastWidgetState extends State<_ToastWidget>
         case IconPosition.right:
           content = Row(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(child: textWidget),
+              Expanded(child: textWidget),
               if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
               iconWidget,
             ],

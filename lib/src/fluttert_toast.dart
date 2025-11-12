@@ -37,6 +37,10 @@ class FlutterToast {
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
   /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
+  /// [showCloseButton] - Hiển thị nút đóng (X) ở góc phải (mặc định false, tự động true cho minimal style)
+  /// [closeButtonIcon] - Icon cho nút đóng (mặc định Icons.close)
+  /// [closeButtonSize] - Kích thước icon nút đóng (mặc định 20)
+  /// [closeButtonColor] - Màu icon nút đóng (nếu null dùng Colors.grey)
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   ///   Nếu builder được cung cấp, nó sẽ được sử dụng thay vì widget mặc định
   ///   Builder nhận các tham số: (BuildContext context, String message, IconData? icon, Color backgroundColor, Color textColor, Color iconColor, double iconSize, IconPosition iconPosition)
@@ -61,6 +65,10 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    bool? showCloseButton,
+    IconData? closeButtonIcon,
+    double? closeButtonSize,
+    Color? closeButtonColor,
     Widget Function(
       BuildContext context,
       String message,
@@ -109,6 +117,12 @@ class FlutterToast {
     final textMrg = textMargin ?? toastStyle.textMargin;
     final showIconValue = showIcon ?? toastStyle.showIcon;
     final showTextValue = showText ?? toastStyle.showText;
+    // Tự động bật close button cho minimal style
+    final showCloseBtn =
+        showCloseButton ?? (styleType == ToastStyleType.minimal);
+    final closeBtnIcon = closeButtonIcon ?? Icons.close;
+    final closeBtnSize = closeButtonSize ?? 20.0;
+    final closeBtnColor = closeButtonColor ?? Colors.grey;
 
     // Tạo overlay entry
     _overlayEntry = OverlayEntry(
@@ -163,6 +177,11 @@ class FlutterToast {
           showIcon: showIconValue,
           showText: showTextValue,
           styleType: toastStyle.styleType,
+          showCloseButton: showCloseBtn,
+          closeButtonIcon: closeBtnIcon,
+          closeButtonSize: closeBtnSize,
+          closeButtonColor: closeBtnColor,
+          hideCallback: hide,
         );
       },
     );
@@ -839,6 +858,11 @@ class _ToastWidget extends StatefulWidget {
   final bool showIcon;
   final bool showText;
   final ToastStyleType? styleType;
+  final bool showCloseButton;
+  final IconData? closeButtonIcon;
+  final double closeButtonSize;
+  final Color closeButtonColor;
+  final VoidCallback hideCallback;
 
   const _ToastWidget({
     required this.message,
@@ -863,6 +887,11 @@ class _ToastWidget extends StatefulWidget {
     required this.showIcon,
     required this.showText,
     this.styleType,
+    this.showCloseButton = false,
+    this.closeButtonIcon,
+    this.closeButtonSize = 20.0,
+    this.closeButtonColor = Colors.grey,
+    required this.hideCallback,
   });
 
   @override
@@ -1099,6 +1128,26 @@ class _ToastWidgetState extends State<_ToastWidget>
       }
     }
 
+    // Close button widget (cho minimal style)
+    Widget? closeButtonWidget;
+    if (widget.showCloseButton) {
+      closeButtonWidget = GestureDetector(
+        onTap: () {
+          _controller.reverse().then((_) {
+            widget.hideCallback();
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.all(4),
+          child: Icon(
+            widget.closeButtonIcon ?? Icons.close,
+            color: widget.closeButtonColor,
+            size: widget.closeButtonSize,
+          ),
+        ),
+      );
+    }
+
     // Xây dựng layout dựa trên vị trí icon
     // Chỉ thêm SizedBox nếu không có margin/padding được chỉ định
     final hasIconSpacing =
@@ -1107,85 +1156,112 @@ class _ToastWidgetState extends State<_ToastWidget>
         widget.textMargin == null && widget.textPadding == null;
 
     Widget content;
-    // Nếu không có cả icon và text, hiển thị một container rỗng
-    if (iconWidget == null && textWidget == null) {
-      content = const SizedBox.shrink();
-    } else if (iconWidget == null) {
-      // Chỉ có text
-      content = textWidget ?? const SizedBox.shrink();
-    } else if (textWidget == null) {
-      // Chỉ có icon
-      content = iconWidget;
+
+    // Nếu có styleType (đặc biệt là minimal), layout đặc biệt với close button
+    if (widget.styleType != null && widget.showCloseButton) {
+      // Layout cho styleType: Icon bên trái, Text ở giữa (Expanded), Close button bên phải
+      List<Widget> rowChildren = [];
+
+      if (iconWidget != null) {
+        rowChildren.add(iconWidget);
+        rowChildren.add(const SizedBox(width: 12));
+      }
+
+      if (textWidget != null) {
+        rowChildren.add(Expanded(child: textWidget));
+      }
+
+      if (closeButtonWidget != null) {
+        rowChildren.add(const SizedBox(width: 8));
+        rowChildren.add(closeButtonWidget);
+      }
+
+      content = Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: rowChildren,
+      );
     } else {
-      // Có cả icon và text
-      switch (widget.iconPosition) {
-        case IconPosition.left:
-          content = Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              iconWidget,
-              if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
-              Flexible(child: textWidget),
-            ],
-          );
-          break;
-        case IconPosition.right:
-          content = Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: textWidget),
-              if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
-              iconWidget,
-            ],
-          );
-          break;
-        case IconPosition.top:
-          content = Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              iconWidget,
-              if (hasIconSpacing && hasTextSpacing) const SizedBox(height: 8),
-              Flexible(child: textWidget),
-            ],
-          );
-          break;
-        case IconPosition.bottom:
-          content = Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(child: textWidget),
-              if (hasIconSpacing && hasTextSpacing) const SizedBox(height: 8),
-              iconWidget,
-            ],
-          );
-          break;
-        case IconPosition.center:
-          content = Stack(
-            alignment: Alignment.center,
-            children: [
-              textWidget,
-              Positioned.fill(
-                child: Center(
-                  child: Container(
-                    padding: widget.iconPadding ?? const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: widget.backgroundColor.withOpacity(0.9),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      widget.icon,
-                      color: widget.iconColor,
-                      size: widget.iconSize,
+      // Layout thông thường
+      // Nếu không có cả icon và text, hiển thị một container rỗng
+      if (iconWidget == null && textWidget == null) {
+        content = const SizedBox.shrink();
+      } else if (iconWidget == null) {
+        // Chỉ có text
+        content = textWidget ?? const SizedBox.shrink();
+      } else if (textWidget == null) {
+        // Chỉ có icon
+        content = iconWidget;
+      } else {
+        // Có cả icon và text
+        switch (widget.iconPosition) {
+          case IconPosition.left:
+            content = Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                iconWidget,
+                if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
+                Flexible(child: textWidget),
+              ],
+            );
+            break;
+          case IconPosition.right:
+            content = Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: textWidget),
+                if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
+                iconWidget,
+              ],
+            );
+            break;
+          case IconPosition.top:
+            content = Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                iconWidget,
+                if (hasIconSpacing && hasTextSpacing) const SizedBox(height: 8),
+                Flexible(child: textWidget),
+              ],
+            );
+            break;
+          case IconPosition.bottom:
+            content = Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(child: textWidget),
+                if (hasIconSpacing && hasTextSpacing) const SizedBox(height: 8),
+                iconWidget,
+              ],
+            );
+            break;
+          case IconPosition.center:
+            content = Stack(
+              alignment: Alignment.center,
+              children: [
+                textWidget,
+                Positioned.fill(
+                  child: Center(
+                    child: Container(
+                      padding: widget.iconPadding ?? const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: widget.backgroundColor.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        widget.icon,
+                        color: widget.iconColor,
+                        size: widget.iconSize,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-          break;
+              ],
+            );
+            break;
+        }
       }
     }
 

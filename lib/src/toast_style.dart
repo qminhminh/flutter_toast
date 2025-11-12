@@ -128,6 +128,13 @@ class ToastStyle {
             left: BorderSide(color: typeColor, width: 4),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         );
     }
   }

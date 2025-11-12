@@ -316,6 +316,9 @@ class FlutterToast {
   /// [actionButton] - Widget nút action (ví dụ: TextButton)
   /// [dismissible] - Có thể đóng bằng cách tap vào hoặc nút đóng (mặc định true)
   /// [showCloseButton] - Hiển thị nút đóng (X) ở góc phải (mặc định true)
+  /// [closeButtonIcon] - Icon cho nút đóng (mặc định Icons.close)
+  /// [closeButtonSize] - Kích thước icon nút đóng (mặc định 20)
+  /// [closeButtonColor] - Màu icon nút đóng (nếu null dùng textColor)
   /// [duration] - Thời gian hiển thị (null = không tự động đóng, mặc định 4 giây)
   /// [position] - Vị trí hiển thị (mặc định top)
   /// [style] - Style tùy chỉnh
@@ -329,6 +332,21 @@ class FlutterToast {
   /// [fontSize] - Kích thước font
   /// [textPadding] - Padding text
   /// [textMargin] - Margin text
+  /// [titleFontSize] - Kích thước font cho title (nếu null = fontSize + 2)
+  /// [titleFontWeight] - Font weight cho title (mặc định FontWeight.bold)
+  /// [borderRadius] - Border radius (nếu null dùng từ style)
+  /// [borderRadiusTopLeft] - Border radius góc trên trái (override borderRadius)
+  /// [borderRadiusTopRight] - Border radius góc trên phải (override borderRadius)
+  /// [borderRadiusBottomLeft] - Border radius góc dưới trái (override borderRadius)
+  /// [borderRadiusBottomRight] - Border radius góc dưới phải (override borderRadius)
+  /// [maxWidth] - Chiều rộng tối đa (nếu null = full width)
+  /// [width] - Chiều rộng cố định (nếu null = auto)
+  /// [height] - Chiều cao cố định (nếu null = auto)
+  /// [iconSpacing] - Khoảng cách giữa icon và text (mặc định 12)
+  /// [titleSpacing] - Khoảng cách giữa title và message (mặc định 4)
+  /// [actionButtonSpacing] - Khoảng cách giữa text và action button (mặc định 8)
+  /// [animationDuration] - Thời gian animation (mặc định 300ms)
+  /// [isVerticalLayout] - Layout dọc thay vì ngang (mặc định false)
   void showAlert(
     BuildContext context,
     String message, {
@@ -338,6 +356,9 @@ class FlutterToast {
     Widget? actionButton,
     bool dismissible = true,
     bool showCloseButton = true,
+    IconData? closeButtonIcon,
+    double? closeButtonSize,
+    Color? closeButtonColor,
     Duration? duration,
     ToastPosition position = ToastPosition.top,
     ToastStyle? style,
@@ -351,6 +372,21 @@ class FlutterToast {
     double? fontSize,
     EdgeInsets? textPadding,
     EdgeInsets? textMargin,
+    double? titleFontSize,
+    FontWeight? titleFontWeight,
+    double? borderRadius,
+    double? borderRadiusTopLeft,
+    double? borderRadiusTopRight,
+    double? borderRadiusBottomLeft,
+    double? borderRadiusBottomRight,
+    double? maxWidth,
+    double? width,
+    double? height,
+    double? iconSpacing,
+    double? titleSpacing,
+    double? actionButtonSpacing,
+    Duration? animationDuration,
+    bool isVerticalLayout = false,
   }) {
     // Ẩn toast hiện tại nếu có
     hide();
@@ -367,6 +403,10 @@ class FlutterToast {
     final fontSz = fontSize ?? toastStyle.fontSize;
     final textPad = textPadding ?? toastStyle.textPadding;
     final textMrg = textMargin ?? toastStyle.textMargin;
+    final titleSz = titleFontSize ?? (fontSz + 2);
+    final titleWeight = titleFontWeight ?? FontWeight.bold;
+    final borderRad = borderRadius ?? toastStyle.borderRadius;
+    final animDuration = animationDuration ?? const Duration(milliseconds: 300);
 
     // Tạo overlay entry
     _overlayEntry = OverlayEntry(
@@ -383,10 +423,16 @@ class FlutterToast {
             iconPosition: iconPosition,
             iconPadding: iconPad,
             iconMargin: iconMrg,
-            borderRadius: toastStyle.borderRadius,
+            borderRadius: borderRad,
+            borderRadiusTopLeft: borderRadiusTopLeft,
+            borderRadiusTopRight: borderRadiusTopRight,
+            borderRadiusBottomLeft: borderRadiusBottomLeft,
+            borderRadiusBottomRight: borderRadiusBottomRight,
             padding: toastStyle.padding,
             margin: toastStyle.margin,
             fontSize: fontSz,
+            titleFontSize: titleSz,
+            titleFontWeight: titleWeight,
             textPadding: textPad,
             textMargin: textMrg,
             fontWeight: toastStyle.fontWeight,
@@ -397,6 +443,17 @@ class FlutterToast {
             actionButton: actionButton,
             dismissible: dismissible,
             showCloseButton: showCloseButton,
+            closeButtonIcon: closeButtonIcon,
+            closeButtonSize: closeButtonSize,
+            closeButtonColor: closeButtonColor,
+            maxWidth: maxWidth,
+            width: width,
+            height: height,
+            iconSpacing: iconSpacing,
+            titleSpacing: titleSpacing,
+            actionButtonSpacing: actionButtonSpacing,
+            animationDuration: animDuration,
+            isVerticalLayout: isVerticalLayout,
             hideCallback: hide,
           ),
     );
@@ -496,12 +553,22 @@ class _ToastWidgetState extends State<_ToastWidget>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     // Slide animation dựa trên position
-    final beginOffset =
-        widget.position == ToastPosition.top
-            ? const Offset(0, -1)
-            : widget.position == ToastPosition.bottom
-            ? const Offset(0, 1)
-            : const Offset(0, 0);
+    Offset beginOffset;
+    switch (widget.position) {
+      case ToastPosition.top:
+      case ToastPosition.topLeft:
+      case ToastPosition.topRight:
+        beginOffset = const Offset(0, -1);
+        break;
+      case ToastPosition.bottom:
+      case ToastPosition.bottomLeft:
+      case ToastPosition.bottomRight:
+        beginOffset = const Offset(0, 1);
+        break;
+      case ToastPosition.center:
+        beginOffset = Offset.zero;
+        break;
+    }
     final endOffset = Offset.zero;
 
     _slideAnimation = Tween<Offset>(
@@ -520,12 +587,52 @@ class _ToastWidgetState extends State<_ToastWidget>
 
   @override
   Widget build(BuildContext context) {
+    // Xác định vị trí và alignment
+    Alignment? alignment;
+    bool isTop = false;
+    bool isBottom = false;
+    bool isLeft = false;
+    bool isRight = false;
+
+    switch (widget.position) {
+      case ToastPosition.top:
+        isTop = true;
+        alignment = Alignment.topCenter;
+        break;
+      case ToastPosition.bottom:
+        isBottom = true;
+        alignment = Alignment.bottomCenter;
+        break;
+      case ToastPosition.topLeft:
+        isTop = true;
+        isLeft = true;
+        alignment = Alignment.topLeft;
+        break;
+      case ToastPosition.topRight:
+        isTop = true;
+        isRight = true;
+        alignment = Alignment.topRight;
+        break;
+      case ToastPosition.bottomLeft:
+        isBottom = true;
+        isLeft = true;
+        alignment = Alignment.bottomLeft;
+        break;
+      case ToastPosition.bottomRight:
+        isBottom = true;
+        isRight = true;
+        alignment = Alignment.bottomRight;
+        break;
+      case ToastPosition.center:
+        alignment = null;
+        break;
+    }
+
     return Positioned(
-      top: widget.position == ToastPosition.top ? widget.margin.top : null,
-      bottom:
-          widget.position == ToastPosition.bottom ? widget.margin.bottom : null,
-      left: widget.margin.left,
-      right: widget.margin.right,
+      top: isTop ? widget.margin.top : null,
+      bottom: isBottom ? widget.margin.bottom : null,
+      left: isLeft ? widget.margin.left : null,
+      right: isRight ? widget.margin.right : null,
       child:
           widget.position == ToastPosition.center
               ? Center(
@@ -538,10 +645,7 @@ class _ToastWidgetState extends State<_ToastWidget>
                 ),
               )
               : Align(
-                alignment:
-                    widget.position == ToastPosition.top
-                        ? Alignment.topCenter
-                        : Alignment.bottomCenter,
+                alignment: alignment!,
                 child: FadeTransition(
                   opacity: _fadeAnimation,
                   child: SlideTransition(
@@ -742,9 +846,15 @@ class _AlertToastWidget extends StatefulWidget {
   final EdgeInsets? iconPadding;
   final EdgeInsets? iconMargin;
   final double borderRadius;
+  final double? borderRadiusTopLeft;
+  final double? borderRadiusTopRight;
+  final double? borderRadiusBottomLeft;
+  final double? borderRadiusBottomRight;
   final EdgeInsets padding;
   final EdgeInsets margin;
   final double fontSize;
+  final double? titleFontSize;
+  final FontWeight? titleFontWeight;
   final EdgeInsets? textPadding;
   final EdgeInsets? textMargin;
   final FontWeight fontWeight;
@@ -755,6 +865,17 @@ class _AlertToastWidget extends StatefulWidget {
   final Widget? actionButton;
   final bool dismissible;
   final bool showCloseButton;
+  final IconData? closeButtonIcon;
+  final double? closeButtonSize;
+  final Color? closeButtonColor;
+  final double? maxWidth;
+  final double? width;
+  final double? height;
+  final double? iconSpacing;
+  final double? titleSpacing;
+  final double? actionButtonSpacing;
+  final Duration animationDuration;
+  final bool isVerticalLayout;
   final VoidCallback hideCallback;
 
   const _AlertToastWidget({
@@ -770,9 +891,15 @@ class _AlertToastWidget extends StatefulWidget {
     this.iconPadding,
     this.iconMargin,
     required this.borderRadius,
+    this.borderRadiusTopLeft,
+    this.borderRadiusTopRight,
+    this.borderRadiusBottomLeft,
+    this.borderRadiusBottomRight,
     required this.padding,
     required this.margin,
     required this.fontSize,
+    this.titleFontSize,
+    this.titleFontWeight,
     this.textPadding,
     this.textMargin,
     required this.fontWeight,
@@ -783,6 +910,17 @@ class _AlertToastWidget extends StatefulWidget {
     this.actionButton,
     required this.dismissible,
     this.showCloseButton = true,
+    this.closeButtonIcon,
+    this.closeButtonSize,
+    this.closeButtonColor,
+    this.maxWidth,
+    this.width,
+    this.height,
+    this.iconSpacing,
+    this.titleSpacing,
+    this.actionButtonSpacing,
+    required this.animationDuration,
+    this.isVerticalLayout = false,
     required this.hideCallback,
   });
 
@@ -809,13 +947,23 @@ class _AlertToastWidgetState extends State<_AlertToastWidget>
       end: 1.0,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
-    // Animation slide từ trên xuống (giống React Native)
-    final beginOffset =
-        widget.position == ToastPosition.top
-            ? const Offset(0, -1)
-            : widget.position == ToastPosition.bottom
-            ? const Offset(0, 1)
-            : const Offset(0, 0);
+    // Animation slide dựa trên position
+    Offset beginOffset;
+    switch (widget.position) {
+      case ToastPosition.top:
+      case ToastPosition.topLeft:
+      case ToastPosition.topRight:
+        beginOffset = const Offset(0, -1);
+        break;
+      case ToastPosition.bottom:
+      case ToastPosition.bottomLeft:
+      case ToastPosition.bottomRight:
+        beginOffset = const Offset(0, 1);
+        break;
+      case ToastPosition.center:
+        beginOffset = Offset.zero;
+        break;
+    }
     final endOffset = Offset.zero;
 
     _slideAnimation = Tween<Offset>(
@@ -847,13 +995,52 @@ class _AlertToastWidgetState extends State<_AlertToastWidget>
     final mediaQuery = MediaQuery.of(context);
     final screenWidth = mediaQuery.size.width;
 
-    // Hiển thị ở top (giống React Native Alert)
+    // Xác định vị trí và alignment
+    Alignment? alignment;
+    bool isTop = false;
+    bool isBottom = false;
+    bool isLeft = false;
+    bool isRight = false;
+
+    switch (widget.position) {
+      case ToastPosition.top:
+        isTop = true;
+        alignment = Alignment.topCenter;
+        break;
+      case ToastPosition.bottom:
+        isBottom = true;
+        alignment = Alignment.bottomCenter;
+        break;
+      case ToastPosition.topLeft:
+        isTop = true;
+        isLeft = true;
+        alignment = Alignment.topLeft;
+        break;
+      case ToastPosition.topRight:
+        isTop = true;
+        isRight = true;
+        alignment = Alignment.topRight;
+        break;
+      case ToastPosition.bottomLeft:
+        isBottom = true;
+        isLeft = true;
+        alignment = Alignment.bottomLeft;
+        break;
+      case ToastPosition.bottomRight:
+        isBottom = true;
+        isRight = true;
+        alignment = Alignment.bottomRight;
+        break;
+      case ToastPosition.center:
+        alignment = null;
+        break;
+    }
+
     return Positioned(
-      top: widget.position == ToastPosition.top ? widget.margin.top : null,
-      bottom:
-          widget.position == ToastPosition.bottom ? widget.margin.bottom : null,
-      left: widget.margin.left,
-      right: widget.margin.right,
+      top: isTop ? widget.margin.top : null,
+      bottom: isBottom ? widget.margin.bottom : null,
+      left: isLeft ? widget.margin.left : null,
+      right: isRight ? widget.margin.right : null,
       child:
           widget.position == ToastPosition.center
               ? Center(
@@ -866,10 +1053,7 @@ class _AlertToastWidgetState extends State<_AlertToastWidget>
                 ),
               )
               : Align(
-                alignment:
-                    widget.position == ToastPosition.top
-                        ? Alignment.topCenter
-                        : Alignment.bottomCenter,
+                alignment: alignment!,
                 child: GestureDetector(
                   onTap: widget.dismissible ? _handleTap : null,
                   child: FadeTransition(
@@ -910,8 +1094,8 @@ class _AlertToastWidgetState extends State<_AlertToastWidget>
         widget.title!,
         style: TextStyle(
           color: widget.textColor,
-          fontSize: widget.fontSize + 2,
-          fontWeight: FontWeight.bold,
+          fontSize: widget.titleFontSize ?? (widget.fontSize + 2),
+          fontWeight: widget.titleFontWeight ?? FontWeight.bold,
         ),
       );
     }
@@ -951,59 +1135,117 @@ class _AlertToastWidgetState extends State<_AlertToastWidget>
         onTap: _handleTap,
         child: Container(
           padding: const EdgeInsets.all(4),
-          child: Icon(Icons.close, color: widget.textColor, size: 20),
+          child: Icon(
+            widget.closeButtonIcon ?? Icons.close,
+            color: widget.closeButtonColor ?? widget.textColor,
+            size: widget.closeButtonSize ?? 20,
+          ),
         ),
       );
     }
 
-    // Build content - Layout giống React Native Alert (horizontal)
-    List<Widget> rowChildren = [];
+    // Tính toán border radius
+    final topLeft = widget.borderRadiusTopLeft ?? widget.borderRadius;
+    final topRight = widget.borderRadiusTopRight ?? widget.borderRadius;
+    final bottomLeft = widget.borderRadiusBottomLeft ?? widget.borderRadius;
+    final bottomRight = widget.borderRadiusBottomRight ?? widget.borderRadius;
 
-    // Icon ở bên trái
-    if (iconWidget != null &&
-        (widget.iconPosition == IconPosition.left ||
-            widget.iconPosition == IconPosition.top)) {
-      rowChildren.add(iconWidget);
-      rowChildren.add(const SizedBox(width: 12));
-    }
+    // Tính toán spacing
+    final iconSpace = widget.iconSpacing ?? 12.0;
+    final titleSpace = widget.titleSpacing ?? 4.0;
+    final actionSpace = widget.actionButtonSpacing ?? 8.0;
 
-    // Text content (title + message)
-    List<Widget> textChildren = [];
-    if (titleWidget != null) {
-      textChildren.add(titleWidget);
-      textChildren.add(const SizedBox(height: 4));
-    }
-    textChildren.add(messageWidget);
+    // Tính toán width constraints
+    final maxW = widget.maxWidth ?? screenWidth;
+    final containerWidth = widget.width ?? double.infinity;
 
-    rowChildren.add(
-      Expanded(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: textChildren,
+    // Build content
+    Widget content;
+    if (widget.isVerticalLayout) {
+      // Layout dọc
+      List<Widget> columnChildren = [];
+      if (iconWidget != null && widget.iconPosition == IconPosition.top) {
+        columnChildren.add(iconWidget);
+        columnChildren.add(SizedBox(height: iconSpace));
+      }
+      if (titleWidget != null) {
+        columnChildren.add(titleWidget);
+        columnChildren.add(SizedBox(height: titleSpace));
+      }
+      columnChildren.add(messageWidget);
+      if (widget.actionButton != null) {
+        columnChildren.add(SizedBox(height: actionSpace));
+        columnChildren.add(widget.actionButton!);
+      } else if (closeButton != null) {
+        columnChildren.add(SizedBox(height: actionSpace));
+        columnChildren.add(
+          Align(alignment: Alignment.centerRight, child: closeButton),
+        );
+      }
+
+      content = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: columnChildren,
+      );
+    } else {
+      // Layout ngang (mặc định)
+      List<Widget> rowChildren = [];
+
+      // Icon ở bên trái
+      if (iconWidget != null &&
+          (widget.iconPosition == IconPosition.left ||
+              widget.iconPosition == IconPosition.top)) {
+        rowChildren.add(iconWidget);
+        rowChildren.add(SizedBox(width: iconSpace));
+      }
+
+      // Text content (title + message)
+      List<Widget> textChildren = [];
+      if (titleWidget != null) {
+        textChildren.add(titleWidget);
+        textChildren.add(SizedBox(height: titleSpace));
+      }
+      textChildren.add(messageWidget);
+
+      rowChildren.add(
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: textChildren,
+          ),
         ),
-      ),
-    );
+      );
 
-    // Action button hoặc close button
-    if (widget.actionButton != null) {
-      rowChildren.add(const SizedBox(width: 8));
-      rowChildren.add(widget.actionButton!);
-    } else if (closeButton != null) {
-      rowChildren.add(const SizedBox(width: 8));
-      rowChildren.add(closeButton);
+      // Action button hoặc close button
+      if (widget.actionButton != null) {
+        rowChildren.add(SizedBox(width: actionSpace));
+        rowChildren.add(widget.actionButton!);
+      } else if (closeButton != null) {
+        rowChildren.add(SizedBox(width: actionSpace));
+        rowChildren.add(closeButton);
+      }
+
+      content = Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: rowChildren,
+      );
     }
 
     return Material(
       color: Colors.transparent,
       child: Container(
-        width: double.infinity,
-        constraints: BoxConstraints(maxWidth: screenWidth),
+        width: containerWidth,
+        height: widget.height,
+        constraints: BoxConstraints(maxWidth: maxW),
         decoration: BoxDecoration(
           color: widget.backgroundColor,
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(widget.borderRadius),
-            bottomRight: Radius.circular(widget.borderRadius),
+            topLeft: Radius.circular(topLeft),
+            topRight: Radius.circular(topRight),
+            bottomLeft: Radius.circular(bottomLeft),
+            bottomRight: Radius.circular(bottomRight),
           ),
           border: widget.border,
           boxShadow:
@@ -1017,10 +1259,7 @@ class _AlertToastWidgetState extends State<_AlertToastWidget>
               ],
         ),
         padding: widget.padding,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: rowChildren,
-        ),
+        child: content,
       ),
     );
   }

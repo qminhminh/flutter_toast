@@ -200,6 +200,58 @@ class ToastDemoPage extends StatelessWidget {
                 },
                 child: const Text('Bottom Position'),
               ),
+              const SizedBox(height: 12),
+
+              // Top Left Position
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Toast ở góc trên trái',
+                    position: ToastPosition.topLeft,
+                  );
+                },
+                child: const Text('Top Left'),
+              ),
+              const SizedBox(height: 12),
+
+              // Top Right Position
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Toast ở góc trên phải',
+                    position: ToastPosition.topRight,
+                  );
+                },
+                child: const Text('Top Right'),
+              ),
+              const SizedBox(height: 12),
+
+              // Bottom Left Position
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Toast ở góc dưới trái',
+                    position: ToastPosition.bottomLeft,
+                  );
+                },
+                child: const Text('Bottom Left'),
+              ),
+              const SizedBox(height: 12),
+
+              // Bottom Right Position
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Toast ở góc dưới phải',
+                    position: ToastPosition.bottomRight,
+                  );
+                },
+                child: const Text('Bottom Right'),
+              ),
               const SizedBox(height: 32),
 
               const Divider(),

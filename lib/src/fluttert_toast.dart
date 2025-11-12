@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttert_toast/src/toast_position.dart';
 import 'package:fluttert_toast/src/toast_type.dart';
 import 'package:fluttert_toast/src/toast_style.dart';
+import 'package:fluttert_toast/src/icon_position.dart';
 
 /// Class chính để hiển thị toast messages
 class FlutterToast {
@@ -25,6 +26,13 @@ class FlutterToast {
   /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định theo type)
   /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
+  /// [iconPosition] - Vị trí icon trong toast (left, right, top, bottom, center)
+  /// [iconSize] - Kích thước icon (nếu null sẽ dùng từ style)
+  /// [iconPadding] - Padding xung quanh icon (nếu null sẽ dùng từ style)
+  /// [iconMargin] - Margin xung quanh icon (nếu null sẽ dùng từ style)
+  /// [fontSize] - Kích thước font chữ (nếu null sẽ dùng từ style)
+  /// [textPadding] - Padding xung quanh text (nếu null sẽ dùng từ style)
+  /// [textMargin] - Margin xung quanh text (nếu null sẽ dùng từ style)
   void show(
     BuildContext context,
     String message, {
@@ -36,6 +44,13 @@ class FlutterToast {
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
+    IconPosition iconPosition = IconPosition.left,
+    double? iconSize,
+    EdgeInsets? iconPadding,
+    EdgeInsets? iconMargin,
+    double? fontSize,
+    EdgeInsets? textPadding,
+    EdgeInsets? textMargin,
   }) {
     // Ẩn toast hiện tại nếu có
     hide();
@@ -52,6 +67,13 @@ class FlutterToast {
     final iconData = icon ?? type.defaultIcon;
     // Ưu tiên màu icon người dùng chọn, nếu không có thì dùng màu từ style hoặc màu chữ
     final iconClr = iconColor ?? toastStyle.iconColor ?? txtColor;
+    // Ưu tiên các giá trị người dùng nhập, nếu không có thì dùng từ style
+    final iconSz = iconSize ?? toastStyle.iconSize;
+    final iconPad = iconPadding ?? toastStyle.iconPadding;
+    final iconMrg = iconMargin ?? toastStyle.iconMargin;
+    final fontSz = fontSize ?? toastStyle.fontSize;
+    final textPad = textPadding ?? toastStyle.textPadding;
+    final textMrg = textMargin ?? toastStyle.textMargin;
 
     // Tạo overlay entry
     _overlayEntry = OverlayEntry(
@@ -63,11 +85,16 @@ class FlutterToast {
             textColor: txtColor,
             icon: iconData,
             iconColor: iconClr,
-            iconSize: toastStyle.iconSize,
+            iconSize: iconSz,
+            iconPosition: iconPosition,
+            iconPadding: iconPad,
+            iconMargin: iconMrg,
             borderRadius: toastStyle.borderRadius,
             padding: toastStyle.padding,
             margin: toastStyle.margin,
-            fontSize: toastStyle.fontSize,
+            fontSize: fontSz,
+            textPadding: textPad,
+            textMargin: textMrg,
             fontWeight: toastStyle.fontWeight,
             border: toastStyle.border,
             boxShadow: toastStyle.boxShadow,
@@ -89,6 +116,13 @@ class FlutterToast {
   /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
+  /// [iconPosition] - Vị trí icon trong toast (left, right, top, bottom, center)
+  /// [iconSize] - Kích thước icon
+  /// [iconPadding] - Padding xung quanh icon
+  /// [iconMargin] - Margin xung quanh icon
+  /// [fontSize] - Kích thước font chữ
+  /// [textPadding] - Padding xung quanh text
+  /// [textMargin] - Margin xung quanh text
   void showSuccess(
     BuildContext context,
     String message, {
@@ -98,6 +132,13 @@ class FlutterToast {
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
+    IconPosition iconPosition = IconPosition.left,
+    double? iconSize,
+    EdgeInsets? iconPadding,
+    EdgeInsets? iconMargin,
+    double? fontSize,
+    EdgeInsets? textPadding,
+    EdgeInsets? textMargin,
   }) {
     show(
       context,
@@ -109,6 +150,13 @@ class FlutterToast {
       backgroundColor: backgroundColor,
       textColor: textColor,
       iconColor: iconColor,
+      iconPosition: iconPosition,
+      iconSize: iconSize,
+      iconPadding: iconPadding,
+      iconMargin: iconMargin,
+      fontSize: fontSize,
+      textPadding: textPadding,
+      textMargin: textMargin,
     );
   }
 
@@ -117,6 +165,13 @@ class FlutterToast {
   /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
+  /// [iconPosition] - Vị trí icon trong toast (left, right, top, bottom, center)
+  /// [iconSize] - Kích thước icon
+  /// [iconPadding] - Padding xung quanh icon
+  /// [iconMargin] - Margin xung quanh icon
+  /// [fontSize] - Kích thước font chữ
+  /// [textPadding] - Padding xung quanh text
+  /// [textMargin] - Margin xung quanh text
   void showError(
     BuildContext context,
     String message, {
@@ -126,6 +181,13 @@ class FlutterToast {
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
+    IconPosition iconPosition = IconPosition.left,
+    double? iconSize,
+    EdgeInsets? iconPadding,
+    EdgeInsets? iconMargin,
+    double? fontSize,
+    EdgeInsets? textPadding,
+    EdgeInsets? textMargin,
   }) {
     show(
       context,
@@ -137,6 +199,13 @@ class FlutterToast {
       backgroundColor: backgroundColor,
       textColor: textColor,
       iconColor: iconColor,
+      iconPosition: iconPosition,
+      iconSize: iconSize,
+      iconPadding: iconPadding,
+      iconMargin: iconMargin,
+      fontSize: fontSize,
+      textPadding: textPadding,
+      textMargin: textMargin,
     );
   }
 
@@ -145,6 +214,13 @@ class FlutterToast {
   /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
+  /// [iconPosition] - Vị trí icon trong toast (left, right, top, bottom, center)
+  /// [iconSize] - Kích thước icon
+  /// [iconPadding] - Padding xung quanh icon
+  /// [iconMargin] - Margin xung quanh icon
+  /// [fontSize] - Kích thước font chữ
+  /// [textPadding] - Padding xung quanh text
+  /// [textMargin] - Margin xung quanh text
   void showWarning(
     BuildContext context,
     String message, {
@@ -154,6 +230,13 @@ class FlutterToast {
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
+    IconPosition iconPosition = IconPosition.left,
+    double? iconSize,
+    EdgeInsets? iconPadding,
+    EdgeInsets? iconMargin,
+    double? fontSize,
+    EdgeInsets? textPadding,
+    EdgeInsets? textMargin,
   }) {
     show(
       context,
@@ -165,6 +248,13 @@ class FlutterToast {
       backgroundColor: backgroundColor,
       textColor: textColor,
       iconColor: iconColor,
+      iconPosition: iconPosition,
+      iconSize: iconSize,
+      iconPadding: iconPadding,
+      iconMargin: iconMargin,
+      fontSize: fontSize,
+      textPadding: textPadding,
+      textMargin: textMargin,
     );
   }
 
@@ -173,6 +263,13 @@ class FlutterToast {
   /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
   /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
+  /// [iconPosition] - Vị trí icon trong toast (left, right, top, bottom, center)
+  /// [iconSize] - Kích thước icon
+  /// [iconPadding] - Padding xung quanh icon
+  /// [iconMargin] - Margin xung quanh icon
+  /// [fontSize] - Kích thước font chữ
+  /// [textPadding] - Padding xung quanh text
+  /// [textMargin] - Margin xung quanh text
   void showInfo(
     BuildContext context,
     String message, {
@@ -182,6 +279,13 @@ class FlutterToast {
     Color? backgroundColor,
     Color? textColor,
     Color? iconColor,
+    IconPosition iconPosition = IconPosition.left,
+    double? iconSize,
+    EdgeInsets? iconPadding,
+    EdgeInsets? iconMargin,
+    double? fontSize,
+    EdgeInsets? textPadding,
+    EdgeInsets? textMargin,
   }) {
     show(
       context,
@@ -193,6 +297,13 @@ class FlutterToast {
       backgroundColor: backgroundColor,
       textColor: textColor,
       iconColor: iconColor,
+      iconPosition: iconPosition,
+      iconSize: iconSize,
+      iconPadding: iconPadding,
+      iconMargin: iconMargin,
+      fontSize: fontSize,
+      textPadding: textPadding,
+      textMargin: textMargin,
     );
   }
 
@@ -220,10 +331,15 @@ class _ToastWidget extends StatefulWidget {
   final IconData? icon;
   final Color iconColor;
   final double iconSize;
+  final IconPosition iconPosition;
+  final EdgeInsets? iconPadding;
+  final EdgeInsets? iconMargin;
   final double borderRadius;
   final EdgeInsets padding;
   final EdgeInsets margin;
   final double fontSize;
+  final EdgeInsets? textPadding;
+  final EdgeInsets? textMargin;
   final FontWeight fontWeight;
   final Border? border;
   final List<BoxShadow>? boxShadow;
@@ -236,10 +352,15 @@ class _ToastWidget extends StatefulWidget {
     required this.icon,
     required this.iconColor,
     required this.iconSize,
+    required this.iconPosition,
+    this.iconPadding,
+    this.iconMargin,
     required this.borderRadius,
     required this.padding,
     required this.margin,
     required this.fontSize,
+    this.textPadding,
+    this.textMargin,
     required this.fontWeight,
     this.border,
     this.boxShadow,
@@ -327,9 +448,159 @@ class _ToastWidgetState extends State<_ToastWidget>
   }
 
   Widget _buildToastContent() {
+    // Tính toán font size responsive dựa trên kích thước màn hình
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+    final screenHeight = mediaQuery.size.height;
+    final screenSize = screenWidth < screenHeight ? screenWidth : screenHeight;
+
+    // Font size responsive: điều chỉnh theo kích thước màn hình
+    // Màn hình nhỏ (< 400): giảm 20%
+    // Màn hình lớn (> 800): tăng 10%
+    double responsiveFontSize = widget.fontSize;
+    if (screenSize < 400) {
+      responsiveFontSize = widget.fontSize * 0.8;
+    } else if (screenSize > 800) {
+      responsiveFontSize = widget.fontSize * 1.1;
+    }
+
+    // Icon widget với padding và margin
+    Widget? iconWidget;
+    if (widget.icon != null) {
+      iconWidget = Icon(
+        widget.icon,
+        color: widget.iconColor,
+        size: widget.iconSize,
+      );
+
+      // Áp dụng padding cho icon
+      if (widget.iconPadding != null) {
+        iconWidget = Padding(padding: widget.iconPadding!, child: iconWidget);
+      }
+
+      // Áp dụng margin cho icon
+      if (widget.iconMargin != null) {
+        iconWidget = Container(margin: widget.iconMargin!, child: iconWidget);
+      }
+    }
+
+    // Text widget với responsive font size, padding và margin
+    Widget textWidget = Text(
+      widget.message,
+      style: TextStyle(
+        color: widget.textColor,
+        fontSize: responsiveFontSize,
+        fontWeight: widget.fontWeight,
+      ),
+      textAlign: TextAlign.center,
+      maxLines: 5,
+      overflow: TextOverflow.ellipsis,
+    );
+
+    // Áp dụng padding cho text
+    if (widget.textPadding != null) {
+      textWidget = Padding(padding: widget.textPadding!, child: textWidget);
+    }
+
+    // Áp dụng margin cho text
+    if (widget.textMargin != null) {
+      textWidget = Container(margin: widget.textMargin!, child: textWidget);
+    }
+
+    // Xây dựng layout dựa trên vị trí icon
+    // Chỉ thêm SizedBox nếu không có margin/padding được chỉ định
+    final hasIconSpacing =
+        widget.iconMargin == null && widget.iconPadding == null;
+    final hasTextSpacing =
+        widget.textMargin == null && widget.textPadding == null;
+
+    Widget content;
+    switch (widget.iconPosition) {
+      case IconPosition.left:
+        content = Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (iconWidget != null) ...[
+              iconWidget,
+              if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
+            ],
+            Flexible(child: textWidget),
+          ],
+        );
+        break;
+      case IconPosition.right:
+        content = Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(child: textWidget),
+            if (iconWidget != null) ...[
+              if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
+              iconWidget,
+            ],
+          ],
+        );
+        break;
+      case IconPosition.top:
+        content = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (iconWidget != null) ...[
+              iconWidget,
+              if (hasIconSpacing && hasTextSpacing) const SizedBox(height: 8),
+            ],
+            Flexible(child: textWidget),
+          ],
+        );
+        break;
+      case IconPosition.bottom:
+        content = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Flexible(child: textWidget),
+            if (iconWidget != null) ...[
+              if (hasIconSpacing && hasTextSpacing) const SizedBox(height: 8),
+              iconWidget,
+            ],
+          ],
+        );
+        break;
+      case IconPosition.center:
+        content = Stack(
+          alignment: Alignment.center,
+          children: [
+            textWidget,
+            if (iconWidget != null)
+              Positioned.fill(
+                child: Center(
+                  child: Container(
+                    padding: widget.iconPadding ?? const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: widget.backgroundColor.withOpacity(0.9),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      widget.icon,
+                      color: widget.iconColor,
+                      size: widget.iconSize,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+        break;
+    }
+
     return Material(
       color: Colors.transparent,
       child: Container(
+        constraints: BoxConstraints(
+          maxWidth:
+              screenWidth * 0.9, // Responsive: tối đa 90% chiều rộng màn hình
+          minWidth: 100,
+        ),
         decoration: BoxDecoration(
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -345,26 +616,7 @@ class _ToastWidgetState extends State<_ToastWidget>
               ],
         ),
         padding: widget.padding,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (widget.icon != null) ...[
-              Icon(widget.icon, color: widget.iconColor, size: widget.iconSize),
-              const SizedBox(width: 12),
-            ],
-            Flexible(
-              child: Text(
-                widget.message,
-                style: TextStyle(
-                  color: widget.textColor,
-                  fontSize: widget.fontSize,
-                  fontWeight: widget.fontWeight,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
+        child: content,
       ),
     );
   }

@@ -322,6 +322,106 @@ class ToastDemoPage extends StatelessWidget {
                 },
                 child: const Text('Màu Hoàn Toàn Tùy Chỉnh'),
               ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Vị trí Icon:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Icon Left
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Icon ở bên trái (mặc định)',
+                    iconPosition: IconPosition.left,
+                  );
+                },
+                child: const Text('Icon Trái'),
+              ),
+              const SizedBox(height: 12),
+
+              // Icon Right
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Icon ở bên phải',
+                    iconPosition: IconPosition.right,
+                  );
+                },
+                child: const Text('Icon Phải'),
+              ),
+              const SizedBox(height: 12),
+
+              // Icon Top
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Icon ở trên cùng',
+                    iconPosition: IconPosition.top,
+                  );
+                },
+                child: const Text('Icon Trên'),
+              ),
+              const SizedBox(height: 12),
+
+              // Icon Bottom
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Icon ở dưới cùng',
+                    iconPosition: IconPosition.bottom,
+                  );
+                },
+                child: const Text('Icon Dưới'),
+              ),
+              const SizedBox(height: 12),
+
+              // Icon Center
+              ElevatedButton(
+                onPressed: () {
+                  toast.show(
+                    context,
+                    'Icon ở giữa (overlay)',
+                    type: ToastType.custom,
+                    backgroundColor: Colors.indigo,
+                    textColor: Colors.white,
+                    icon: Icons.star,
+                    iconPosition: IconPosition.center,
+                  );
+                },
+                child: const Text('Icon Giữa'),
+              ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Text Responsive:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Long text để test responsive
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Đây là một đoạn text rất dài để kiểm tra tính năng responsive của toast. Text sẽ tự động điều chỉnh kích thước font và chiều rộng theo màn hình thiết bị.',
+                    iconPosition: IconPosition.left,
+                  );
+                },
+                child: const Text('Text Dài - Responsive'),
+              ),
             ],
           ),
         ),

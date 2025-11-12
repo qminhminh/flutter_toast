@@ -33,6 +33,8 @@ class FlutterToast {
   /// [fontSize] - Kích thước font chữ (nếu null sẽ dùng từ style)
   /// [textPadding] - Padding xung quanh text (nếu null sẽ dùng từ style)
   /// [textMargin] - Margin xung quanh text (nếu null sẽ dùng từ style)
+  /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
+  /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
   void show(
     BuildContext context,
     String message, {
@@ -51,6 +53,8 @@ class FlutterToast {
     double? fontSize,
     EdgeInsets? textPadding,
     EdgeInsets? textMargin,
+    bool? showIcon,
+    bool? showText,
   }) {
     // Ẩn toast hiện tại nếu có
     hide();
@@ -74,6 +78,8 @@ class FlutterToast {
     final fontSz = fontSize ?? toastStyle.fontSize;
     final textPad = textPadding ?? toastStyle.textPadding;
     final textMrg = textMargin ?? toastStyle.textMargin;
+    final showIconValue = showIcon ?? toastStyle.showIcon;
+    final showTextValue = showText ?? toastStyle.showText;
 
     // Tạo overlay entry
     _overlayEntry = OverlayEntry(
@@ -98,6 +104,8 @@ class FlutterToast {
             fontWeight: toastStyle.fontWeight,
             border: toastStyle.border,
             boxShadow: toastStyle.boxShadow,
+            showIcon: showIconValue,
+            showText: showTextValue,
           ),
     );
 
@@ -123,6 +131,8 @@ class FlutterToast {
   /// [fontSize] - Kích thước font chữ
   /// [textPadding] - Padding xung quanh text
   /// [textMargin] - Margin xung quanh text
+  /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
+  /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
   void showSuccess(
     BuildContext context,
     String message, {
@@ -139,6 +149,8 @@ class FlutterToast {
     double? fontSize,
     EdgeInsets? textPadding,
     EdgeInsets? textMargin,
+    bool? showIcon,
+    bool? showText,
   }) {
     show(
       context,
@@ -157,6 +169,8 @@ class FlutterToast {
       fontSize: fontSize,
       textPadding: textPadding,
       textMargin: textMargin,
+      showIcon: showIcon,
+      showText: showText,
     );
   }
 
@@ -172,6 +186,8 @@ class FlutterToast {
   /// [fontSize] - Kích thước font chữ
   /// [textPadding] - Padding xung quanh text
   /// [textMargin] - Margin xung quanh text
+  /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
+  /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
   void showError(
     BuildContext context,
     String message, {
@@ -188,6 +204,8 @@ class FlutterToast {
     double? fontSize,
     EdgeInsets? textPadding,
     EdgeInsets? textMargin,
+    bool? showIcon,
+    bool? showText,
   }) {
     show(
       context,
@@ -206,6 +224,8 @@ class FlutterToast {
       fontSize: fontSize,
       textPadding: textPadding,
       textMargin: textMargin,
+      showIcon: showIcon,
+      showText: showText,
     );
   }
 
@@ -221,6 +241,8 @@ class FlutterToast {
   /// [fontSize] - Kích thước font chữ
   /// [textPadding] - Padding xung quanh text
   /// [textMargin] - Margin xung quanh text
+  /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
+  /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
   void showWarning(
     BuildContext context,
     String message, {
@@ -237,6 +259,8 @@ class FlutterToast {
     double? fontSize,
     EdgeInsets? textPadding,
     EdgeInsets? textMargin,
+    bool? showIcon,
+    bool? showText,
   }) {
     show(
       context,
@@ -255,6 +279,8 @@ class FlutterToast {
       fontSize: fontSize,
       textPadding: textPadding,
       textMargin: textMargin,
+      showIcon: showIcon,
+      showText: showText,
     );
   }
 
@@ -270,6 +296,8 @@ class FlutterToast {
   /// [fontSize] - Kích thước font chữ
   /// [textPadding] - Padding xung quanh text
   /// [textMargin] - Margin xung quanh text
+  /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
+  /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
   void showInfo(
     BuildContext context,
     String message, {
@@ -286,6 +314,8 @@ class FlutterToast {
     double? fontSize,
     EdgeInsets? textPadding,
     EdgeInsets? textMargin,
+    bool? showIcon,
+    bool? showText,
   }) {
     show(
       context,
@@ -304,6 +334,8 @@ class FlutterToast {
       fontSize: fontSize,
       textPadding: textPadding,
       textMargin: textMargin,
+      showIcon: showIcon,
+      showText: showText,
     );
   }
 
@@ -470,6 +502,146 @@ class FlutterToast {
     });
   }
 
+  /// Hiển thị dialog toast với TextField và buttons (giống dialog có thể tương tác)
+  ///
+  /// [message] - Nội dung message
+  /// [title] - Tiêu đề dialog (tùy chọn)
+  /// [textField] - Widget TextField tùy chỉnh (nếu null sẽ không hiển thị)
+  /// [onConfirm] - Callback khi nhấn nút xác nhận (nhận giá trị từ TextField nếu có)
+  /// [onCancel] - Callback khi nhấn nút hủy
+  /// [confirmButton] - Widget nút xác nhận tùy chỉnh (ví dụ: ElevatedButton với text "Đồng ý")
+  /// [cancelButton] - Widget nút hủy tùy chỉnh (ví dụ: TextButton với text "Không")
+  /// [confirmText] - Text cho nút xác nhận (mặc định "Đồng ý")
+  /// [cancelText] - Text cho nút hủy (mặc định "Hủy")
+  /// [showCancelButton] - Hiển thị nút hủy (mặc định true)
+  /// [dismissible] - Có thể đóng bằng cách tap bên ngoài (mặc định true)
+  /// [duration] - Thời gian hiển thị (null = không tự động đóng)
+  /// [position] - Vị trí hiển thị (mặc định center)
+  /// [style] - Style tùy chỉnh
+  /// [backgroundColor] - Màu nền
+  /// [textColor] - Màu chữ
+  /// [iconColor] - Màu icon
+  /// [iconPosition] - Vị trí icon
+  /// [iconSize] - Kích thước icon
+  /// [iconPadding] - Padding icon
+  /// [iconMargin] - Margin icon
+  /// [fontSize] - Kích thước font
+  /// [textPadding] - Padding text
+  /// [textMargin] - Margin text
+  /// [titleFontSize] - Kích thước font cho title
+  /// [titleFontWeight] - Font weight cho title
+  /// [borderRadius] - Border radius
+  /// [maxWidth] - Chiều rộng tối đa
+  /// [width] - Chiều rộng cố định
+  /// [animationDuration] - Thời gian animation
+  void showDialogToast(
+    BuildContext context,
+    String message, {
+    String? title,
+    Widget? textField,
+    Function(String?)? onConfirm,
+    VoidCallback? onCancel,
+    Widget? confirmButton,
+    Widget? cancelButton,
+    String confirmText = 'Đồng ý',
+    String cancelText = 'Hủy',
+    bool showCancelButton = true,
+    bool dismissible = true,
+    Duration? duration,
+    ToastPosition position = ToastPosition.center,
+    ToastStyle? style,
+    Color? backgroundColor,
+    Color? textColor,
+    Color? iconColor,
+    IconPosition iconPosition = IconPosition.top,
+    double? iconSize,
+    EdgeInsets? iconPadding,
+    EdgeInsets? iconMargin,
+    double? fontSize,
+    EdgeInsets? textPadding,
+    EdgeInsets? textMargin,
+    double? titleFontSize,
+    FontWeight? titleFontWeight,
+    double? borderRadius,
+    double? maxWidth,
+    double? width,
+    Duration? animationDuration,
+  }) {
+    // Ẩn toast hiện tại nếu có
+    hide();
+
+    // Tạo style
+    final toastStyle = style ?? const ToastStyle();
+    final bgColor = backgroundColor ?? Colors.white;
+    final txtColor = textColor ?? Colors.black87;
+    final iconData = ToastType.alert.defaultIcon;
+    final iconClr = iconColor ?? toastStyle.iconColor ?? txtColor;
+    final iconSz = iconSize ?? toastStyle.iconSize;
+    final iconPad = iconPadding ?? toastStyle.iconPadding;
+    final iconMrg = iconMargin ?? toastStyle.iconMargin;
+    final fontSz = fontSize ?? toastStyle.fontSize;
+    final textPad = textPadding ?? toastStyle.textPadding;
+    final textMrg = textMargin ?? toastStyle.textMargin;
+    final titleSz = titleFontSize ?? (fontSz + 2);
+    final titleWeight = titleFontWeight ?? FontWeight.bold;
+    final borderRad = borderRadius ?? toastStyle.borderRadius;
+    final animDuration = animationDuration ?? const Duration(milliseconds: 300);
+
+    // Tạo overlay entry
+    _overlayEntry = OverlayEntry(
+      builder:
+          (context) => _DialogToastWidget(
+            message: message,
+            title: title,
+            textField: textField,
+            onConfirm: onConfirm,
+            onCancel: onCancel,
+            confirmButton: confirmButton,
+            cancelButton: cancelButton,
+            confirmText: confirmText,
+            cancelText: cancelText,
+            showCancelButton: showCancelButton,
+            dismissible: dismissible,
+            position: position,
+            backgroundColor: bgColor,
+            textColor: txtColor,
+            icon: iconData,
+            iconColor: iconClr,
+            iconSize: iconSz,
+            iconPosition: iconPosition,
+            iconPadding: iconPad,
+            iconMargin: iconMrg,
+            borderRadius: borderRad,
+            padding: toastStyle.padding,
+            margin: toastStyle.margin,
+            fontSize: fontSz,
+            titleFontSize: titleSz,
+            titleFontWeight: titleWeight,
+            textPadding: textPad,
+            textMargin: textMrg,
+            fontWeight: toastStyle.fontWeight,
+            border: toastStyle.border,
+            boxShadow: toastStyle.boxShadow,
+            maxWidth: maxWidth,
+            width: width,
+            animationDuration: animDuration,
+            hideCallback: hide,
+          ),
+    );
+
+    // Chèn overlay vào
+    Overlay.of(context).insert(_overlayEntry!);
+    _isVisible = true;
+
+    // Tự động ẩn sau duration (nếu có)
+    if (duration != null) {
+      _timer = Timer(duration, () {
+        hide();
+        onCancel?.call();
+      });
+    }
+  }
+
   /// Ẩn toast hiện tại
   void hide() {
     if (_isVisible && _overlayEntry != null) {
@@ -506,6 +678,8 @@ class _ToastWidget extends StatefulWidget {
   final FontWeight fontWeight;
   final Border? border;
   final List<BoxShadow>? boxShadow;
+  final bool showIcon;
+  final bool showText;
 
   const _ToastWidget({
     required this.message,
@@ -527,6 +701,8 @@ class _ToastWidget extends StatefulWidget {
     required this.fontWeight,
     this.border,
     this.boxShadow,
+    required this.showIcon,
+    required this.showText,
   });
 
   @override
@@ -674,9 +850,9 @@ class _ToastWidgetState extends State<_ToastWidget>
       responsiveFontSize = widget.fontSize * 1.1;
     }
 
-    // Icon widget với padding và margin
+    // Icon widget với padding và margin (chỉ hiển thị nếu showIcon = true)
     Widget? iconWidget;
-    if (widget.icon != null) {
+    if (widget.showIcon && widget.icon != null) {
       iconWidget = Icon(
         widget.icon,
         color: widget.iconColor,
@@ -694,27 +870,30 @@ class _ToastWidgetState extends State<_ToastWidget>
       }
     }
 
-    // Text widget với responsive font size, padding và margin
-    Widget textWidget = Text(
-      widget.message,
-      style: TextStyle(
-        color: widget.textColor,
-        fontSize: responsiveFontSize,
-        fontWeight: widget.fontWeight,
-      ),
-      textAlign: TextAlign.center,
-      maxLines: 5,
-      overflow: TextOverflow.ellipsis,
-    );
+    // Text widget với responsive font size, padding và margin (chỉ hiển thị nếu showText = true)
+    Widget? textWidget;
+    if (widget.showText) {
+      textWidget = Text(
+        widget.message,
+        style: TextStyle(
+          color: widget.textColor,
+          fontSize: responsiveFontSize,
+          fontWeight: widget.fontWeight,
+        ),
+        textAlign: TextAlign.center,
+        maxLines: 5,
+        overflow: TextOverflow.ellipsis,
+      );
 
-    // Áp dụng padding cho text
-    if (widget.textPadding != null) {
-      textWidget = Padding(padding: widget.textPadding!, child: textWidget);
-    }
+      // Áp dụng padding cho text
+      if (widget.textPadding != null) {
+        textWidget = Padding(padding: widget.textPadding!, child: textWidget);
+      }
 
-    // Áp dụng margin cho text
-    if (widget.textMargin != null) {
-      textWidget = Container(margin: widget.textMargin!, child: textWidget);
+      // Áp dụng margin cho text
+      if (widget.textMargin != null) {
+        textWidget = Container(margin: widget.textMargin!, child: textWidget);
+      }
     }
 
     // Xây dựng layout dựa trên vị trí icon
@@ -725,63 +904,65 @@ class _ToastWidgetState extends State<_ToastWidget>
         widget.textMargin == null && widget.textPadding == null;
 
     Widget content;
-    switch (widget.iconPosition) {
-      case IconPosition.left:
-        content = Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (iconWidget != null) ...[
+    // Nếu không có cả icon và text, hiển thị một container rỗng
+    if (iconWidget == null && textWidget == null) {
+      content = const SizedBox.shrink();
+    } else if (iconWidget == null) {
+      // Chỉ có text
+      content = textWidget ?? const SizedBox.shrink();
+    } else if (textWidget == null) {
+      // Chỉ có icon
+      content = iconWidget;
+    } else {
+      // Có cả icon và text
+      switch (widget.iconPosition) {
+        case IconPosition.left:
+          content = Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               iconWidget,
               if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
+              Flexible(child: textWidget),
             ],
-            Flexible(child: textWidget),
-          ],
-        );
-        break;
-      case IconPosition.right:
-        content = Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(child: textWidget),
-            if (iconWidget != null) ...[
+          );
+          break;
+        case IconPosition.right:
+          content = Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(child: textWidget),
               if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
               iconWidget,
             ],
-          ],
-        );
-        break;
-      case IconPosition.top:
-        content = Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (iconWidget != null) ...[
+          );
+          break;
+        case IconPosition.top:
+          content = Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               iconWidget,
               if (hasIconSpacing && hasTextSpacing) const SizedBox(height: 8),
+              Flexible(child: textWidget),
             ],
-            Flexible(child: textWidget),
-          ],
-        );
-        break;
-      case IconPosition.bottom:
-        content = Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(child: textWidget),
-            if (iconWidget != null) ...[
+          );
+          break;
+        case IconPosition.bottom:
+          content = Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(child: textWidget),
               if (hasIconSpacing && hasTextSpacing) const SizedBox(height: 8),
               iconWidget,
             ],
-          ],
-        );
-        break;
-      case IconPosition.center:
-        content = Stack(
-          alignment: Alignment.center,
-          children: [
-            textWidget,
-            if (iconWidget != null)
+          );
+          break;
+        case IconPosition.center:
+          content = Stack(
+            alignment: Alignment.center,
+            children: [
+              textWidget,
               Positioned.fill(
                 child: Center(
                   child: Container(
@@ -798,9 +979,10 @@ class _ToastWidgetState extends State<_ToastWidget>
                   ),
                 ),
               ),
-          ],
-        );
-        break;
+            ],
+          );
+          break;
+      }
     }
 
     return Material(
@@ -1260,6 +1442,357 @@ class _AlertToastWidgetState extends State<_AlertToastWidget>
         ),
         padding: widget.padding,
         child: content,
+      ),
+    );
+  }
+}
+
+/// Widget hiển thị dialog toast với TextField và buttons
+class _DialogToastWidget extends StatefulWidget {
+  final String message;
+  final String? title;
+  final Widget? textField;
+  final Function(String?)? onConfirm;
+  final VoidCallback? onCancel;
+  final Widget? confirmButton;
+  final Widget? cancelButton;
+  final String confirmText;
+  final String cancelText;
+  final bool showCancelButton;
+  final bool dismissible;
+  final ToastPosition position;
+  final Color backgroundColor;
+  final Color textColor;
+  final IconData? icon;
+  final Color iconColor;
+  final double iconSize;
+  final IconPosition iconPosition;
+  final EdgeInsets? iconPadding;
+  final EdgeInsets? iconMargin;
+  final double borderRadius;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+  final double fontSize;
+  final double? titleFontSize;
+  final FontWeight? titleFontWeight;
+  final EdgeInsets? textPadding;
+  final EdgeInsets? textMargin;
+  final FontWeight fontWeight;
+  final Border? border;
+  final List<BoxShadow>? boxShadow;
+  final double? maxWidth;
+  final double? width;
+  final Duration animationDuration;
+  final VoidCallback hideCallback;
+
+  const _DialogToastWidget({
+    required this.message,
+    this.title,
+    this.textField,
+    this.onConfirm,
+    this.onCancel,
+    this.confirmButton,
+    this.cancelButton,
+    this.confirmText = 'Đồng ý',
+    this.cancelText = 'Hủy',
+    this.showCancelButton = true,
+    required this.dismissible,
+    required this.position,
+    required this.backgroundColor,
+    required this.textColor,
+    required this.icon,
+    required this.iconColor,
+    required this.iconSize,
+    required this.iconPosition,
+    this.iconPadding,
+    this.iconMargin,
+    required this.borderRadius,
+    required this.padding,
+    required this.margin,
+    required this.fontSize,
+    this.titleFontSize,
+    this.titleFontWeight,
+    this.textPadding,
+    this.textMargin,
+    required this.fontWeight,
+    this.border,
+    this.boxShadow,
+    this.maxWidth,
+    this.width,
+    required this.animationDuration,
+    required this.hideCallback,
+  });
+
+  @override
+  State<_DialogToastWidget> createState() => _DialogToastWidgetState();
+}
+
+class _DialogToastWidgetState extends State<_DialogToastWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+  late Animation<double> _scaleAnimation;
+  final TextEditingController _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: widget.animationDuration,
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    Offset beginOffset;
+    switch (widget.position) {
+      case ToastPosition.top:
+      case ToastPosition.topLeft:
+      case ToastPosition.topRight:
+        beginOffset = const Offset(0, -0.5);
+        break;
+      case ToastPosition.bottom:
+      case ToastPosition.bottomLeft:
+      case ToastPosition.bottomRight:
+        beginOffset = const Offset(0, 0.5);
+        break;
+      case ToastPosition.center:
+        beginOffset = Offset.zero;
+        break;
+    }
+    final endOffset = Offset.zero;
+
+    _slideAnimation = Tween<Offset>(
+      begin: beginOffset,
+      end: endOffset,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _textController.dispose();
+    super.dispose();
+  }
+
+  void _handleConfirm() {
+    // Nếu có TextField tùy chỉnh, người dùng sẽ tự quản lý giá trị
+    // Nếu không có TextField, truyền null
+    final textValue = null; // Người dùng tự quản lý giá trị từ TextField của họ
+    _controller.reverse().then((_) {
+      widget.hideCallback();
+      widget.onConfirm?.call(textValue);
+    });
+  }
+
+  void _handleCancel() {
+    _controller.reverse().then((_) {
+      widget.hideCallback();
+      widget.onCancel?.call();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+
+    return Positioned.fill(
+      child: GestureDetector(
+        onTap: widget.dismissible ? _handleCancel : null,
+        child: Container(
+          color: Colors.black.withOpacity(0.3),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {}, // Ngăn tap event bubble lên
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: ScaleTransition(
+                  scale: _scaleAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: _buildDialogContent(screenWidth),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDialogContent(double screenWidth) {
+    // Icon widget
+    Widget? iconWidget;
+    if (widget.icon != null) {
+      iconWidget = Icon(
+        widget.icon,
+        color: widget.iconColor,
+        size: widget.iconSize,
+      );
+
+      if (widget.iconPadding != null) {
+        iconWidget = Padding(padding: widget.iconPadding!, child: iconWidget);
+      }
+
+      if (widget.iconMargin != null) {
+        iconWidget = Container(margin: widget.iconMargin!, child: iconWidget);
+      }
+    }
+
+    // Title widget
+    Widget? titleWidget;
+    if (widget.title != null) {
+      titleWidget = Text(
+        widget.title!,
+        style: TextStyle(
+          color: widget.textColor,
+          fontSize: widget.titleFontSize ?? (widget.fontSize + 2),
+          fontWeight: widget.titleFontWeight ?? FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
+      );
+    }
+
+    // Message widget
+    Widget messageWidget = Text(
+      widget.message,
+      style: TextStyle(
+        color: widget.textColor,
+        fontSize: widget.fontSize,
+        fontWeight: widget.fontWeight,
+      ),
+      textAlign: TextAlign.center,
+    );
+
+    if (widget.textPadding != null) {
+      messageWidget = Padding(
+        padding: widget.textPadding!,
+        child: messageWidget,
+      );
+    }
+
+    if (widget.textMargin != null) {
+      messageWidget = Container(
+        margin: widget.textMargin!,
+        child: messageWidget,
+      );
+    }
+
+    // TextField widget
+    Widget? textFieldWidget;
+    if (widget.textField != null) {
+      textFieldWidget = widget.textField;
+    }
+
+    // Buttons
+    Widget? buttonsWidget;
+    if (widget.confirmButton != null ||
+        widget.cancelButton != null ||
+        widget.showCancelButton ||
+        widget.onConfirm != null) {
+      List<Widget> buttonRow = [];
+
+      if (widget.showCancelButton) {
+        if (widget.cancelButton != null) {
+          buttonRow.add(Expanded(child: widget.cancelButton!));
+        } else {
+          buttonRow.add(
+            Expanded(
+              child: TextButton(
+                onPressed: _handleCancel,
+                child: Text(widget.cancelText),
+              ),
+            ),
+          );
+        }
+        if (widget.confirmButton != null || widget.onConfirm != null) {
+          buttonRow.add(const SizedBox(width: 12));
+        }
+      }
+
+      if (widget.confirmButton != null) {
+        buttonRow.add(Expanded(child: widget.confirmButton!));
+      } else if (widget.onConfirm != null) {
+        buttonRow.add(
+          Expanded(
+            child: ElevatedButton(
+              onPressed: _handleConfirm,
+              child: Text(widget.confirmText),
+            ),
+          ),
+        );
+      }
+
+      buttonsWidget = Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Row(children: buttonRow),
+      );
+    }
+
+    // Build content
+    List<Widget> children = [];
+    if (iconWidget != null && widget.iconPosition == IconPosition.top) {
+      children.add(iconWidget);
+      children.add(const SizedBox(height: 16));
+    }
+    if (titleWidget != null) {
+      children.add(titleWidget);
+      children.add(const SizedBox(height: 12));
+    }
+    children.add(messageWidget);
+    if (textFieldWidget != null) {
+      children.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: textFieldWidget,
+        ),
+      );
+    }
+    if (buttonsWidget != null) {
+      children.add(buttonsWidget);
+    }
+
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        width: widget.width,
+        constraints: BoxConstraints(
+          maxWidth: widget.maxWidth ?? (screenWidth * 0.85),
+          minWidth: 250,
+        ),
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          border: widget.border,
+          boxShadow:
+              widget.boxShadow ??
+              [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+        ),
+        padding: widget.padding,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children,
+        ),
       ),
     );
   }

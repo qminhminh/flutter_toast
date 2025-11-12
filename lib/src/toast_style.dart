@@ -47,6 +47,12 @@ class ToastStyle {
   /// Shadow của toast
   final List<BoxShadow>? boxShadow;
 
+  /// Hiển thị icon (mặc định true)
+  final bool showIcon;
+
+  /// Hiển thị text (mặc định true)
+  final bool showText;
+
   const ToastStyle({
     this.backgroundColor = Colors.black87,
     this.textColor = Colors.white,
@@ -63,6 +69,8 @@ class ToastStyle {
     this.fontWeight = FontWeight.normal,
     this.border,
     this.boxShadow,
+    this.showIcon = true,
+    this.showText = true,
   });
 
   /// Copy với các thay đổi
@@ -82,6 +90,8 @@ class ToastStyle {
     FontWeight? fontWeight,
     Border? border,
     List<BoxShadow>? boxShadow,
+    bool? showIcon,
+    bool? showText,
   }) {
     return ToastStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -99,6 +109,8 @@ class ToastStyle {
       fontWeight: fontWeight ?? this.fontWeight,
       border: border ?? this.border,
       boxShadow: boxShadow ?? this.boxShadow,
+      showIcon: showIcon ?? this.showIcon,
+      showText: showText ?? this.showText,
     );
   }
 }

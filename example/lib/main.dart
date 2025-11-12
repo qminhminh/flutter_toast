@@ -474,6 +474,50 @@ class ToastDemoPage extends StatelessWidget {
                 },
                 child: const Text('Text Dài - Responsive'),
               ),
+              const SizedBox(height: 12),
+
+              // Toast chỉ có icon (không có text)
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    '', // Text rỗng
+                    showText: false,
+                    showIcon: true,
+                  );
+                },
+                child: const Text('Chỉ Hiển Thị Icon'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast chỉ có text (không có icon)
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Toast này chỉ hiển thị text, không có icon',
+                    showIcon: false,
+                    showText: true,
+                  );
+                },
+                child: const Text('Chỉ Hiển Thị Text'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast không có cả icon và text (chỉ có background)
+              ElevatedButton(
+                onPressed: () {
+                  toast.show(
+                    context,
+                    '',
+                    type: ToastType.custom,
+                    backgroundColor: Colors.purple,
+                    showIcon: false,
+                    showText: false,
+                  );
+                },
+                child: const Text('Không Có Icon Và Text'),
+              ),
               const SizedBox(height: 32),
 
               const Divider(),
@@ -577,6 +621,151 @@ class ToastDemoPage extends StatelessWidget {
                   );
                 },
                 child: const Text('Alert Với Callback'),
+              ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Dialog Toast (Có TextField và Buttons):',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Dialog đơn giản với buttons
+              ElevatedButton(
+                onPressed: () {
+                  toast.showDialogToast(
+                    context,
+                    'Bạn có muốn tiếp tục không?',
+                    title: 'Xác Nhận',
+                    onConfirm: (value) {
+                      toast.showSuccess(context, 'Bạn đã đồng ý!');
+                    },
+                    onCancel: () {
+                      toast.showInfo(context, 'Bạn đã hủy');
+                    },
+                  );
+                },
+                child: const Text('Dialog Đơn Giản'),
+              ),
+              const SizedBox(height: 12),
+
+              // Dialog với TextField
+              ElevatedButton(
+                onPressed: () {
+                  final controller = TextEditingController();
+                  toast.showDialogToast(
+                    context,
+                    'Vui lòng nhập tên của bạn:',
+                    title: 'Nhập Tên',
+                    textField: TextField(
+                      controller: controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Nhập tên của bạn',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    onConfirm: (value) {
+                      final name = controller.text;
+                      if (name.isNotEmpty) {
+                        toast.showSuccess(context, 'Xin chào $name!');
+                      } else {
+                        toast.showError(context, 'Vui lòng nhập tên!');
+                      }
+                    },
+                    onCancel: () {
+                      controller.dispose();
+                      toast.showInfo(context, 'Đã hủy');
+                    },
+                  );
+                },
+                child: const Text('Dialog Với TextField'),
+              ),
+              const SizedBox(height: 12),
+
+              // Dialog với buttons tùy chỉnh
+              ElevatedButton(
+                onPressed: () {
+                  toast.showDialogToast(
+                    context,
+                    'Bạn có chắc chắn muốn xóa không?',
+                    title: 'Xóa Dữ Liệu',
+                    confirmText: 'Xóa',
+                    cancelText: 'Không',
+                    onConfirm: (value) {
+                      toast.showError(context, 'Đã xóa thành công!');
+                    },
+                    onCancel: () {
+                      toast.showInfo(context, 'Đã hủy xóa');
+                    },
+                    backgroundColor: Colors.red.shade50,
+                    textColor: Colors.red.shade900,
+                  );
+                },
+                child: const Text('Dialog Với Buttons Tùy Chỉnh'),
+              ),
+              const SizedBox(height: 12),
+
+              // Dialog không dismissible
+              ElevatedButton(
+                onPressed: () {
+                  toast.showDialogToast(
+                    context,
+                    'Dialog này không thể đóng bằng cách tap bên ngoài.',
+                    title: 'Dialog Quan Trọng',
+                    dismissible: false,
+                    onConfirm: (value) {
+                      toast.showSuccess(context, 'Đã xác nhận!');
+                    },
+                    onCancel: () {
+                      toast.showInfo(context, 'Đã hủy');
+                    },
+                  );
+                },
+                child: const Text('Dialog Không Dismissible'),
+              ),
+              const SizedBox(height: 12),
+
+              // Dialog với TextField và validation
+              ElevatedButton(
+                onPressed: () {
+                  final emailController = TextEditingController();
+                  toast.showDialogToast(
+                    context,
+                    'Vui lòng nhập email của bạn:',
+                    title: 'Đăng Ký Email',
+                    textField: TextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        hintText: 'email@example.com',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.email),
+                      ),
+                    ),
+                    confirmText: 'Đăng Ký',
+                    cancelText: 'Hủy',
+                    onConfirm: (value) {
+                      final email = emailController.text;
+                      if (email.contains('@') && email.contains('.')) {
+                        toast.showSuccess(
+                          context,
+                          'Đăng ký email $email thành công!',
+                        );
+                      } else {
+                        toast.showError(context, 'Email không hợp lệ!');
+                      }
+                      emailController.dispose();
+                    },
+                    onCancel: () {
+                      emailController.dispose();
+                      toast.showInfo(context, 'Đã hủy đăng ký');
+                    },
+                  );
+                },
+                child: const Text('Dialog Với Validation'),
               ),
             ],
           ),

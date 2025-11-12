@@ -1,5 +1,5 @@
 name: fluttert_toast
-description: "A new Flutter package project."
+description: "Một package Flutter đơn giản và mạnh mẽ để hiển thị toast messages trên tất cả các nền tảng (Android, iOS, Web, Desktop, macOS, Linux)."
 version: 0.0.1
 homepage:
 

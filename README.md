@@ -9,7 +9,8 @@ A beautiful and powerful Flutter package for displaying toast notifications on a
 
 - 🎨 **Multiple Toast Types**: Success, Error, Warning, Info, and Custom
 - 📍 **Flexible Positioning**: Top, Bottom, Center, and corner positions (topLeft, topRight, bottomLeft, bottomRight)
-- 🎭 **Predefined Styles**: Flat, Fill Colored, Flat Colored, and Minimal styles (similar to ToastificationStyle)
+- 🎭 **Predefined Styles**: Flat, Fill Colored, Flat Colored, Minimal, and Simple styles (similar to ToastificationStyle)
+- 🔧 **Override Properties**: Override any style property (colors, padding, margin, border, shadow, etc.) even when using predefined styles
 - 🎯 **Icon Customization**: Custom icon positions (left, right, top, bottom, center), sizes, colors, padding, and margins
 - 📱 **Responsive Design**: Automatic font size adjustment based on screen size
 - 🎨 **Full Customization**: Custom colors, fonts, borders, shadows, padding, and margins
@@ -62,7 +63,7 @@ toast.showInfo(context, 'New update available!');
 
 ### Show Method
 
-The `show` method allows you to display toast messages with full customization:
+The `show` method allows you to display toast messages with full customization. When using a `styleType`, you can override any of its default properties:
 
 ```dart
 toast.show(
@@ -72,12 +73,18 @@ toast.show(
   styleType: ToastStyleType.flat,
   duration: Duration(seconds: 5),
   position: ToastPosition.top,
-  backgroundColor: Colors.white,
-  textColor: Colors.black87,
-  iconColor: Colors.green,
+  backgroundColor: Colors.white,      // Overrides styleType default
+  textColor: Colors.black87,          // Overrides styleType default
+  iconColor: Colors.green,            // Overrides styleType default
   iconPosition: IconPosition.left,
   iconSize: 30,
   fontSize: 14,
+  borderRadius: 16.0,                 // Overrides styleType default
+  padding: EdgeInsets.all(20),         // Overrides styleType default
+  margin: EdgeInsets.all(16),         // Overrides styleType default
+  border: Border.all(color: Colors.green), // Overrides styleType default
+  boxShadow: [...],                   // Overrides styleType default
+  fontWeight: FontWeight.bold,         // Overrides styleType default
   showIcon: true,
   showText: true,
 );
@@ -164,6 +171,42 @@ toast.showInfo(
   context,
   'Component updates available.',
   styleType: ToastStyleType.minimal,
+);
+```
+
+#### 5. ToastStyleType.simple
+
+A simple style with light background, no icon, and no close button. Perfect for minimal notifications.
+
+```dart
+toast.showSuccess(
+  context,
+  'Component updates available.',
+  styleType: ToastStyleType.simple,
+);
+```
+
+### Override Style Properties
+
+You can override any property of a predefined style type:
+
+```dart
+toast.showSuccess(
+  context,
+  'Custom styled toast',
+  styleType: ToastStyleType.flat,
+  backgroundColor: Colors.blue.shade50, // Override background color
+  padding: EdgeInsets.all(24.0),        // Override padding
+  borderRadius: 16.0,                    // Override border radius
+  border: Border.all(color: Colors.blue, width: 2), // Override border
+  boxShadow: [
+    BoxShadow(
+      color: Colors.blue.withOpacity(0.3),
+      blurRadius: 20,
+      offset: Offset(0, 10),
+    ),
+  ],
+  fontWeight: FontWeight.bold,           // Override font weight
 );
 ```
 
@@ -343,7 +386,13 @@ Show a custom toast message with full customization options.
 - `type` - ToastType (success, error, warning, info, custom)
 - `duration` - Duration to display (default: 2 seconds)
 - `position` - ToastPosition (top, bottom, center, corners)
-- `styleType` - ToastStyleType (flat, fillColored, flatColored, minimal)
+- `styleType` - ToastStyleType (flat, fillColored, flatColored, minimal, simple)
+- `borderRadius` - Border radius (overrides styleType default)
+- `padding` - Padding (overrides styleType default)
+- `margin` - Margin (overrides styleType default)
+- `border` - Border (overrides styleType default)
+- `boxShadow` - Shadow (overrides styleType default)
+- `fontWeight` - Font weight (overrides styleType default)
 - `backgroundColor` - Custom background color
 - `textColor` - Custom text color
 - `iconColor` - Custom icon color
@@ -392,6 +441,7 @@ Show a custom toast message with full customization options.
 - `ToastStyleType.fillColored` - Filled background with white text and icon
 - `ToastStyleType.flatColored` - Light colored background with dark border
 - `ToastStyleType.minimal` - Minimal style with left border and close button
+- `ToastStyleType.simple` - Simple style with light background, no icon, no close button
 
 #### IconPosition
 

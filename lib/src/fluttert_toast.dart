@@ -1072,9 +1072,22 @@ class _ToastWidgetState extends State<_ToastWidget>
             break;
         }
 
+        // Icon size trong circle phụ thuộc vào styleType
+        double circleSize;
+        switch (widget.styleType!) {
+          case ToastStyleType.flat:
+          case ToastStyleType.flatColored:
+          case ToastStyleType.minimal:
+            circleSize = widget.iconSize + 16; // Padding lớn hơn cho đẹp
+            break;
+          case ToastStyleType.fillColored:
+            circleSize = widget.iconSize + 16;
+            break;
+        }
+
         icon = Container(
-          width: widget.iconSize + 12,
-          height: widget.iconSize + 12,
+          width: circleSize,
+          height: circleSize,
           decoration: BoxDecoration(
             color: circleBackgroundColor,
             shape: BoxShape.circle,
@@ -1128,21 +1141,28 @@ class _ToastWidgetState extends State<_ToastWidget>
       }
     }
 
-    // Close button widget (cho minimal style)
+    // Close button widget (cho minimal style và các style khác)
     Widget? closeButtonWidget;
     if (widget.showCloseButton) {
-      closeButtonWidget = GestureDetector(
-        onTap: () {
-          _controller.reverse().then((_) {
-            widget.hideCallback();
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.all(4),
-          child: Icon(
-            widget.closeButtonIcon ?? Icons.close,
-            color: widget.closeButtonColor,
-            size: widget.closeButtonSize,
+      closeButtonWidget = MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            _controller.reverse().then((_) {
+              widget.hideCallback();
+            });
+          },
+          child: Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Icon(
+              widget.closeButtonIcon ?? Icons.close_rounded,
+              color: widget.closeButtonColor,
+              size: widget.closeButtonSize,
+            ),
           ),
         ),
       );
@@ -1157,9 +1177,9 @@ class _ToastWidgetState extends State<_ToastWidget>
 
     Widget content;
 
-    // Nếu có styleType (đặc biệt là minimal), layout đặc biệt với close button
-    if (widget.styleType != null && widget.showCloseButton) {
-      // Layout cho styleType: Icon bên trái, Text ở giữa (Expanded), Close button bên phải
+    // Nếu có styleType, layout đặc biệt (giống toastification)
+    if (widget.styleType != null) {
+      // Layout cho styleType: Icon bên trái, Text ở giữa (Expanded), Close button bên phải (nếu có)
       List<Widget> rowChildren = [];
 
       if (iconWidget != null) {
@@ -1172,8 +1192,10 @@ class _ToastWidgetState extends State<_ToastWidget>
       }
 
       if (closeButtonWidget != null) {
-        rowChildren.add(const SizedBox(width: 8));
-        rowChildren.add(closeButtonWidget);
+        rowChildren.add(const SizedBox(width: 4));
+        rowChildren.add(
+          Align(alignment: Alignment.topCenter, child: closeButtonWidget),
+        );
       }
 
       content = Row(
@@ -1270,7 +1292,10 @@ class _ToastWidgetState extends State<_ToastWidget>
       child: Container(
         constraints: BoxConstraints(
           maxWidth:
-              screenWidth * 0.9, // Responsive: tối đa 90% chiều rộng màn hình
+              screenWidth > 600
+                  ? 440.0 // Giống toastification: max width 440 cho desktop
+                  : screenWidth *
+                      0.9, // Responsive: tối đa 90% chiều rộng màn hình cho mobile
           minWidth: 100,
         ),
         decoration: BoxDecoration(
@@ -1281,9 +1306,10 @@ class _ToastWidgetState extends State<_ToastWidget>
               widget.boxShadow ??
               [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                  color: const Color(0x07000000),
+                  blurRadius: 16,
+                  offset: const Offset(0, 16),
+                  spreadRadius: 0,
                 ),
               ],
         ),

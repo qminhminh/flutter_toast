@@ -65,9 +65,9 @@ class ToastStyle {
     this.iconSize = 30.0,
     this.iconPadding,
     this.iconMargin,
-    this.borderRadius = 8.0,
-    this.padding = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-    this.margin = const EdgeInsets.all(16.0),
+    this.borderRadius = 12.0,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+    this.margin = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
     this.fontSize = 14.0,
     this.textPadding,
     this.textMargin,
@@ -94,9 +94,17 @@ class ToastStyle {
           backgroundColor: Colors.grey.shade100,
           textColor: Colors.black87,
           iconColor: typeColor,
-          borderRadius: 8.0,
+          borderRadius: 12.0,
           border: Border.all(color: lightColor, width: 1),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x07000000),
+              blurRadius: 16,
+              offset: const Offset(0, 16),
+              spreadRadius: 0,
+            ),
+          ],
         );
       case ToastStyleType.fillColored:
         return ToastStyle(
@@ -104,8 +112,16 @@ class ToastStyle {
           backgroundColor: typeColor,
           textColor: Colors.white,
           iconColor: Colors.white,
-          borderRadius: 8.0,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          borderRadius: 12.0,
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x07000000),
+              blurRadius: 16,
+              offset: const Offset(0, 16),
+              spreadRadius: 0,
+            ),
+          ],
         );
       case ToastStyleType.flatColored:
         return ToastStyle(
@@ -113,9 +129,17 @@ class ToastStyle {
           backgroundColor: lightColor,
           textColor: Colors.black87,
           iconColor: darkColor,
-          borderRadius: 8.0,
+          borderRadius: 12.0,
           border: Border.all(color: darkColor, width: 1),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x07000000),
+              blurRadius: 16,
+              offset: const Offset(0, 16),
+              spreadRadius: 0,
+            ),
+          ],
         );
       case ToastStyleType.minimal:
         return ToastStyle(
@@ -123,16 +147,17 @@ class ToastStyle {
           backgroundColor: Colors.white,
           textColor: Colors.black87,
           iconColor: typeColor,
-          borderRadius: 8.0,
+          borderRadius: 12.0,
           border: Border(
             left: BorderSide(color: typeColor, width: 4),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              color: const Color(0x07000000),
+              blurRadius: 16,
+              offset: const Offset(0, 16),
+              spreadRadius: 0,
             ),
           ],
         );

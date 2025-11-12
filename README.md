@@ -1,8 +1,11 @@
 # fluttert_toast
 
-A simple and powerful Flutter package for displaying toast messages on all platforms (Android, iOS, Web, Desktop, macOS, Linux).
+[![pub package](https://img.shields.io/pub/v/fluttert_toast.svg)](https://pub.dev/packages/fluttert_toast)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
+A beautiful and powerful Flutter package for displaying toast notifications on all platforms (Android, iOS, Web, Desktop, macOS, Linux). Inspired by [toastification](https://pub.dev/packages/toastification), this package provides a simple yet flexible way to show toast messages with beautiful predefined styles.
+
+## ✨ Features
 
 - 🎨 **Multiple Toast Types**: Success, Error, Warning, Info, and Custom
 - 📍 **Flexible Positioning**: Top, Bottom, Center, and corner positions (topLeft, topRight, bottomLeft, bottomRight)
@@ -15,23 +18,21 @@ A simple and powerful Flutter package for displaying toast messages on all platf
 - 🎨 **Custom Builder**: Build your own toast widget with full control
 - 👁️ **Visibility Control**: Toggle icon and text visibility independently
 - ❌ **Close Button**: Optional close button for minimal style toasts
+- 🎬 **Smooth Animations**: Beautiful fade and slide animations
+- ⏱️ **Auto-close**: Configurable duration for automatic dismissal
 
-## Getting Started
+## 📦 Installation
 
-### Installation
-
-Add `fluttert_toast` to your `pubspec.yaml`:
+Add `fluttert_toast` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
   fluttert_toast: ^1.0.0
 ```
 
-Then run:
+Then, run `flutter pub get` to install the package.
 
-```bash
-flutter pub get
-```
+## 🚀 Quick Start
 
 ### Import
 
@@ -39,9 +40,7 @@ flutter pub get
 import 'package:fluttert_toast/fluttert_toast.dart';
 ```
 
-## Usage
-
-### Basic Toast
+### Basic Usage
 
 ```dart
 final toast = FlutterToast();
@@ -59,18 +58,42 @@ toast.showWarning(context, 'Please check your input!');
 toast.showInfo(context, 'New update available!');
 ```
 
-### Custom Toast
+## 📖 Usage
+
+### Show Method
+
+The `show` method allows you to display toast messages with full customization:
 
 ```dart
 toast.show(
   context,
-  'Custom toast message',
-  type: ToastType.custom,
-  backgroundColor: Colors.purple,
-  textColor: Colors.white,
-  icon: Icons.star,
-  iconColor: Colors.yellow,
+  'Hello, world!',
+  type: ToastType.success,
+  styleType: ToastStyleType.flat,
+  duration: Duration(seconds: 5),
+  position: ToastPosition.top,
+  backgroundColor: Colors.white,
+  textColor: Colors.black87,
+  iconColor: Colors.green,
+  iconPosition: IconPosition.left,
+  iconSize: 30,
+  fontSize: 14,
+  showIcon: true,
+  showText: true,
 );
+```
+
+### Toast Types
+
+```dart
+// Using helper methods
+toast.showSuccess(context, 'Success message');
+toast.showError(context, 'Error message');
+toast.showWarning(context, 'Warning message');
+toast.showInfo(context, 'Info message');
+
+// Or using show method with type
+toast.show(context, 'Custom message', type: ToastType.custom);
 ```
 
 ### Toast Positions
@@ -94,29 +117,49 @@ toast.showSuccess(context, 'Message', position: ToastPosition.bottomRight);
 
 ### Predefined Styles
 
+We have 4 predefined styles for toast messages, each offering a unique look and feel:
+
+#### 1. ToastStyleType.flat
+
+A simple and clean style with a subtle border and light background. Ideal for minimalist notifications.
+
 ```dart
-// Flat style
 toast.showSuccess(
   context,
   'Component updates available.',
   styleType: ToastStyleType.flat,
 );
+```
 
-// Fill colored style
+#### 2. ToastStyleType.fillColored
+
+A bold style with a solid colored background and white text/icon. Perfect for high-visibility alerts.
+
+```dart
 toast.showError(
   context,
   'Component updates available.',
   styleType: ToastStyleType.fillColored,
 );
+```
 
-// Flat colored style
+#### 3. ToastStyleType.flatColored
+
+A balanced style with a light colored background, colored borders, and dark text. Great for notifications that need to stand out.
+
+```dart
 toast.showWarning(
   context,
   'Component updates available.',
   styleType: ToastStyleType.flatColored,
 );
+```
 
-// Minimal style (with close button)
+#### 4. ToastStyleType.minimal
+
+A sleek and modern design with minimal elements, a left accent border, and a close button. Perfect for clean, distraction-free interfaces.
+
+```dart
 toast.showInfo(
   context,
   'Component updates available.',
@@ -164,6 +207,8 @@ toast.showSuccess(
 
 ### Alert Toast
 
+Display interactive alert-style toasts with titles, action buttons, and callbacks:
+
 ```dart
 toast.showAlert(
   context,
@@ -178,10 +223,14 @@ toast.showAlert(
   onDismiss: () {
     print('Alert dismissed');
   },
+  dismissible: true,
+  showCloseButton: true,
 );
 ```
 
 ### Dialog Toast with Input
+
+Display dialog-style toasts with TextField input and confirm/cancel buttons:
 
 ```dart
 toast.showDialogToast(
@@ -199,10 +248,14 @@ toast.showDialogToast(
   onCancel: () {
     print('Cancelled');
   },
+  confirmText: 'Confirm',
+  cancelText: 'Cancel',
 );
 ```
 
 ### Custom Builder
+
+For complete control over the toast appearance, use the custom builder:
 
 ```dart
 toast.show(
@@ -223,7 +276,16 @@ toast.show(
             Icon(icon, color: iconColor, size: iconSize),
           SizedBox(width: 12),
           if (showText)
-            Text(message, style: TextStyle(color: textColor, fontSize: fontSize)),
+            Expanded(
+              child: Text(
+                message,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: fontSize,
+                  fontWeight: fontWeight,
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -252,11 +314,49 @@ toast.showSuccess(
 );
 ```
 
-## API Reference
+### Close Button
+
+The close button is automatically enabled for minimal style toasts. You can also enable it for other styles:
+
+```dart
+toast.showSuccess(
+  context,
+  'Message',
+  showCloseButton: true,
+  closeButtonIcon: Icons.close,
+  closeButtonSize: 20,
+  closeButtonColor: Colors.grey,
+);
+```
+
+## 📚 API Reference
 
 ### FlutterToast Methods
 
-- `show(context, message, {...})` - Show a custom toast
+#### `show(context, message, {...})`
+
+Show a custom toast message with full customization options.
+
+**Parameters:**
+- `context` - BuildContext for the toast
+- `message` - The message to display
+- `type` - ToastType (success, error, warning, info, custom)
+- `duration` - Duration to display (default: 2 seconds)
+- `position` - ToastPosition (top, bottom, center, corners)
+- `styleType` - ToastStyleType (flat, fillColored, flatColored, minimal)
+- `backgroundColor` - Custom background color
+- `textColor` - Custom text color
+- `iconColor` - Custom icon color
+- `iconPosition` - IconPosition (left, right, top, bottom, center)
+- `iconSize` - Icon size
+- `fontSize` - Font size
+- `showIcon` - Show/hide icon
+- `showText` - Show/hide text
+- `showCloseButton` - Show/hide close button
+- `builder` - Custom builder function
+
+#### Helper Methods
+
 - `showSuccess(context, message, {...})` - Show a success toast
 - `showError(context, message, {...})` - Show an error toast
 - `showWarning(context, message, {...})` - Show a warning toast
@@ -264,9 +364,11 @@ toast.showSuccess(
 - `showAlert(context, message, {...})` - Show an alert toast
 - `showDialogToast(context, message, {...})` - Show a dialog toast
 - `hide()` - Hide the current toast
-- `isVisible` - Check if toast is currently visible
+- `isVisible` - Check if toast is currently visible (getter)
 
-### ToastType Enum
+### Enums
+
+#### ToastType
 
 - `ToastType.success` - Success toast (green)
 - `ToastType.error` - Error toast (red)
@@ -274,7 +376,7 @@ toast.showSuccess(
 - `ToastType.info` - Info toast (blue)
 - `ToastType.custom` - Custom toast
 
-### ToastPosition Enum
+#### ToastPosition
 
 - `ToastPosition.top` - Top center
 - `ToastPosition.bottom` - Bottom center (default)
@@ -284,14 +386,14 @@ toast.showSuccess(
 - `ToastPosition.bottomLeft` - Bottom left corner
 - `ToastPosition.bottomRight` - Bottom right corner
 
-### ToastStyleType Enum
+#### ToastStyleType
 
 - `ToastStyleType.flat` - Flat style with light background
 - `ToastStyleType.fillColored` - Filled background with white text and icon
 - `ToastStyleType.flatColored` - Light colored background with dark border
 - `ToastStyleType.minimal` - Minimal style with left border and close button
 
-### IconPosition Enum
+#### IconPosition
 
 - `IconPosition.left` - Icon on the left (default)
 - `IconPosition.right` - Icon on the right
@@ -299,14 +401,24 @@ toast.showSuccess(
 - `IconPosition.bottom` - Icon on bottom
 - `IconPosition.center` - Icon centered over text
 
-## Example
+## 🎨 Examples
 
 See the `example` folder for a complete example app demonstrating all features.
 
-## Contributing
+## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are always welcome! If you have any suggestions, bug reports, or feature requests, please open an issue on the GitHub repository.
 
-## License
+If you would like to contribute to the project, please feel free to submit a Pull Request.
 
-This project is licensed under the MIT License.
+## 📄 License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+This package is inspired by the beautiful design of [toastification](https://pub.dev/packages/toastification) package. Special thanks to the toastification team for their excellent work.
+
+---
+
+**Made with ❤️ for Flutter developers**

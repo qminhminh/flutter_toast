@@ -36,11 +36,18 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text (nếu null sẽ dùng từ style)
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
-  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
-  /// [showCloseButton] - Hiển thị nút đóng (X) ở góc phải (mặc định false, tự động true cho minimal style)
+  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal, simple) - giống ToastificationStyle
+  ///   Nếu styleType được chỉ định, các tham số khác (backgroundColor, textColor, padding, v.v.) sẽ override giá trị mặc định của styleType
+  /// [showCloseButton] - Hiển thị nút đóng (X) ở góc phải (mặc định false, tự động true khi có styleType)
   /// [closeButtonIcon] - Icon cho nút đóng (mặc định Icons.close)
   /// [closeButtonSize] - Kích thước icon nút đóng (mặc định 20)
-  /// [closeButtonColor] - Màu icon nút đóng (nếu null dùng Colors.grey)
+  /// [closeButtonColor] - Màu icon nút đóng (nếu null dùng màu tự động theo styleType)
+  /// [borderRadius] - Border radius của toast (override giá trị từ styleType nếu có)
+  /// [padding] - Padding bên trong toast (override giá trị từ styleType nếu có)
+  /// [margin] - Margin bên ngoài toast (override giá trị từ styleType nếu có)
+  /// [border] - Border của toast (override giá trị từ styleType nếu có)
+  /// [boxShadow] - Shadow của toast (override giá trị từ styleType nếu có)
+  /// [fontWeight] - Font weight của text (override giá trị từ styleType nếu có)
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   ///   Nếu builder được cung cấp, nó sẽ được sử dụng thay vì widget mặc định
   ///   Builder nhận các tham số: (BuildContext context, String message, IconData? icon, Color backgroundColor, Color textColor, Color iconColor, double iconSize, IconPosition iconPosition)
@@ -69,6 +76,12 @@ class FlutterToast {
     IconData? closeButtonIcon,
     double? closeButtonSize,
     Color? closeButtonColor,
+    double? borderRadius,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    Border? border,
+    List<BoxShadow>? boxShadow,
+    FontWeight? fontWeight,
     Widget Function(
       BuildContext context,
       String message,
@@ -94,16 +107,43 @@ class FlutterToast {
     hide();
 
     // Tạo style - nếu có styleType thì dùng nó, nếu không thì dùng style được truyền vào
-    final toastStyle =
-        styleType != null
-            ? ToastStyle.fromStyleType(styleType, type)
-            : (style ?? const ToastStyle());
-    // Ưu tiên màu người dùng chọn, nếu không có thì dùng màu mặc định
+    ToastStyle toastStyle;
+    if (styleType != null) {
+      // Tạo style từ styleType
+      final baseStyle = ToastStyle.fromStyleType(styleType, type);
+      // Cho phép người dùng override bất kỳ thuộc tính nào
+      toastStyle = baseStyle.copyWith(
+        backgroundColor: backgroundColor,
+        textColor: textColor,
+        iconColor: iconColor,
+        iconSize: iconSize,
+        iconPadding: iconPadding,
+        iconMargin: iconMargin,
+        borderRadius: borderRadius,
+        padding: padding,
+        margin: margin,
+        fontSize: fontSize,
+        textPadding: textPadding,
+        textMargin: textMargin,
+        fontWeight: fontWeight,
+        border: border,
+        boxShadow: boxShadow,
+        showIcon: showIcon,
+        showText: showText,
+        showCloseButton: showCloseButton,
+      );
+    } else {
+      toastStyle = style ?? const ToastStyle();
+    }
+
+    // Ưu tiên màu người dùng chọn, nếu không có thì dùng màu từ style
     final bgColor =
         backgroundColor ??
         (type == ToastType.custom
             ? toastStyle.backgroundColor
-            : type.defaultColor);
+            : (styleType != null
+                ? toastStyle.backgroundColor
+                : type.defaultColor));
     final txtColor = textColor ?? toastStyle.textColor;
     final iconData = icon ?? type.defaultIcon;
     // Ưu tiên màu icon người dùng chọn, nếu không có thì dùng màu từ style hoặc màu chữ
@@ -117,12 +157,18 @@ class FlutterToast {
     final textMrg = textMargin ?? toastStyle.textMargin;
     final showIconValue = showIcon ?? toastStyle.showIcon;
     final showTextValue = showText ?? toastStyle.showText;
-    // Tự động bật close button cho minimal style
+    // Tự động bật close button: nếu styleType có showCloseButton thì dùng, nếu không thì dùng giá trị truyền vào
     final showCloseBtn =
-        showCloseButton ?? (styleType == ToastStyleType.minimal);
+        showCloseButton ??
+        (toastStyle.showCloseButton ?? (styleType == ToastStyleType.minimal));
     final closeBtnIcon = closeButtonIcon ?? Icons.close;
     final closeBtnSize = closeButtonSize ?? 20.0;
-    final closeBtnColor = closeButtonColor ?? Colors.grey;
+    // Màu close button phụ thuộc vào styleType - giống trong ảnh
+    final closeBtnColor =
+        closeButtonColor ??
+        (styleType == ToastStyleType.fillColored
+            ? Colors.white.withOpacity(0.9) // Trắng cho fillColored
+            : const Color(0xFF6B7280)); // Gray-500 cho các style khác
 
     // Tạo overlay entry
     _overlayEntry = OverlayEntry(
@@ -210,7 +256,14 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
-  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
+  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal, simple)
+  ///   Các tham số khác có thể override giá trị mặc định của styleType
+  /// [borderRadius] - Border radius (override styleType)
+  /// [padding] - Padding (override styleType)
+  /// [margin] - Margin (override styleType)
+  /// [border] - Border (override styleType)
+  /// [boxShadow] - Shadow (override styleType)
+  /// [fontWeight] - Font weight (override styleType)
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showSuccess(
     BuildContext context,
@@ -231,6 +284,12 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    double? borderRadius,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    Border? border,
+    List<BoxShadow>? boxShadow,
+    FontWeight? fontWeight,
     Widget Function(
       BuildContext context,
       String message,
@@ -272,6 +331,12 @@ class FlutterToast {
       textMargin: textMargin,
       showIcon: showIcon,
       showText: showText,
+      borderRadius: borderRadius,
+      padding: padding,
+      margin: margin,
+      border: border,
+      boxShadow: boxShadow,
+      fontWeight: fontWeight,
       builder: builder,
     );
   }
@@ -290,7 +355,8 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
-  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
+  /// [styleType] - Loại style - có thể override bằng các tham số khác
+  /// [borderRadius], [padding], [margin], [border], [boxShadow], [fontWeight] - Override styleType
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showError(
     BuildContext context,
@@ -311,6 +377,12 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    double? borderRadius,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    Border? border,
+    List<BoxShadow>? boxShadow,
+    FontWeight? fontWeight,
     Widget Function(
       BuildContext context,
       String message,
@@ -352,6 +424,12 @@ class FlutterToast {
       textMargin: textMargin,
       showIcon: showIcon,
       showText: showText,
+      borderRadius: borderRadius,
+      padding: padding,
+      margin: margin,
+      border: border,
+      boxShadow: boxShadow,
+      fontWeight: fontWeight,
       builder: builder,
     );
   }
@@ -370,7 +448,8 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
-  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
+  /// [styleType] - Loại style - có thể override bằng các tham số khác
+  /// [borderRadius], [padding], [margin], [border], [boxShadow], [fontWeight] - Override styleType
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showWarning(
     BuildContext context,
@@ -391,6 +470,12 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    double? borderRadius,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    Border? border,
+    List<BoxShadow>? boxShadow,
+    FontWeight? fontWeight,
     Widget Function(
       BuildContext context,
       String message,
@@ -432,6 +517,12 @@ class FlutterToast {
       textMargin: textMargin,
       showIcon: showIcon,
       showText: showText,
+      borderRadius: borderRadius,
+      padding: padding,
+      margin: margin,
+      border: border,
+      boxShadow: boxShadow,
+      fontWeight: fontWeight,
       builder: builder,
     );
   }
@@ -450,7 +541,8 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
-  /// [styleType] - Loại style (flat, fillColored, flatColored, minimal) - giống ToastificationStyle
+  /// [styleType] - Loại style - có thể override bằng các tham số khác
+  /// [borderRadius], [padding], [margin], [border], [boxShadow], [fontWeight] - Override styleType
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showInfo(
     BuildContext context,
@@ -471,6 +563,12 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    double? borderRadius,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    Border? border,
+    List<BoxShadow>? boxShadow,
+    FontWeight? fontWeight,
     Widget Function(
       BuildContext context,
       String message,
@@ -512,6 +610,12 @@ class FlutterToast {
       textMargin: textMargin,
       showIcon: showIcon,
       showText: showText,
+      borderRadius: borderRadius,
+      padding: padding,
+      margin: margin,
+      border: border,
+      boxShadow: boxShadow,
+      fontWeight: fontWeight,
       builder: builder,
     );
   }
@@ -1051,55 +1155,63 @@ class _ToastWidgetState extends State<_ToastWidget>
 
       // Nếu có styleType, bọc icon trong circle (giống trong ảnh)
       if (widget.styleType != null) {
-        // Màu nền của circle phụ thuộc vào styleType
+        // Màu nền của circle phụ thuộc vào styleType - giống trong ảnh toastification
         Color circleBackgroundColor;
         switch (widget.styleType!) {
           case ToastStyleType.flat:
-            // Flat: circle với màu nhạt của icon
-            circleBackgroundColor = widget.iconColor.withOpacity(0.15);
+            // Flat: circle với màu nhạt hơn của icon (light color)
+            circleBackgroundColor = widget.iconColor.withOpacity(0.12);
             break;
           case ToastStyleType.fillColored:
-            // Fill colored: circle với màu trắng nhạt (vì icon màu trắng)
-            circleBackgroundColor = Colors.white.withOpacity(0.2);
+            // Fill colored: circle với màu trắng nhạt/lighter shade của nền
+            circleBackgroundColor = Colors.white.withOpacity(0.25);
             break;
           case ToastStyleType.flatColored:
-            // Flat colored: circle với màu nhạt của icon
+            // Flat colored: circle với màu nhạt hơn của icon
             circleBackgroundColor = widget.iconColor.withOpacity(0.15);
             break;
           case ToastStyleType.minimal:
-            // Minimal: circle với màu nhạt của icon
-            circleBackgroundColor = widget.iconColor.withOpacity(0.15);
+            // Minimal: circle với màu trắng (icon màu type trong white circle)
+            circleBackgroundColor = Colors.white;
+            break;
+          case ToastStyleType.simple:
+            // Simple: không có icon nên không cần circle
+            circleBackgroundColor = Colors.transparent;
             break;
         }
 
-        // Icon size trong circle phụ thuộc vào styleType
-        double circleSize;
-        switch (widget.styleType!) {
-          case ToastStyleType.flat:
-          case ToastStyleType.flatColored:
-          case ToastStyleType.minimal:
-            circleSize = widget.iconSize + 16; // Padding lớn hơn cho đẹp
-            break;
-          case ToastStyleType.fillColored:
-            circleSize = widget.iconSize + 16;
-            break;
-        }
+        // Chỉ tạo circle nếu không phải simple style
+        if (widget.styleType != ToastStyleType.simple) {
+          // Icon size trong circle phụ thuộc vào styleType
+          double circleSize;
+          switch (widget.styleType!) {
+            case ToastStyleType.flat:
+            case ToastStyleType.flatColored:
+            case ToastStyleType.fillColored:
+            case ToastStyleType.minimal:
+              circleSize = widget.iconSize + 16; // Padding lớn hơn cho đẹp
+              break;
+            case ToastStyleType.simple:
+              circleSize = 0; // Simple không có icon
+              break;
+          }
 
-        icon = Container(
-          width: circleSize,
-          height: circleSize,
-          decoration: BoxDecoration(
-            color: circleBackgroundColor,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Icon(
-              widget.icon,
-              color: widget.iconColor,
-              size: widget.iconSize,
+          icon = Container(
+            width: circleSize,
+            height: circleSize,
+            decoration: BoxDecoration(
+              color: circleBackgroundColor,
+              shape: BoxShape.circle,
             ),
-          ),
-        );
+            child: Center(
+              child: Icon(
+                widget.icon,
+                color: widget.iconColor,
+                size: widget.iconSize,
+              ),
+            ),
+          );
+        }
       }
 
       iconWidget = icon;
@@ -1125,7 +1237,12 @@ class _ToastWidgetState extends State<_ToastWidget>
           fontSize: responsiveFontSize,
           fontWeight: widget.fontWeight,
         ),
-        textAlign: widget.styleType != null ? TextAlign.left : TextAlign.center,
+        textAlign:
+            widget.styleType == ToastStyleType.simple
+                ? TextAlign.center
+                : (widget.styleType != null
+                    ? TextAlign.left
+                    : TextAlign.center),
         maxLines: 5,
         overflow: TextOverflow.ellipsis,
       );
@@ -1141,7 +1258,7 @@ class _ToastWidgetState extends State<_ToastWidget>
       }
     }
 
-    // Close button widget (cho minimal style và các style khác)
+    // Close button widget - giống trong ảnh toastification
     Widget? closeButtonWidget;
     if (widget.showCloseButton) {
       closeButtonWidget = MouseRegion(
@@ -1153,13 +1270,9 @@ class _ToastWidgetState extends State<_ToastWidget>
             });
           },
           child: Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(4),
-            ),
+            padding: const EdgeInsets.all(2),
             child: Icon(
-              widget.closeButtonIcon ?? Icons.close_rounded,
+              Icons.close,
               color: widget.closeButtonColor,
               size: widget.closeButtonSize,
             ),
@@ -1179,29 +1292,32 @@ class _ToastWidgetState extends State<_ToastWidget>
 
     // Nếu có styleType, layout đặc biệt (giống toastification)
     if (widget.styleType != null) {
-      // Layout cho styleType: Icon bên trái, Text ở giữa (Expanded), Close button bên phải (nếu có)
-      List<Widget> rowChildren = [];
+      // Simple style: chỉ có text, centered, không có icon và close button
+      if (widget.styleType == ToastStyleType.simple) {
+        content = textWidget ?? const SizedBox.shrink();
+      } else {
+        // Layout cho các style khác: Icon bên trái, Text ở giữa (Expanded), Close button bên phải (nếu có)
+        List<Widget> rowChildren = [];
 
-      if (iconWidget != null) {
-        rowChildren.add(iconWidget);
-        rowChildren.add(const SizedBox(width: 12));
-      }
+        if (iconWidget != null) {
+          rowChildren.add(iconWidget);
+          rowChildren.add(const SizedBox(width: 12));
+        }
 
-      if (textWidget != null) {
-        rowChildren.add(Expanded(child: textWidget));
-      }
+        if (textWidget != null) {
+          rowChildren.add(Expanded(child: textWidget));
+        }
 
-      if (closeButtonWidget != null) {
-        rowChildren.add(const SizedBox(width: 4));
-        rowChildren.add(
-          Align(alignment: Alignment.topCenter, child: closeButtonWidget),
+        if (closeButtonWidget != null) {
+          rowChildren.add(const SizedBox(width: 8));
+          rowChildren.add(closeButtonWidget);
+        }
+
+        content = Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: rowChildren,
         );
       }
-
-      content = Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: rowChildren,
-      );
     } else {
       // Layout thông thường
       // Nếu không có cả icon và text, hiển thị một container rỗng

@@ -6,6 +6,7 @@ import 'package:fluttert_toast/src/toast_type.dart';
 class ToastStyle {
   /// Loại style (flat, fillColored, flatColored, minimal)
   final ToastStyleType? styleType;
+
   /// Màu nền của toast
   final Color backgroundColor;
 
@@ -57,6 +58,9 @@ class ToastStyle {
   /// Hiển thị text (mặc định true)
   final bool showText;
 
+  /// Hiển thị close button (mặc định null, sẽ tự động set theo styleType)
+  final bool? showCloseButton;
+
   const ToastStyle({
     this.styleType,
     this.backgroundColor = Colors.black87,
@@ -66,7 +70,7 @@ class ToastStyle {
     this.iconPadding,
     this.iconMargin,
     this.borderRadius = 12.0,
-    this.padding = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+    this.padding = const EdgeInsets.all(16.0),
     this.margin = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
     this.fontSize = 14.0,
     this.textPadding,
@@ -76,6 +80,7 @@ class ToastStyle {
     this.boxShadow,
     this.showIcon = true,
     this.showText = true,
+    this.showCloseButton,
   });
 
   /// Tạo style dựa trên styleType và toastType
@@ -91,17 +96,20 @@ class ToastStyle {
       case ToastStyleType.flat:
         return ToastStyle(
           styleType: styleType,
-          backgroundColor: Colors.grey.shade100,
-          textColor: Colors.black87,
+          backgroundColor: const Color(
+            0xFFF5F5F5,
+          ), // Nền xám nhạt giống trong ảnh
+          textColor: const Color(0xFF1F2937), // Text màu đen đậm (gray-800)
           iconColor: typeColor,
           borderRadius: 12.0,
-          border: Border.all(color: lightColor, width: 1),
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+          border: null, // Không có border cho flat style
+          padding: const EdgeInsets.all(16.0),
+          showCloseButton: true, // Flat style có close button
           boxShadow: [
             BoxShadow(
-              color: const Color(0x07000000),
-              blurRadius: 16,
-              offset: const Offset(0, 16),
+              color: const Color(0x0A000000), // Shadow nhẹ hơn
+              blurRadius: 10,
+              offset: const Offset(0, 4),
               spreadRadius: 0,
             ),
           ],
@@ -109,16 +117,17 @@ class ToastStyle {
       case ToastStyleType.fillColored:
         return ToastStyle(
           styleType: styleType,
-          backgroundColor: typeColor,
+          backgroundColor: typeColor, // Nền màu đậm theo type
           textColor: Colors.white,
           iconColor: Colors.white,
           borderRadius: 12.0,
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+          padding: const EdgeInsets.all(16.0),
+          showCloseButton: true, // Fill colored style có close button
           boxShadow: [
             BoxShadow(
-              color: const Color(0x07000000),
-              blurRadius: 16,
-              offset: const Offset(0, 16),
+              color: const Color(0x0A000000),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
               spreadRadius: 0,
             ),
           ],
@@ -126,17 +135,18 @@ class ToastStyle {
       case ToastStyleType.flatColored:
         return ToastStyle(
           styleType: styleType,
-          backgroundColor: lightColor,
-          textColor: Colors.black87,
-          iconColor: darkColor,
+          backgroundColor: lightColor, // Nền màu nhạt theo type
+          textColor: const Color(0xFF1F2937), // Text màu đen đậm
+          iconColor: darkColor, // Icon màu đậm
           borderRadius: 12.0,
-          border: Border.all(color: darkColor, width: 1),
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+          border: Border.all(color: darkColor, width: 1.5), // Border màu đậm
+          padding: const EdgeInsets.all(16.0),
+          showCloseButton: true, // Flat colored style có close button
           boxShadow: [
             BoxShadow(
-              color: const Color(0x07000000),
-              blurRadius: 16,
-              offset: const Offset(0, 16),
+              color: const Color(0x0A000000),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
               spreadRadius: 0,
             ),
           ],
@@ -145,18 +155,38 @@ class ToastStyle {
         return ToastStyle(
           styleType: styleType,
           backgroundColor: Colors.white,
-          textColor: Colors.black87,
+          textColor: const Color(0xFF1F2937), // Text màu đen đậm
           iconColor: typeColor,
           borderRadius: 12.0,
           border: Border(
             left: BorderSide(color: typeColor, width: 4),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+          ), // Border left màu type
+          padding: const EdgeInsets.all(16.0),
+          showCloseButton: true, // Minimal style có close button
           boxShadow: [
             BoxShadow(
-              color: const Color(0x07000000),
-              blurRadius: 16,
-              offset: const Offset(0, 16),
+              color: const Color(0x0A000000),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+              spreadRadius: 0,
+            ),
+          ],
+        );
+      case ToastStyleType.simple:
+        return ToastStyle(
+          styleType: styleType,
+          backgroundColor: const Color(0xFFF5F5F5), // Nền xám nhạt
+          textColor: const Color(0xFF1F2937), // Text màu đen đậm
+          iconColor: typeColor,
+          borderRadius: 12.0,
+          padding: const EdgeInsets.all(16.0),
+          showIcon: false, // Simple style không có icon
+          showCloseButton: false, // Simple style không có close button
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x0A000000),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
               spreadRadius: 0,
             ),
           ],
@@ -202,6 +232,7 @@ class ToastStyle {
     List<BoxShadow>? boxShadow,
     bool? showIcon,
     bool? showText,
+    bool? showCloseButton,
   }) {
     return ToastStyle(
       styleType: styleType ?? this.styleType,
@@ -222,6 +253,7 @@ class ToastStyle {
       boxShadow: boxShadow ?? this.boxShadow,
       showIcon: showIcon ?? this.showIcon,
       showText: showText ?? this.showText,
+      showCloseButton: showCloseButton ?? this.showCloseButton,
     );
   }
 }

@@ -40,13 +40,13 @@ class ToastDemoPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Chọn loại toast để demo:',
+                'Choose toast type to demo:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 32),
 
               const Text(
-                'Toast Style Types (Giống ToastificationStyle):',
+                'Toast Style Types (Like ToastificationStyle):',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -243,7 +243,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showSuccess(
                     context,
-                    'Thành công! Đây là toast thành công.',
+                    'Success! This is a success toast.',
                   );
                 },
                 icon: const Icon(Icons.check_circle, size: 30),
@@ -264,7 +264,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showError(
                     context,
-                    'Lỗi! Đã xảy ra lỗi trong quá trình xử lý.',
+                    'Error! An error occurred during processing.',
                   );
                 },
                 icon: const Icon(Icons.error, size: 30),
@@ -285,7 +285,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showWarning(
                     context,
-                    'Cảnh báo! Vui lòng kiểm tra lại thông tin.',
+                    'Warning! Please check your information.',
                   );
                 },
                 icon: const Icon(Icons.warning, size: 30),
@@ -306,7 +306,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Thông tin: Đây là một thông báo thông tin.',
+                    'Info: This is an informational notification.',
                   );
                 },
                 icon: const Icon(Icons.info, size: 30),
@@ -327,7 +327,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.show(
                     context,
-                    'Toast tùy chỉnh với màu sắc và icon riêng!',
+                    'Custom toast with unique colors and icon!',
                     type: ToastType.custom,
                     icon: Icons.star,
                     backgroundColor: Colors.purple,
@@ -351,7 +351,7 @@ class ToastDemoPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               const Text(
-                'Vị trí hiển thị:',
+                'Display Position:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -361,7 +361,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Toast ở trên cùng',
+                    'Toast at the top',
                     position: ToastPosition.top,
                   );
                 },
@@ -374,7 +374,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Toast ở giữa màn hình',
+                    'Toast at center screen',
                     position: ToastPosition.center,
                   );
                 },
@@ -387,7 +387,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Toast ở dưới cùng',
+                    'Toast at the bottom',
                     position: ToastPosition.bottom,
                   );
                 },
@@ -400,7 +400,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showSuccess(
                     context,
-                    'Toast ở góc trên trái',
+                    'Toast at top left corner',
                     position: ToastPosition.topLeft,
                   );
                 },
@@ -413,7 +413,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showError(
                     context,
-                    'Toast ở góc trên phải',
+                    'Toast at top right corner',
                     position: ToastPosition.topRight,
                   );
                 },
@@ -426,7 +426,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showWarning(
                     context,
-                    'Toast ở góc dưới trái',
+                    'Toast at bottom left corner',
                     position: ToastPosition.bottomLeft,
                   );
                 },
@@ -439,7 +439,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Toast ở góc dưới phải',
+                    'Toast at bottom right corner',
                     position: ToastPosition.bottomRight,
                   );
                 },
@@ -455,7 +455,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showSuccess(
                     context,
-                    'Toast này sẽ hiển thị trong 5 giây',
+                    'This toast will display for 5 seconds',
                     duration: const Duration(seconds: 5),
                   );
                 },
@@ -468,7 +468,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.show(
                     context,
-                    'Toast với style tùy chỉnh',
+                    'Toast with custom style',
                     type: ToastType.custom,
                     style: const ToastStyle(
                       backgroundColor: Colors.indigo,
@@ -489,83 +489,83 @@ class ToastDemoPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               const Text(
-                'Tùy chọn màu sắc:',
+                'Custom Colors:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
 
-              // Success với màu tùy chỉnh
+              // Success with custom colors
               ElevatedButton(
                 onPressed: () {
                   toast.showSuccess(
                     context,
-                    'Success với màu nền tùy chỉnh',
+                    'Success with custom background color',
                     backgroundColor: Colors.teal,
                     textColor: Colors.white,
                     iconColor: Colors.yellow,
                   );
                 },
-                child: const Text('Success - Màu Tùy Chỉnh'),
+                child: const Text('Success - Custom Colors'),
               ),
               const SizedBox(height: 12),
 
-              // Error với màu tùy chỉnh
+              // Error with custom colors
               ElevatedButton(
                 onPressed: () {
                   toast.showError(
                     context,
-                    'Error với màu nền hồng',
+                    'Error with pink background',
                     backgroundColor: Colors.pink,
                     textColor: Colors.white,
                   );
                 },
-                child: const Text('Error - Màu Tùy Chỉnh'),
+                child: const Text('Error - Custom Colors'),
               ),
               const SizedBox(height: 12),
 
-              // Warning với màu tùy chỉnh
+              // Warning with custom colors
               ElevatedButton(
                 onPressed: () {
                   toast.showWarning(
                     context,
-                    'Warning với màu vàng nhạt',
+                    'Warning with light yellow color',
                     backgroundColor: Colors.amber.shade300,
                     textColor: Colors.brown,
                     iconColor: Colors.orange,
                   );
                 },
-                child: const Text('Warning - Màu Tùy Chỉnh'),
+                child: const Text('Warning - Custom Colors'),
               ),
               const SizedBox(height: 12),
 
-              // Info với màu tùy chỉnh
+              // Info with custom colors
               ElevatedButton(
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Info với màu xanh lá',
+                    'Info with light green color',
                     backgroundColor: Colors.lightGreen,
                     textColor: Colors.green.shade900,
                     iconColor: Colors.green.shade900,
                   );
                 },
-                child: const Text('Info - Màu Tùy Chỉnh'),
+                child: const Text('Info - Custom Colors'),
               ),
               const SizedBox(height: 12),
 
-              // Show với màu hoàn toàn tùy chỉnh
+              // Show with fully custom colors
               ElevatedButton(
                 onPressed: () {
                   toast.show(
                     context,
-                    'Toast với màu gradient tùy chỉnh',
+                    'Toast with custom gradient colors',
                     backgroundColor: Colors.deepPurple.shade400,
                     textColor: Colors.white,
                     iconColor: Colors.amber,
                     icon: Icons.palette,
                   );
                 },
-                child: const Text('Màu Hoàn Toàn Tùy Chỉnh'),
+                child: const Text('Fully Custom Colors'),
               ),
               const SizedBox(height: 32),
 
@@ -573,7 +573,7 @@ class ToastDemoPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               const Text(
-                'Vị trí Icon:',
+                'Icon Position:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -583,11 +583,11 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showSuccess(
                     context,
-                    'Icon ở bên trái (mặc định)',
+                    'Icon on the left (default)',
                     iconPosition: IconPosition.left,
                   );
                 },
-                child: const Text('Icon Trái'),
+                child: const Text('Icon Left'),
               ),
               const SizedBox(height: 12),
 
@@ -596,11 +596,11 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showError(
                     context,
-                    'Icon ở bên phải',
+                    'Icon on the right',
                     iconPosition: IconPosition.right,
                   );
                 },
-                child: const Text('Icon Phải'),
+                child: const Text('Icon Right'),
               ),
               const SizedBox(height: 12),
 
@@ -609,11 +609,11 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showWarning(
                     context,
-                    'Icon ở trên cùng',
+                    'Icon on top',
                     iconPosition: IconPosition.top,
                   );
                 },
-                child: const Text('Icon Trên'),
+                child: const Text('Icon Top'),
               ),
               const SizedBox(height: 12),
 
@@ -622,11 +622,11 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Icon ở dưới cùng',
+                    'Icon on bottom',
                     iconPosition: IconPosition.bottom,
                   );
                 },
-                child: const Text('Icon Dưới'),
+                child: const Text('Icon Bottom'),
               ),
               const SizedBox(height: 12),
 
@@ -635,7 +635,7 @@ class ToastDemoPage extends StatelessWidget {
                 onPressed: () {
                   toast.show(
                     context,
-                    'Icon ở giữa (overlay)',
+                    'Icon at center (overlay)',
                     type: ToastType.custom,
                     backgroundColor: Colors.indigo,
                     textColor: Colors.white,
@@ -643,7 +643,7 @@ class ToastDemoPage extends StatelessWidget {
                     iconPosition: IconPosition.center,
                   );
                 },
-                child: const Text('Icon Giữa'),
+                child: const Text('Icon Center'),
               ),
               const SizedBox(height: 32),
 
@@ -651,53 +651,53 @@ class ToastDemoPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               const Text(
-                'Text Responsive:',
+                'Responsive Text:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
 
-              // Long text để test responsive
+              // Long text to test responsive
               ElevatedButton(
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Đây là một đoạn text rất dài để kiểm tra tính năng responsive của toast. Text sẽ tự động điều chỉnh kích thước font và chiều rộng theo màn hình thiết bị.',
+                    'This is a very long text to test the responsive feature of toast. Text will automatically adjust font size and width according to device screen.',
                     iconPosition: IconPosition.left,
                   );
                 },
-                child: const Text('Text Dài - Responsive'),
+                child: const Text('Long Text - Responsive'),
               ),
               const SizedBox(height: 12),
 
-              // Toast chỉ có icon (không có text)
+              // Toast with icon only (no text)
               ElevatedButton(
                 onPressed: () {
                   toast.showSuccess(
                     context,
-                    '', // Text rỗng
+                    '', // Empty text
                     showText: false,
                     showIcon: true,
                   );
                 },
-                child: const Text('Chỉ Hiển Thị Icon'),
+                child: const Text('Show Icon Only'),
               ),
               const SizedBox(height: 12),
 
-              // Toast chỉ có text (không có icon)
+              // Toast with text only (no icon)
               ElevatedButton(
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Toast này chỉ hiển thị text, không có icon',
+                    'This toast only displays text, no icon',
                     showIcon: false,
                     showText: true,
                   );
                 },
-                child: const Text('Chỉ Hiển Thị Text'),
+                child: const Text('Show Text Only'),
               ),
               const SizedBox(height: 12),
 
-              // Toast không có cả icon và text (chỉ có background)
+              // Toast without icon and text (background only)
               ElevatedButton(
                 onPressed: () {
                   toast.show(
@@ -709,7 +709,7 @@ class ToastDemoPage extends StatelessWidget {
                     showText: false,
                   );
                 },
-                child: const Text('Không Có Icon Và Text'),
+                child: const Text('No Icon And Text'),
               ),
               const SizedBox(height: 32),
 
@@ -717,17 +717,17 @@ class ToastDemoPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               const Text(
-                'Custom Builder (Tự Thiết Kế Style):',
+                'Custom Builder (Design Your Own Style):',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
 
-              // Toast với custom builder - Gradient background
+              // Toast with custom builder - Gradient background
               ElevatedButton(
                 onPressed: () {
                   toast.showSuccess(
                     context,
-                    'Toast với gradient background tự thiết kế',
+                    'Toast with custom gradient background',
                     builder: (
                       context,
                       message,
@@ -802,12 +802,12 @@ class ToastDemoPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // Toast với custom builder - Card style
+              // Toast with custom builder - Card style
               ElevatedButton(
                 onPressed: () {
                   toast.showInfo(
                     context,
-                    'Toast kiểu card với shadow đẹp',
+                    'Card-style toast with beautiful shadow',
                     builder: (
                       context,
                       message,
@@ -870,12 +870,12 @@ class ToastDemoPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // Toast với custom builder - Rounded với border
+              // Toast with custom builder - Rounded with border
               ElevatedButton(
                 onPressed: () {
                   toast.showWarning(
                     context,
-                    'Toast với border và style độc đáo',
+                    'Toast with border and unique style',
                     builder: (
                       context,
                       message,
@@ -965,98 +965,98 @@ class ToastDemoPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Alert đơn giản
+              // Simple alert
               ElevatedButton(
                 onPressed: () {
                   toast.showAlert(
                     context,
-                    'Đây là một alert toast đơn giản. Tap vào để đóng.',
+                    'This is a simple alert toast. Tap to close.',
                     dismissible: true,
                   );
                 },
-                child: const Text('Alert Đơn Giản'),
+                child: const Text('Simple Alert'),
               ),
               const SizedBox(height: 12),
 
-              // Alert với title
+              // Alert with title
               ElevatedButton(
                 onPressed: () {
                   toast.showAlert(
                     context,
-                    'Bạn có chắc chắn muốn thực hiện hành động này không?',
-                    title: 'Xác Nhận',
+                    'Are you sure you want to perform this action?',
+                    title: 'Confirm',
                     dismissible: true,
                   );
                 },
-                child: const Text('Alert Có Title'),
+                child: const Text('Alert With Title'),
               ),
               const SizedBox(height: 12),
 
-              // Alert với nút action
+              // Alert with action button
               ElevatedButton(
                 onPressed: () {
                   toast.showAlert(
                     context,
-                    'Bạn có muốn lưu thay đổi không?',
-                    title: 'Lưu Thay Đổi',
+                    'Do you want to save changes?',
+                    title: 'Save Changes',
                     actionButton: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
                           onPressed: () {
                             toast.hide();
-                            toast.showInfo(context, 'Đã hủy');
+                            toast.showInfo(context, 'Cancelled');
                           },
-                          child: const Text('Hủy'),
+                          child: const Text('Cancel'),
                         ),
                         const SizedBox(width: 16),
                         ElevatedButton(
                           onPressed: () {
                             toast.hide();
-                            toast.showSuccess(context, 'Đã lưu thành công!');
+                            toast.showSuccess(context, 'Saved successfully!');
                           },
-                          child: const Text('Lưu'),
+                          child: const Text('Save'),
                         ),
                       ],
                     ),
                     dismissible: false,
                   );
                 },
-                child: const Text('Alert Có Nút Action'),
+                child: const Text('Alert With Action Button'),
               ),
               const SizedBox(height: 12),
 
-              // Alert không tự đóng
+              // Alert without auto-close
               ElevatedButton(
                 onPressed: () {
                   toast.showAlert(
                     context,
-                    'Alert này sẽ không tự động đóng. Bạn phải tap vào để đóng.',
-                    title: 'Alert Quan Trọng',
+                    'This alert will not close automatically. You must tap to close.',
+                    title: 'Important Alert',
                     dismissible: true,
-                    duration: null, // Không tự động đóng
+                    duration: null, // No auto-close
                   );
                 },
-                child: const Text('Alert Không Tự Đóng'),
+                child: const Text('Alert Without Auto-Close'),
               ),
               const SizedBox(height: 12),
 
-              // Alert với callback
+              // Alert with callback
               ElevatedButton(
                 onPressed: () {
                   toast.showAlert(
                     context,
-                    'Alert với callback. Kiểm tra console khi đóng.',
+                    'Alert with callback. Check console when closed.',
                     title: 'Alert Callback',
                     onDismiss: () {
-                      toast.showInfo(context, 'Alert đã được đóng!');
+                      toast.showInfo(context, 'Alert has been closed!');
                     },
                     onTap: () {
-                      print('Alert được tap!');
+                      print('Alert was tapped!');
                     },
                   );
                 },
-                child: const Text('Alert Với Callback'),
+                child: const Text('Alert With Callback'),
               ),
               const SizedBox(height: 32),
 
@@ -1064,114 +1064,114 @@ class ToastDemoPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               const Text(
-                'Dialog Toast (Có TextField và Buttons):',
+                'Dialog Toast (With TextField and Buttons):',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
 
-              // Dialog đơn giản với buttons
+              // Simple dialog with buttons
               ElevatedButton(
                 onPressed: () {
                   toast.showDialogToast(
                     context,
-                    'Bạn có muốn tiếp tục không?',
-                    title: 'Xác Nhận',
+                    'Do you want to continue?',
+                    title: 'Confirm',
                     onConfirm: (value) {
-                      toast.showSuccess(context, 'Bạn đã đồng ý!');
+                      toast.showSuccess(context, 'You agreed!');
                     },
                     onCancel: () {
-                      toast.showInfo(context, 'Bạn đã hủy');
+                      toast.showInfo(context, 'Cancelled');
                     },
                   );
                 },
-                child: const Text('Dialog Đơn Giản'),
+                child: const Text('Simple Dialog'),
               ),
               const SizedBox(height: 12),
 
-              // Dialog với TextField
+              // Dialog with TextField
               ElevatedButton(
                 onPressed: () {
                   final controller = TextEditingController();
                   toast.showDialogToast(
                     context,
-                    'Vui lòng nhập tên của bạn:',
-                    title: 'Nhập Tên',
+                    'Please enter your name:',
+                    title: 'Enter Name',
                     textField: TextField(
                       controller: controller,
                       decoration: const InputDecoration(
-                        hintText: 'Nhập tên của bạn',
+                        hintText: 'Enter your name',
                         border: OutlineInputBorder(),
                       ),
                     ),
                     onConfirm: (value) {
                       final name = controller.text;
                       if (name.isNotEmpty) {
-                        toast.showSuccess(context, 'Xin chào $name!');
+                        toast.showSuccess(context, 'Hello $name!');
                       } else {
-                        toast.showError(context, 'Vui lòng nhập tên!');
+                        toast.showError(context, 'Please enter name!');
                       }
                     },
                     onCancel: () {
                       controller.dispose();
-                      toast.showInfo(context, 'Đã hủy');
+                      toast.showInfo(context, 'Cancelled');
                     },
                   );
                 },
-                child: const Text('Dialog Với TextField'),
+                child: const Text('Dialog With TextField'),
               ),
               const SizedBox(height: 12),
 
-              // Dialog với buttons tùy chỉnh
+              // Dialog with custom buttons
               ElevatedButton(
                 onPressed: () {
                   toast.showDialogToast(
                     context,
-                    'Bạn có chắc chắn muốn xóa không?',
-                    title: 'Xóa Dữ Liệu',
-                    confirmText: 'Xóa',
-                    cancelText: 'Không',
+                    'Are you sure you want to delete?',
+                    title: 'Delete Data',
+                    confirmText: 'Delete',
+                    cancelText: 'No',
                     onConfirm: (value) {
-                      toast.showError(context, 'Đã xóa thành công!');
+                      toast.showError(context, 'Deleted successfully!');
                     },
                     onCancel: () {
-                      toast.showInfo(context, 'Đã hủy xóa');
+                      toast.showInfo(context, 'Deletion cancelled');
                     },
                     backgroundColor: Colors.red.shade50,
                     textColor: Colors.red.shade900,
                   );
                 },
-                child: const Text('Dialog Với Buttons Tùy Chỉnh'),
+                child: const Text('Dialog With Custom Buttons'),
               ),
               const SizedBox(height: 12),
 
-              // Dialog không dismissible
+              // Non-dismissible dialog
               ElevatedButton(
                 onPressed: () {
                   toast.showDialogToast(
                     context,
-                    'Dialog này không thể đóng bằng cách tap bên ngoài.',
-                    title: 'Dialog Quan Trọng',
+                    'This dialog cannot be closed by tapping outside.',
+                    title: 'Important Dialog',
                     dismissible: false,
                     onConfirm: (value) {
-                      toast.showSuccess(context, 'Đã xác nhận!');
+                      toast.showSuccess(context, 'Confirmed!');
                     },
                     onCancel: () {
-                      toast.showInfo(context, 'Đã hủy');
+                      toast.showInfo(context, 'Cancelled');
                     },
                   );
                 },
-                child: const Text('Dialog Không Dismissible'),
+                child: const Text('Non-Dismissible Dialog'),
               ),
               const SizedBox(height: 12),
 
-              // Dialog với TextField và validation
+              // Dialog with TextField and validation
               ElevatedButton(
                 onPressed: () {
                   final emailController = TextEditingController();
                   toast.showDialogToast(
                     context,
-                    'Vui lòng nhập email của bạn:',
-                    title: 'Đăng Ký Email',
+                    'Please enter your email:',
+                    title: 'Email Registration',
                     textField: TextField(
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -1181,27 +1181,27 @@ class ToastDemoPage extends StatelessWidget {
                         prefixIcon: Icon(Icons.email),
                       ),
                     ),
-                    confirmText: 'Đăng Ký',
-                    cancelText: 'Hủy',
+                    confirmText: 'Register',
+                    cancelText: 'Cancel',
                     onConfirm: (value) {
                       final email = emailController.text;
                       if (email.contains('@') && email.contains('.')) {
                         toast.showSuccess(
                           context,
-                          'Đăng ký email $email thành công!',
+                          'Email $email registered successfully!',
                         );
                       } else {
-                        toast.showError(context, 'Email không hợp lệ!');
+                        toast.showError(context, 'Invalid email!');
                       }
                       emailController.dispose();
                     },
                     onCancel: () {
                       emailController.dispose();
-                      toast.showInfo(context, 'Đã hủy đăng ký');
+                      toast.showInfo(context, 'Registration cancelled');
                     },
                   );
                 },
-                child: const Text('Dialog Với Validation'),
+                child: const Text('Dialog With Validation'),
               ),
             ],
           ),

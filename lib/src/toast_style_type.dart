@@ -11,5 +11,8 @@ enum ToastStyleType {
 
   /// Minimal style: Nền trắng với đường line màu bên trái, text đen
   minimal,
+
+  /// Simple style: Nền xám nhạt, không có icon, không có close button, text centered
+  simple,
 }
 

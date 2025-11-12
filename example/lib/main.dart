@@ -238,6 +238,90 @@ class ToastDemoPage extends StatelessWidget {
                 },
                 child: const Text('Custom Style'),
               ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Tùy chọn màu sắc:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Success với màu tùy chỉnh
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Success với màu nền tùy chỉnh',
+                    backgroundColor: Colors.teal,
+                    textColor: Colors.white,
+                    iconColor: Colors.yellow,
+                  );
+                },
+                child: const Text('Success - Màu Tùy Chỉnh'),
+              ),
+              const SizedBox(height: 12),
+
+              // Error với màu tùy chỉnh
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Error với màu nền hồng',
+                    backgroundColor: Colors.pink,
+                    textColor: Colors.white,
+                  );
+                },
+                child: const Text('Error - Màu Tùy Chỉnh'),
+              ),
+              const SizedBox(height: 12),
+
+              // Warning với màu tùy chỉnh
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Warning với màu vàng nhạt',
+                    backgroundColor: Colors.amber.shade300,
+                    textColor: Colors.brown,
+                    iconColor: Colors.orange,
+                  );
+                },
+                child: const Text('Warning - Màu Tùy Chỉnh'),
+              ),
+              const SizedBox(height: 12),
+
+              // Info với màu tùy chỉnh
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Info với màu xanh lá',
+                    backgroundColor: Colors.lightGreen,
+                    textColor: Colors.green.shade900,
+                    iconColor: Colors.green.shade900,
+                  );
+                },
+                child: const Text('Info - Màu Tùy Chỉnh'),
+              ),
+              const SizedBox(height: 12),
+
+              // Show với màu hoàn toàn tùy chỉnh
+              ElevatedButton(
+                onPressed: () {
+                  toast.show(
+                    context,
+                    'Toast với màu gradient tùy chỉnh',
+                    backgroundColor: Colors.deepPurple.shade400,
+                    textColor: Colors.white,
+                    iconColor: Colors.amber,
+                    icon: Icons.palette,
+                  );
+                },
+                child: const Text('Màu Hoàn Toàn Tùy Chỉnh'),
+              ),
             ],
           ),
         ),

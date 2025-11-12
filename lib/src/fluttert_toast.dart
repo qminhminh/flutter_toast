@@ -15,15 +15,16 @@ class FlutterToast {
   bool _isVisible = false;
 
   /// Hiển thị toast message
-  /// 
+  ///
   /// [message] - Nội dung message cần hiển thị
   /// [type] - Loại toast (success, error, warning, info, custom)
   /// [duration] - Thời gian hiển thị (mặc định 2 giây)
   /// [position] - Vị trí hiển thị (top, center, bottom)
   /// [style] - Style tùy chỉnh cho toast
   /// [icon] - Icon tùy chỉnh (nếu null sẽ dùng icon mặc định theo type)
-  /// [backgroundColor] - Màu nền tùy chỉnh
-  /// [textColor] - Màu chữ tùy chỉnh
+  /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định theo type)
+  /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
   void show(
     BuildContext context,
     String message, {
@@ -34,36 +35,43 @@ class FlutterToast {
     IconData? icon,
     Color? backgroundColor,
     Color? textColor,
+    Color? iconColor,
   }) {
     // Ẩn toast hiện tại nếu có
     hide();
 
     // Tạo style
     final toastStyle = style ?? const ToastStyle();
-    final bgColor = backgroundColor ?? 
-        (type == ToastType.custom ? toastStyle.backgroundColor : type.defaultColor);
+    // Ưu tiên màu người dùng chọn, nếu không có thì dùng màu mặc định
+    final bgColor =
+        backgroundColor ??
+        (type == ToastType.custom
+            ? toastStyle.backgroundColor
+            : type.defaultColor);
     final txtColor = textColor ?? toastStyle.textColor;
     final iconData = icon ?? type.defaultIcon;
-    final iconClr = toastStyle.iconColor ?? txtColor;
+    // Ưu tiên màu icon người dùng chọn, nếu không có thì dùng màu từ style hoặc màu chữ
+    final iconClr = iconColor ?? toastStyle.iconColor ?? txtColor;
 
     // Tạo overlay entry
     _overlayEntry = OverlayEntry(
-      builder: (context) => _ToastWidget(
-        message: message,
-        position: position,
-        backgroundColor: bgColor,
-        textColor: txtColor,
-        icon: iconData,
-        iconColor: iconClr,
-        iconSize: toastStyle.iconSize,
-        borderRadius: toastStyle.borderRadius,
-        padding: toastStyle.padding,
-        margin: toastStyle.margin,
-        fontSize: toastStyle.fontSize,
-        fontWeight: toastStyle.fontWeight,
-        border: toastStyle.border,
-        boxShadow: toastStyle.boxShadow,
-      ),
+      builder:
+          (context) => _ToastWidget(
+            message: message,
+            position: position,
+            backgroundColor: bgColor,
+            textColor: txtColor,
+            icon: iconData,
+            iconColor: iconClr,
+            iconSize: toastStyle.iconSize,
+            borderRadius: toastStyle.borderRadius,
+            padding: toastStyle.padding,
+            margin: toastStyle.margin,
+            fontSize: toastStyle.fontSize,
+            fontWeight: toastStyle.fontWeight,
+            border: toastStyle.border,
+            boxShadow: toastStyle.boxShadow,
+          ),
     );
 
     // Chèn overlay vào
@@ -77,12 +85,19 @@ class FlutterToast {
   }
 
   /// Hiển thị toast thành công
+  ///
+  /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
   void showSuccess(
     BuildContext context,
     String message, {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    Color? backgroundColor,
+    Color? textColor,
+    Color? iconColor,
   }) {
     show(
       context,
@@ -91,16 +106,26 @@ class FlutterToast {
       duration: duration,
       position: position,
       style: style,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      iconColor: iconColor,
     );
   }
 
   /// Hiển thị toast lỗi
+  ///
+  /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
   void showError(
     BuildContext context,
     String message, {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    Color? backgroundColor,
+    Color? textColor,
+    Color? iconColor,
   }) {
     show(
       context,
@@ -109,16 +134,26 @@ class FlutterToast {
       duration: duration,
       position: position,
       style: style,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      iconColor: iconColor,
     );
   }
 
   /// Hiển thị toast cảnh báo
+  ///
+  /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
   void showWarning(
     BuildContext context,
     String message, {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    Color? backgroundColor,
+    Color? textColor,
+    Color? iconColor,
   }) {
     show(
       context,
@@ -127,16 +162,26 @@ class FlutterToast {
       duration: duration,
       position: position,
       style: style,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      iconColor: iconColor,
     );
   }
 
   /// Hiển thị toast thông tin
+  ///
+  /// [backgroundColor] - Màu nền tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [textColor] - Màu chữ tùy chỉnh (nếu null sẽ dùng màu mặc định)
+  /// [iconColor] - Màu icon tùy chỉnh (nếu null sẽ dùng màu chữ)
   void showInfo(
     BuildContext context,
     String message, {
     Duration duration = const Duration(seconds: 2),
     ToastPosition position = ToastPosition.bottom,
     ToastStyle? style,
+    Color? backgroundColor,
+    Color? textColor,
+    Color? iconColor,
   }) {
     show(
       context,
@@ -145,6 +190,9 @@ class FlutterToast {
       duration: duration,
       position: position,
       style: style,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      iconColor: iconColor,
     );
   }
 
@@ -215,21 +263,24 @@ class _ToastWidgetState extends State<_ToastWidget>
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     // Slide animation dựa trên position
-    final beginOffset = widget.position == ToastPosition.top
-        ? const Offset(0, -1)
-        : widget.position == ToastPosition.bottom
+    final beginOffset =
+        widget.position == ToastPosition.top
+            ? const Offset(0, -1)
+            : widget.position == ToastPosition.bottom
             ? const Offset(0, 1)
             : const Offset(0, 0);
     final endOffset = Offset.zero;
 
-    _slideAnimation = Tween<Offset>(begin: beginOffset, end: endOffset).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _slideAnimation = Tween<Offset>(
+      begin: beginOffset,
+      end: endOffset,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
   }
@@ -244,33 +295,34 @@ class _ToastWidgetState extends State<_ToastWidget>
   Widget build(BuildContext context) {
     return Positioned(
       top: widget.position == ToastPosition.top ? widget.margin.top : null,
-      bottom: widget.position == ToastPosition.bottom
-          ? widget.margin.bottom
-          : null,
+      bottom:
+          widget.position == ToastPosition.bottom ? widget.margin.bottom : null,
       left: widget.margin.left,
       right: widget.margin.right,
-      child: widget.position == ToastPosition.center
-          ? Center(
-              child: FadeTransition(
-                opacity: _fadeAnimation,
-                child: SlideTransition(
-                  position: _slideAnimation,
-                  child: _buildToastContent(),
+      child:
+          widget.position == ToastPosition.center
+              ? Center(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: _buildToastContent(),
+                  ),
+                ),
+              )
+              : Align(
+                alignment:
+                    widget.position == ToastPosition.top
+                        ? Alignment.topCenter
+                        : Alignment.bottomCenter,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: _buildToastContent(),
+                  ),
                 ),
               ),
-            )
-          : Align(
-              alignment: widget.position == ToastPosition.top
-                  ? Alignment.topCenter
-                  : Alignment.bottomCenter,
-              child: FadeTransition(
-                opacity: _fadeAnimation,
-                child: SlideTransition(
-                  position: _slideAnimation,
-                  child: _buildToastContent(),
-                ),
-              ),
-            ),
     );
   }
 
@@ -282,7 +334,8 @@ class _ToastWidgetState extends State<_ToastWidget>
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(widget.borderRadius),
           border: widget.border,
-          boxShadow: widget.boxShadow ??
+          boxShadow:
+              widget.boxShadow ??
               [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
@@ -296,11 +349,7 @@ class _ToastWidgetState extends State<_ToastWidget>
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.icon != null) ...[
-              Icon(
-                widget.icon,
-                color: widget.iconColor,
-                size: widget.iconSize,
-              ),
+              Icon(widget.icon, color: widget.iconColor, size: widget.iconSize),
               const SizedBox(width: 12),
             ],
             Flexible(
@@ -320,4 +369,3 @@ class _ToastWidgetState extends State<_ToastWidget>
     );
   }
 }
-

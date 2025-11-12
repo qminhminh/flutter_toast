@@ -1,4 +1,4 @@
-name: fluttert_toast
+name: flutter_toast
 description: "A simple and powerful Flutter package for displaying toast messages on all platforms (Android, iOS, Web, Desktop, macOS, Linux)."
 version: 1.0.0
 homepage: https://github.com/qminhminh/flutter_toast

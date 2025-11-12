@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttert_toast/src/toast_style_type.dart';
-import 'package:fluttert_toast/src/toast_type.dart';
+import 'package:flutter_toast/src/toast_style_type.dart';
+import 'package:flutter_toast/src/toast_type.dart';
 
 /// Style tùy chỉnh cho toast
 class ToastStyle {

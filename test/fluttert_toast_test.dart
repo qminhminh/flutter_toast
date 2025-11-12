@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttert_toast/fluttert_toast.dart';
+import 'package:flutter_toast/flutter_toast.dart';
 
 void main() {
   group('FlutterToast', () {

@@ -524,6 +524,249 @@ class ToastDemoPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               const Text(
+                'Custom Builder (Tự Thiết Kế Style):',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Toast với custom builder - Gradient background
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Toast với gradient background tự thiết kế',
+                    builder: (
+                      context,
+                      message,
+                      icon,
+                      backgroundColor,
+                      textColor,
+                      iconColor,
+                      iconSize,
+                      iconPosition,
+                      fontSize,
+                      fontWeight,
+                      borderRadius,
+                      padding,
+                      margin,
+                      border,
+                      boxShadow,
+                      showIconValue,
+                      showTextValue,
+                    ) {
+                      return Container(
+                        constraints: const BoxConstraints(
+                          maxWidth: 300,
+                          minWidth: 100,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.blue.shade400,
+                              Colors.purple.shade400,
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          boxShadow:
+                              boxShadow ??
+                              [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                        ),
+                        padding: padding,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (showIconValue && icon != null) ...[
+                              Icon(icon, color: iconColor, size: iconSize),
+                              const SizedBox(width: 12),
+                            ],
+                            if (showTextValue)
+                              Flexible(
+                                child: Text(
+                                  message,
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: fontSize,
+                                    fontWeight: fontWeight,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text('Custom Builder - Gradient'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast với custom builder - Card style
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Toast kiểu card với shadow đẹp',
+                    builder: (
+                      context,
+                      message,
+                      icon,
+                      backgroundColor,
+                      textColor,
+                      iconColor,
+                      iconSize,
+                      iconPosition,
+                      fontSize,
+                      fontWeight,
+                      borderRadius,
+                      padding,
+                      margin,
+                      border,
+                      boxShadow,
+                      showIconValue,
+                      showTextValue,
+                    ) {
+                      return Card(
+                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        child: Container(
+                          constraints: const BoxConstraints(
+                            maxWidth: 350,
+                            minWidth: 150,
+                          ),
+                          padding: padding,
+                          decoration: BoxDecoration(
+                            color: backgroundColor,
+                            borderRadius: BorderRadius.circular(borderRadius),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (showIconValue && icon != null) ...[
+                                Icon(icon, color: iconColor, size: iconSize),
+                                const SizedBox(height: 8),
+                              ],
+                              if (showTextValue)
+                                Text(
+                                  message,
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: fontSize,
+                                    fontWeight: fontWeight,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text('Custom Builder - Card Style'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast với custom builder - Rounded với border
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Toast với border và style độc đáo',
+                    builder: (
+                      context,
+                      message,
+                      icon,
+                      backgroundColor,
+                      textColor,
+                      iconColor,
+                      iconSize,
+                      iconPosition,
+                      fontSize,
+                      fontWeight,
+                      borderRadius,
+                      padding,
+                      margin,
+                      border,
+                      boxShadow,
+                      showIconValue,
+                      showTextValue,
+                    ) {
+                      return Container(
+                        constraints: const BoxConstraints(
+                          maxWidth: 320,
+                          minWidth: 120,
+                        ),
+                        decoration: BoxDecoration(
+                          color: backgroundColor,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.orange, width: 3),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.orange.withOpacity(0.5),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 16,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (showIconValue && icon != null) ...[
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.shade100,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  icon,
+                                  color: iconColor,
+                                  size: iconSize,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                            ],
+                            if (showTextValue)
+                              Flexible(
+                                child: Text(
+                                  message,
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: fontSize,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text('Custom Builder - Rounded Border'),
+              ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
                 'Alert Toast:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),

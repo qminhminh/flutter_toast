@@ -35,6 +35,9 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text (nếu null sẽ dùng từ style)
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
+  ///   Nếu builder được cung cấp, nó sẽ được sử dụng thay vì widget mặc định
+  ///   Builder nhận các tham số: (BuildContext context, String message, IconData? icon, Color backgroundColor, Color textColor, Color iconColor, double iconSize, IconPosition iconPosition)
   void show(
     BuildContext context,
     String message, {
@@ -55,6 +58,26 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    Widget Function(
+      BuildContext context,
+      String message,
+      IconData? icon,
+      Color backgroundColor,
+      Color textColor,
+      Color iconColor,
+      double iconSize,
+      IconPosition iconPosition,
+      double fontSize,
+      FontWeight fontWeight,
+      double borderRadius,
+      EdgeInsets padding,
+      EdgeInsets margin,
+      Border? border,
+      List<BoxShadow>? boxShadow,
+      bool showIconValue,
+      bool showTextValue,
+    )?
+    builder,
   }) {
     // Ẩn toast hiện tại nếu có
     hide();
@@ -83,30 +106,58 @@ class FlutterToast {
 
     // Tạo overlay entry
     _overlayEntry = OverlayEntry(
-      builder:
-          (context) => _ToastWidget(
-            message: message,
+      builder: (context) {
+        // Nếu có builder tùy chỉnh, sử dụng nó
+        if (builder != null) {
+          return _CustomToastWrapper(
             position: position,
-            backgroundColor: bgColor,
-            textColor: txtColor,
-            icon: iconData,
-            iconColor: iconClr,
-            iconSize: iconSz,
-            iconPosition: iconPosition,
-            iconPadding: iconPad,
-            iconMargin: iconMrg,
-            borderRadius: toastStyle.borderRadius,
-            padding: toastStyle.padding,
             margin: toastStyle.margin,
-            fontSize: fontSz,
-            textPadding: textPad,
-            textMargin: textMrg,
-            fontWeight: toastStyle.fontWeight,
-            border: toastStyle.border,
-            boxShadow: toastStyle.boxShadow,
-            showIcon: showIconValue,
-            showText: showTextValue,
-          ),
+            child: builder(
+              context,
+              message,
+              iconData,
+              bgColor,
+              txtColor,
+              iconClr,
+              iconSz,
+              iconPosition,
+              fontSz,
+              toastStyle.fontWeight,
+              toastStyle.borderRadius,
+              toastStyle.padding,
+              toastStyle.margin,
+              toastStyle.border,
+              toastStyle.boxShadow,
+              showIconValue,
+              showTextValue,
+            ),
+          );
+        }
+        // Nếu không có builder, sử dụng widget mặc định
+        return _ToastWidget(
+          message: message,
+          position: position,
+          backgroundColor: bgColor,
+          textColor: txtColor,
+          icon: iconData,
+          iconColor: iconClr,
+          iconSize: iconSz,
+          iconPosition: iconPosition,
+          iconPadding: iconPad,
+          iconMargin: iconMrg,
+          borderRadius: toastStyle.borderRadius,
+          padding: toastStyle.padding,
+          margin: toastStyle.margin,
+          fontSize: fontSz,
+          textPadding: textPad,
+          textMargin: textMrg,
+          fontWeight: toastStyle.fontWeight,
+          border: toastStyle.border,
+          boxShadow: toastStyle.boxShadow,
+          showIcon: showIconValue,
+          showText: showTextValue,
+        );
+      },
     );
 
     // Chèn overlay vào
@@ -133,6 +184,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showSuccess(
     BuildContext context,
     String message, {
@@ -151,6 +203,26 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    Widget Function(
+      BuildContext context,
+      String message,
+      IconData? icon,
+      Color backgroundColor,
+      Color textColor,
+      Color iconColor,
+      double iconSize,
+      IconPosition iconPosition,
+      double fontSize,
+      FontWeight fontWeight,
+      double borderRadius,
+      EdgeInsets padding,
+      EdgeInsets margin,
+      Border? border,
+      List<BoxShadow>? boxShadow,
+      bool showIconValue,
+      bool showTextValue,
+    )?
+    builder,
   }) {
     show(
       context,
@@ -171,6 +243,7 @@ class FlutterToast {
       textMargin: textMargin,
       showIcon: showIcon,
       showText: showText,
+      builder: builder,
     );
   }
 
@@ -188,6 +261,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showError(
     BuildContext context,
     String message, {
@@ -206,6 +280,26 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    Widget Function(
+      BuildContext context,
+      String message,
+      IconData? icon,
+      Color backgroundColor,
+      Color textColor,
+      Color iconColor,
+      double iconSize,
+      IconPosition iconPosition,
+      double fontSize,
+      FontWeight fontWeight,
+      double borderRadius,
+      EdgeInsets padding,
+      EdgeInsets margin,
+      Border? border,
+      List<BoxShadow>? boxShadow,
+      bool showIconValue,
+      bool showTextValue,
+    )?
+    builder,
   }) {
     show(
       context,
@@ -226,6 +320,7 @@ class FlutterToast {
       textMargin: textMargin,
       showIcon: showIcon,
       showText: showText,
+      builder: builder,
     );
   }
 
@@ -243,6 +338,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showWarning(
     BuildContext context,
     String message, {
@@ -261,6 +357,26 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    Widget Function(
+      BuildContext context,
+      String message,
+      IconData? icon,
+      Color backgroundColor,
+      Color textColor,
+      Color iconColor,
+      double iconSize,
+      IconPosition iconPosition,
+      double fontSize,
+      FontWeight fontWeight,
+      double borderRadius,
+      EdgeInsets padding,
+      EdgeInsets margin,
+      Border? border,
+      List<BoxShadow>? boxShadow,
+      bool showIconValue,
+      bool showTextValue,
+    )?
+    builder,
   }) {
     show(
       context,
@@ -281,6 +397,7 @@ class FlutterToast {
       textMargin: textMargin,
       showIcon: showIcon,
       showText: showText,
+      builder: builder,
     );
   }
 
@@ -298,6 +415,7 @@ class FlutterToast {
   /// [textMargin] - Margin xung quanh text
   /// [showIcon] - Hiển thị icon (nếu null sẽ dùng từ style, mặc định true)
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
+  /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showInfo(
     BuildContext context,
     String message, {
@@ -316,6 +434,26 @@ class FlutterToast {
     EdgeInsets? textMargin,
     bool? showIcon,
     bool? showText,
+    Widget Function(
+      BuildContext context,
+      String message,
+      IconData? icon,
+      Color backgroundColor,
+      Color textColor,
+      Color iconColor,
+      double iconSize,
+      IconPosition iconPosition,
+      double fontSize,
+      FontWeight fontWeight,
+      double borderRadius,
+      EdgeInsets padding,
+      EdgeInsets margin,
+      Border? border,
+      List<BoxShadow>? boxShadow,
+      bool showIconValue,
+      bool showTextValue,
+    )?
+    builder,
   }) {
     show(
       context,
@@ -336,6 +474,7 @@ class FlutterToast {
       textMargin: textMargin,
       showIcon: showIcon,
       showText: showText,
+      builder: builder,
     );
   }
 
@@ -1010,6 +1149,148 @@ class _ToastWidgetState extends State<_ToastWidget>
         padding: widget.padding,
         child: content,
       ),
+    );
+  }
+}
+
+/// Widget wrapper cho custom toast builder
+/// Xử lý positioning và animation cho custom widget
+class _CustomToastWrapper extends StatefulWidget {
+  final ToastPosition position;
+  final EdgeInsets margin;
+  final Widget child;
+
+  const _CustomToastWrapper({
+    required this.position,
+    required this.margin,
+    required this.child,
+  });
+
+  @override
+  State<_CustomToastWrapper> createState() => _CustomToastWrapperState();
+}
+
+class _CustomToastWrapperState extends State<_CustomToastWrapper>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    // Slide animation dựa trên position
+    Offset beginOffset;
+    switch (widget.position) {
+      case ToastPosition.top:
+      case ToastPosition.topLeft:
+      case ToastPosition.topRight:
+        beginOffset = const Offset(0, -1);
+        break;
+      case ToastPosition.bottom:
+      case ToastPosition.bottomLeft:
+      case ToastPosition.bottomRight:
+        beginOffset = const Offset(0, 1);
+        break;
+      case ToastPosition.center:
+        beginOffset = Offset.zero;
+        break;
+    }
+    final endOffset = Offset.zero;
+
+    _slideAnimation = Tween<Offset>(
+      begin: beginOffset,
+      end: endOffset,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Xác định vị trí và alignment
+    Alignment? alignment;
+    bool isTop = false;
+    bool isBottom = false;
+    bool isLeft = false;
+    bool isRight = false;
+
+    switch (widget.position) {
+      case ToastPosition.top:
+        isTop = true;
+        alignment = Alignment.topCenter;
+        break;
+      case ToastPosition.bottom:
+        isBottom = true;
+        alignment = Alignment.bottomCenter;
+        break;
+      case ToastPosition.topLeft:
+        isTop = true;
+        isLeft = true;
+        alignment = Alignment.topLeft;
+        break;
+      case ToastPosition.topRight:
+        isTop = true;
+        isRight = true;
+        alignment = Alignment.topRight;
+        break;
+      case ToastPosition.bottomLeft:
+        isBottom = true;
+        isLeft = true;
+        alignment = Alignment.bottomLeft;
+        break;
+      case ToastPosition.bottomRight:
+        isBottom = true;
+        isRight = true;
+        alignment = Alignment.bottomRight;
+        break;
+      case ToastPosition.center:
+        alignment = null;
+        break;
+    }
+
+    return Positioned(
+      top: isTop ? widget.margin.top : null,
+      bottom: isBottom ? widget.margin.bottom : null,
+      left: isLeft ? widget.margin.left : null,
+      right: isRight ? widget.margin.right : null,
+      child:
+          widget.position == ToastPosition.center
+              ? Center(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: widget.child,
+                  ),
+                ),
+              )
+              : Align(
+                alignment: alignment!,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: widget.child,
+                  ),
+                ),
+              ),
     );
   }
 }

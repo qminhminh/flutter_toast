@@ -422,6 +422,110 @@ class ToastDemoPage extends StatelessWidget {
                 },
                 child: const Text('Text Dài - Responsive'),
               ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Alert Toast:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Alert đơn giản
+              ElevatedButton(
+                onPressed: () {
+                  toast.showAlert(
+                    context,
+                    'Đây là một alert toast đơn giản. Tap vào để đóng.',
+                    dismissible: true,
+                  );
+                },
+                child: const Text('Alert Đơn Giản'),
+              ),
+              const SizedBox(height: 12),
+
+              // Alert với title
+              ElevatedButton(
+                onPressed: () {
+                  toast.showAlert(
+                    context,
+                    'Bạn có chắc chắn muốn thực hiện hành động này không?',
+                    title: 'Xác Nhận',
+                    dismissible: true,
+                  );
+                },
+                child: const Text('Alert Có Title'),
+              ),
+              const SizedBox(height: 12),
+
+              // Alert với nút action
+              ElevatedButton(
+                onPressed: () {
+                  toast.showAlert(
+                    context,
+                    'Bạn có muốn lưu thay đổi không?',
+                    title: 'Lưu Thay Đổi',
+                    actionButton: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            toast.hide();
+                            toast.showInfo(context, 'Đã hủy');
+                          },
+                          child: const Text('Hủy'),
+                        ),
+                        const SizedBox(width: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            toast.hide();
+                            toast.showSuccess(context, 'Đã lưu thành công!');
+                          },
+                          child: const Text('Lưu'),
+                        ),
+                      ],
+                    ),
+                    dismissible: false,
+                  );
+                },
+                child: const Text('Alert Có Nút Action'),
+              ),
+              const SizedBox(height: 12),
+
+              // Alert không tự đóng
+              ElevatedButton(
+                onPressed: () {
+                  toast.showAlert(
+                    context,
+                    'Alert này sẽ không tự động đóng. Bạn phải tap vào để đóng.',
+                    title: 'Alert Quan Trọng',
+                    dismissible: true,
+                    duration: null, // Không tự động đóng
+                  );
+                },
+                child: const Text('Alert Không Tự Đóng'),
+              ),
+              const SizedBox(height: 12),
+
+              // Alert với callback
+              ElevatedButton(
+                onPressed: () {
+                  toast.showAlert(
+                    context,
+                    'Alert với callback. Kiểm tra console khi đóng.',
+                    title: 'Alert Callback',
+                    onDismiss: () {
+                      toast.showInfo(context, 'Alert đã được đóng!');
+                    },
+                    onTap: () {
+                      print('Alert được tap!');
+                    },
+                  );
+                },
+                child: const Text('Alert Với Callback'),
+              ),
             ],
           ),
         ),

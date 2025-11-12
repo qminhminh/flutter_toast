@@ -16,6 +16,9 @@ enum ToastType {
 
   /// Toast tùy chỉnh
   custom,
+
+  /// Toast alert (cảnh báo quan trọng)
+  alert,
 }
 
 /// Extension để lấy màu sắc và icon cho từng loại toast
@@ -33,6 +36,8 @@ extension ToastTypeExtension on ToastType {
         return Colors.blue;
       case ToastType.custom:
         return Colors.grey;
+      case ToastType.alert:
+        return Colors.orange.shade700;
     }
   }
 
@@ -49,6 +54,8 @@ extension ToastTypeExtension on ToastType {
         return Icons.info;
       case ToastType.custom:
         return null;
+      case ToastType.alert:
+        return Icons.warning_amber_rounded;
     }
   }
 }

@@ -307,6 +307,112 @@ class FlutterToast {
     );
   }
 
+  /// Hiển thị alert toast (thiết kế giống React Native Alert)
+  ///
+  /// [message] - Nội dung message
+  /// [title] - Tiêu đề alert (tùy chọn)
+  /// [onTap] - Callback khi tap vào toast
+  /// [onDismiss] - Callback khi toast bị đóng
+  /// [actionButton] - Widget nút action (ví dụ: TextButton)
+  /// [dismissible] - Có thể đóng bằng cách tap vào hoặc nút đóng (mặc định true)
+  /// [showCloseButton] - Hiển thị nút đóng (X) ở góc phải (mặc định true)
+  /// [duration] - Thời gian hiển thị (null = không tự động đóng, mặc định 4 giây)
+  /// [position] - Vị trí hiển thị (mặc định top)
+  /// [style] - Style tùy chỉnh
+  /// [backgroundColor] - Màu nền
+  /// [textColor] - Màu chữ
+  /// [iconColor] - Màu icon
+  /// [iconPosition] - Vị trí icon
+  /// [iconSize] - Kích thước icon
+  /// [iconPadding] - Padding icon
+  /// [iconMargin] - Margin icon
+  /// [fontSize] - Kích thước font
+  /// [textPadding] - Padding text
+  /// [textMargin] - Margin text
+  void showAlert(
+    BuildContext context,
+    String message, {
+    String? title,
+    VoidCallback? onTap,
+    VoidCallback? onDismiss,
+    Widget? actionButton,
+    bool dismissible = true,
+    bool showCloseButton = true,
+    Duration? duration,
+    ToastPosition position = ToastPosition.top,
+    ToastStyle? style,
+    Color? backgroundColor,
+    Color? textColor,
+    Color? iconColor,
+    IconPosition iconPosition = IconPosition.left,
+    double? iconSize,
+    EdgeInsets? iconPadding,
+    EdgeInsets? iconMargin,
+    double? fontSize,
+    EdgeInsets? textPadding,
+    EdgeInsets? textMargin,
+  }) {
+    // Ẩn toast hiện tại nếu có
+    hide();
+
+    // Tạo style
+    final toastStyle = style ?? const ToastStyle();
+    final bgColor = backgroundColor ?? ToastType.alert.defaultColor;
+    final txtColor = textColor ?? toastStyle.textColor;
+    final iconData = ToastType.alert.defaultIcon;
+    final iconClr = iconColor ?? toastStyle.iconColor ?? txtColor;
+    final iconSz = iconSize ?? toastStyle.iconSize;
+    final iconPad = iconPadding ?? toastStyle.iconPadding;
+    final iconMrg = iconMargin ?? toastStyle.iconMargin;
+    final fontSz = fontSize ?? toastStyle.fontSize;
+    final textPad = textPadding ?? toastStyle.textPadding;
+    final textMrg = textMargin ?? toastStyle.textMargin;
+
+    // Tạo overlay entry
+    _overlayEntry = OverlayEntry(
+      builder:
+          (context) => _AlertToastWidget(
+            message: message,
+            title: title,
+            position: position,
+            backgroundColor: bgColor,
+            textColor: txtColor,
+            icon: iconData,
+            iconColor: iconClr,
+            iconSize: iconSz,
+            iconPosition: iconPosition,
+            iconPadding: iconPad,
+            iconMargin: iconMrg,
+            borderRadius: toastStyle.borderRadius,
+            padding: toastStyle.padding,
+            margin: toastStyle.margin,
+            fontSize: fontSz,
+            textPadding: textPad,
+            textMargin: textMrg,
+            fontWeight: toastStyle.fontWeight,
+            border: toastStyle.border,
+            boxShadow: toastStyle.boxShadow,
+            onTap: onTap,
+            onDismiss: onDismiss,
+            actionButton: actionButton,
+            dismissible: dismissible,
+            showCloseButton: showCloseButton,
+            hideCallback: hide,
+          ),
+    );
+
+    // Chèn overlay vào
+    Overlay.of(context).insert(_overlayEntry!);
+    _isVisible = true;
+
+    // Tự động ẩn sau duration (mặc định 4 giây nếu không chỉ định)
+    final alertDuration = duration ?? const Duration(seconds: 4);
+    _timer = Timer(alertDuration, () {
+      hide();
+      onDismiss?.call();
+    });
+  }
+
   /// Ẩn toast hiện tại
   void hide() {
     if (_isVisible && _overlayEntry != null) {
@@ -617,6 +723,304 @@ class _ToastWidgetState extends State<_ToastWidget>
         ),
         padding: widget.padding,
         child: content,
+      ),
+    );
+  }
+}
+
+/// Widget hiển thị alert toast (có thể tương tác)
+class _AlertToastWidget extends StatefulWidget {
+  final String message;
+  final String? title;
+  final ToastPosition position;
+  final Color backgroundColor;
+  final Color textColor;
+  final IconData? icon;
+  final Color iconColor;
+  final double iconSize;
+  final IconPosition iconPosition;
+  final EdgeInsets? iconPadding;
+  final EdgeInsets? iconMargin;
+  final double borderRadius;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+  final double fontSize;
+  final EdgeInsets? textPadding;
+  final EdgeInsets? textMargin;
+  final FontWeight fontWeight;
+  final Border? border;
+  final List<BoxShadow>? boxShadow;
+  final VoidCallback? onTap;
+  final VoidCallback? onDismiss;
+  final Widget? actionButton;
+  final bool dismissible;
+  final bool showCloseButton;
+  final VoidCallback hideCallback;
+
+  const _AlertToastWidget({
+    required this.message,
+    this.title,
+    required this.position,
+    required this.backgroundColor,
+    required this.textColor,
+    required this.icon,
+    required this.iconColor,
+    required this.iconSize,
+    required this.iconPosition,
+    this.iconPadding,
+    this.iconMargin,
+    required this.borderRadius,
+    required this.padding,
+    required this.margin,
+    required this.fontSize,
+    this.textPadding,
+    this.textMargin,
+    required this.fontWeight,
+    this.border,
+    this.boxShadow,
+    this.onTap,
+    this.onDismiss,
+    this.actionButton,
+    required this.dismissible,
+    this.showCloseButton = true,
+    required this.hideCallback,
+  });
+
+  @override
+  State<_AlertToastWidget> createState() => _AlertToastWidgetState();
+}
+
+class _AlertToastWidgetState extends State<_AlertToastWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    // Animation slide từ trên xuống (giống React Native)
+    final beginOffset =
+        widget.position == ToastPosition.top
+            ? const Offset(0, -1)
+            : widget.position == ToastPosition.bottom
+            ? const Offset(0, 1)
+            : const Offset(0, 0);
+    final endOffset = Offset.zero;
+
+    _slideAnimation = Tween<Offset>(
+      begin: beginOffset,
+      end: endOffset,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTap() {
+    if (widget.dismissible) {
+      _controller.reverse().then((_) {
+        widget.hideCallback();
+        widget.onDismiss?.call();
+      });
+    }
+    widget.onTap?.call();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+
+    // Hiển thị ở top (giống React Native Alert)
+    return Positioned(
+      top: widget.position == ToastPosition.top ? widget.margin.top : null,
+      bottom:
+          widget.position == ToastPosition.bottom ? widget.margin.bottom : null,
+      left: widget.margin.left,
+      right: widget.margin.right,
+      child:
+          widget.position == ToastPosition.center
+              ? Center(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: _buildAlertContent(screenWidth),
+                  ),
+                ),
+              )
+              : Align(
+                alignment:
+                    widget.position == ToastPosition.top
+                        ? Alignment.topCenter
+                        : Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: widget.dismissible ? _handleTap : null,
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: SlideTransition(
+                      position: _slideAnimation,
+                      child: _buildAlertContent(screenWidth),
+                    ),
+                  ),
+                ),
+              ),
+    );
+  }
+
+  Widget _buildAlertContent(double screenWidth) {
+    // Icon widget
+    Widget? iconWidget;
+    if (widget.icon != null) {
+      iconWidget = Icon(
+        widget.icon,
+        color: widget.iconColor,
+        size: widget.iconSize,
+      );
+
+      if (widget.iconPadding != null) {
+        iconWidget = Padding(padding: widget.iconPadding!, child: iconWidget);
+      }
+
+      if (widget.iconMargin != null) {
+        iconWidget = Container(margin: widget.iconMargin!, child: iconWidget);
+      }
+    }
+
+    // Title widget
+    Widget? titleWidget;
+    if (widget.title != null) {
+      titleWidget = Text(
+        widget.title!,
+        style: TextStyle(
+          color: widget.textColor,
+          fontSize: widget.fontSize + 2,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+
+    // Message widget
+    Widget messageWidget = Flexible(
+      child: Text(
+        widget.message,
+        style: TextStyle(
+          color: widget.textColor,
+          fontSize: widget.fontSize,
+          fontWeight: widget.fontWeight,
+        ),
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
+    if (widget.textPadding != null) {
+      messageWidget = Padding(
+        padding: widget.textPadding!,
+        child: messageWidget,
+      );
+    }
+
+    if (widget.textMargin != null) {
+      messageWidget = Container(
+        margin: widget.textMargin!,
+        child: messageWidget,
+      );
+    }
+
+    // Close button widget
+    Widget? closeButton;
+    if (widget.showCloseButton && widget.dismissible) {
+      closeButton = GestureDetector(
+        onTap: _handleTap,
+        child: Container(
+          padding: const EdgeInsets.all(4),
+          child: Icon(Icons.close, color: widget.textColor, size: 20),
+        ),
+      );
+    }
+
+    // Build content - Layout giống React Native Alert (horizontal)
+    List<Widget> rowChildren = [];
+
+    // Icon ở bên trái
+    if (iconWidget != null &&
+        (widget.iconPosition == IconPosition.left ||
+            widget.iconPosition == IconPosition.top)) {
+      rowChildren.add(iconWidget);
+      rowChildren.add(const SizedBox(width: 12));
+    }
+
+    // Text content (title + message)
+    List<Widget> textChildren = [];
+    if (titleWidget != null) {
+      textChildren.add(titleWidget);
+      textChildren.add(const SizedBox(height: 4));
+    }
+    textChildren.add(messageWidget);
+
+    rowChildren.add(
+      Expanded(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: textChildren,
+        ),
+      ),
+    );
+
+    // Action button hoặc close button
+    if (widget.actionButton != null) {
+      rowChildren.add(const SizedBox(width: 8));
+      rowChildren.add(widget.actionButton!);
+    } else if (closeButton != null) {
+      rowChildren.add(const SizedBox(width: 8));
+      rowChildren.add(closeButton);
+    }
+
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        width: double.infinity,
+        constraints: BoxConstraints(maxWidth: screenWidth),
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(widget.borderRadius),
+            bottomRight: Radius.circular(widget.borderRadius),
+          ),
+          border: widget.border,
+          boxShadow:
+              widget.boxShadow ??
+              [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+        ),
+        padding: widget.padding,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: rowChildren,
+        ),
       ),
     );
   }

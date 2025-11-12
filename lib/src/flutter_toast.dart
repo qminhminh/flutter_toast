@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_toast/src/toast_position.dart';
-import 'package:flutter_toast/src/toast_type.dart';
-import 'package:flutter_toast/src/toast_style.dart';
-import 'package:flutter_toast/src/toast_style_type.dart';
-import 'package:flutter_toast/src/icon_position.dart';
+import 'package:flutter_toast_notification/src/toast_position.dart';
+import 'package:flutter_toast_notification/src/toast_type.dart';
+import 'package:flutter_toast_notification/src/toast_style.dart';
+import 'package:flutter_toast_notification/src/toast_style_type.dart';
+import 'package:flutter_toast_notification/src/icon_position.dart';
 
 /// Class chính để hiển thị toast messages
 class FlutterToast {

@@ -1,6 +1,6 @@
 ## 1.0.0
 
-* Initial release of flutter_toast package
+* Initial release of flutter_toast_notification package
 * Support for all platforms: Android, iOS, Web, Desktop, macOS, Linux
 * Multiple toast types: Success, Error, Warning, Info, and Custom
 * Flexible positioning: Top, Bottom, Center, and corner positions

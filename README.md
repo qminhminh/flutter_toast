@@ -1,6 +1,6 @@
-# flutter_toast
+# flutter_toast_notification
 
-[![pub package](https://img.shields.io/pub/v/flutter_toast.svg)](https://pub.dev/packages/flutter_toast)
+[![pub package](https://img.shields.io/pub/v/flutter_toast_notification.svg)](https://pub.dev/packages/flutter_toast_notification)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A beautiful and powerful Flutter package for displaying toast notifications on all platforms (Android, iOS, Web, Desktop, macOS, Linux). Inspired by [toastification](https://pub.dev/packages/toastification), this package provides a simple yet flexible way to show toast messages with beautiful predefined styles.
@@ -24,11 +24,11 @@ A beautiful and powerful Flutter package for displaying toast notifications on a
 
 ## 📦 Installation
 
-Add `flutter_toast` to your `pubspec.yaml` file:
+Add `flutter_toast_notification` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_toast: ^1.0.0
+  flutter_toast_notification: ^1.0.0
 ```
 
 Then, run `flutter pub get` to install the package.
@@ -38,7 +38,7 @@ Then, run `flutter pub get` to install the package.
 ### Import
 
 ```dart
-import 'package:flutter_toast/flutter_toast.dart';
+import 'package:flutter_toast_notification/flutter_toast.dart';
 ```
 
 ### Basic Usage

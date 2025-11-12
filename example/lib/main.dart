@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_toast/flutter_toast.dart';
+import 'package:flutter_toast_notification/flutter_toast.dart';
 
 void main() {
   runApp(const MyApp());

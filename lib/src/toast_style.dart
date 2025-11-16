@@ -46,6 +46,12 @@ class ToastStyle {
   /// Font weight của text
   final FontWeight fontWeight;
 
+  /// Text alignment của text (left, center, right, justify)
+  final TextAlign? textAlign;
+
+  /// TextStyle tùy chỉnh cho text (nếu null sẽ dùng fontSize, fontWeight, textColor)
+  final TextStyle? textStyle;
+
   /// Border của toast
   final Border? border;
 
@@ -60,6 +66,19 @@ class ToastStyle {
 
   /// Hiển thị close button (mặc định null, sẽ tự động set theo styleType)
   final bool? showCloseButton;
+
+  /// Căn chỉnh theo chiều dọc của các phần tử trong Row (start, center, end, stretch)
+  final CrossAxisAlignment? crossAxisAlignment;
+
+  /// Chiều rộng của toast (null = auto)
+  final double? width;
+
+  /// Chiều cao của toast (null = auto)
+  final double? height;
+
+  /// Căn chỉnh ngang khi toast ở vị trí top/bottom/center (left, center, right)
+  /// null = dùng mặc định của position
+  final Alignment? horizontalAlignment;
 
   const ToastStyle({
     this.styleType,
@@ -76,11 +95,17 @@ class ToastStyle {
     this.textPadding,
     this.textMargin,
     this.fontWeight = FontWeight.normal,
+    this.textAlign,
+    this.textStyle,
     this.border,
     this.boxShadow,
     this.showIcon = true,
     this.showText = true,
     this.showCloseButton,
+    this.crossAxisAlignment,
+    this.width,
+    this.height,
+    this.horizontalAlignment,
   });
 
   /// Tạo style dựa trên styleType và toastType
@@ -104,6 +129,9 @@ class ToastStyle {
           borderRadius: 12.0,
           border: null, // Không có border cho flat style
           padding: const EdgeInsets.all(16.0),
+          textAlign: TextAlign.left, // Flat style mặc định left
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Căn giữa theo chiều dọc
           showCloseButton: true, // Flat style có close button
           boxShadow: [
             BoxShadow(
@@ -122,6 +150,9 @@ class ToastStyle {
           iconColor: Colors.white,
           borderRadius: 12.0,
           padding: const EdgeInsets.all(16.0),
+          textAlign: TextAlign.left, // Fill colored style mặc định left
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Căn giữa theo chiều dọc
           showCloseButton: true, // Fill colored style có close button
           boxShadow: [
             BoxShadow(
@@ -141,6 +172,9 @@ class ToastStyle {
           borderRadius: 12.0,
           border: Border.all(color: darkColor, width: 1.5), // Border màu đậm
           padding: const EdgeInsets.all(16.0),
+          textAlign: TextAlign.left, // Flat colored style mặc định left
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Căn giữa theo chiều dọc
           showCloseButton: true, // Flat colored style có close button
           boxShadow: [
             BoxShadow(
@@ -162,6 +196,10 @@ class ToastStyle {
             left: BorderSide(color: typeColor, width: 4),
           ), // Border left màu type
           padding: const EdgeInsets.all(16.0),
+          textAlign:
+              TextAlign.left, // Mặc định left, người dùng có thể tùy chỉnh
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Căn giữa theo chiều dọc
           showCloseButton: true, // Minimal style có close button
           boxShadow: [
             BoxShadow(
@@ -180,6 +218,9 @@ class ToastStyle {
           iconColor: typeColor,
           borderRadius: 12.0,
           padding: const EdgeInsets.all(16.0),
+          textAlign: TextAlign.center, // Simple style mặc định center
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Căn giữa theo chiều dọc
           showIcon: false, // Simple style không có icon
           showCloseButton: false, // Simple style không có close button
           boxShadow: [
@@ -228,11 +269,17 @@ class ToastStyle {
     EdgeInsets? textPadding,
     EdgeInsets? textMargin,
     FontWeight? fontWeight,
+    TextAlign? textAlign,
+    TextStyle? textStyle,
     Border? border,
     List<BoxShadow>? boxShadow,
     bool? showIcon,
     bool? showText,
     bool? showCloseButton,
+    CrossAxisAlignment? crossAxisAlignment,
+    double? width,
+    double? height,
+    Alignment? horizontalAlignment,
   }) {
     return ToastStyle(
       styleType: styleType ?? this.styleType,
@@ -249,11 +296,17 @@ class ToastStyle {
       textPadding: textPadding ?? this.textPadding,
       textMargin: textMargin ?? this.textMargin,
       fontWeight: fontWeight ?? this.fontWeight,
+      textAlign: textAlign ?? this.textAlign,
+      textStyle: textStyle ?? this.textStyle,
       border: border ?? this.border,
       boxShadow: boxShadow ?? this.boxShadow,
       showIcon: showIcon ?? this.showIcon,
       showText: showText ?? this.showText,
       showCloseButton: showCloseButton ?? this.showCloseButton,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      horizontalAlignment: horizontalAlignment ?? this.horizontalAlignment,
     );
   }
 }

@@ -48,6 +48,12 @@ class FlutterToast {
   /// [border] - Border của toast (override giá trị từ styleType nếu có)
   /// [boxShadow] - Shadow của toast (override giá trị từ styleType nếu có)
   /// [fontWeight] - Font weight của text (override giá trị từ styleType nếu có)
+  /// [textAlign] - Text alignment của text (left, center, right, justify) (override giá trị từ styleType nếu có)
+  /// [textStyle] - TextStyle tùy chỉnh cho text (override giá trị từ styleType nếu có)
+  /// [crossAxisAlignment] - Căn chỉnh theo chiều dọc của các phần tử trong Row (start, center, end) (override giá trị từ styleType nếu có)
+  /// [width] - Chiều rộng của toast (null = auto, override giá trị từ styleType nếu có)
+  /// [height] - Chiều cao của toast (null = auto, override giá trị từ styleType nếu có)
+  /// [horizontalAlignment] - Căn chỉnh ngang khi toast ở vị trí top/bottom/center (left, center, right) (override giá trị từ styleType nếu có)
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   ///   Nếu builder được cung cấp, nó sẽ được sử dụng thay vì widget mặc định
   ///   Builder nhận các tham số: (BuildContext context, String message, IconData? icon, Color backgroundColor, Color textColor, Color iconColor, double iconSize, IconPosition iconPosition)
@@ -82,6 +88,12 @@ class FlutterToast {
     Border? border,
     List<BoxShadow>? boxShadow,
     FontWeight? fontWeight,
+    TextAlign? textAlign,
+    TextStyle? textStyle,
+    CrossAxisAlignment? crossAxisAlignment,
+    double? width,
+    double? height,
+    Alignment? horizontalAlignment,
     Widget Function(
       BuildContext context,
       String message,
@@ -126,6 +138,12 @@ class FlutterToast {
         textPadding: textPadding,
         textMargin: textMargin,
         fontWeight: fontWeight,
+        textAlign: textAlign,
+        textStyle: textStyle,
+        crossAxisAlignment: crossAxisAlignment,
+        width: width,
+        height: height,
+        horizontalAlignment: horizontalAlignment,
         border: border,
         boxShadow: boxShadow,
         showIcon: showIcon,
@@ -155,6 +173,12 @@ class FlutterToast {
     final fontSz = fontSize ?? toastStyle.fontSize;
     final textPad = textPadding ?? toastStyle.textPadding;
     final textMrg = textMargin ?? toastStyle.textMargin;
+    final textAlignValue = textAlign ?? toastStyle.textAlign;
+    final textStyleValue = textStyle ?? toastStyle.textStyle;
+    final crossAxisAlignValue = crossAxisAlignment ?? toastStyle.crossAxisAlignment;
+    final toastWidth = width ?? toastStyle.width;
+    final toastHeight = height ?? toastStyle.height;
+    final horizAlignValue = horizontalAlignment ?? toastStyle.horizontalAlignment;
     final showIconValue = showIcon ?? toastStyle.showIcon;
     final showTextValue = showText ?? toastStyle.showText;
     // Tự động bật close button: nếu styleType có showCloseButton thì dùng, nếu không thì dùng giá trị truyền vào
@@ -218,6 +242,12 @@ class FlutterToast {
           textPadding: textPad,
           textMargin: textMrg,
           fontWeight: toastStyle.fontWeight,
+          textAlign: textAlignValue,
+          textStyle: textStyleValue,
+          crossAxisAlignment: crossAxisAlignValue,
+          width: toastWidth,
+          height: toastHeight,
+          horizontalAlignment: horizAlignValue,
           border: toastStyle.border,
           boxShadow: toastStyle.boxShadow,
           showIcon: showIconValue,
@@ -264,6 +294,8 @@ class FlutterToast {
   /// [border] - Border (override styleType)
   /// [boxShadow] - Shadow (override styleType)
   /// [fontWeight] - Font weight (override styleType)
+  /// [textAlign] - Text alignment (override styleType)
+  /// [textStyle] - TextStyle tùy chỉnh (override styleType)
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showSuccess(
     BuildContext context,
@@ -290,6 +322,12 @@ class FlutterToast {
     Border? border,
     List<BoxShadow>? boxShadow,
     FontWeight? fontWeight,
+    TextAlign? textAlign,
+    TextStyle? textStyle,
+    CrossAxisAlignment? crossAxisAlignment,
+    double? width,
+    double? height,
+    Alignment? horizontalAlignment,
     Widget Function(
       BuildContext context,
       String message,
@@ -337,6 +375,12 @@ class FlutterToast {
       border: border,
       boxShadow: boxShadow,
       fontWeight: fontWeight,
+      textAlign: textAlign,
+      textStyle: textStyle,
+      crossAxisAlignment: crossAxisAlignment,
+      width: width,
+      height: height,
+      horizontalAlignment: horizontalAlignment,
       builder: builder,
     );
   }
@@ -357,6 +401,8 @@ class FlutterToast {
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
   /// [styleType] - Loại style - có thể override bằng các tham số khác
   /// [borderRadius], [padding], [margin], [border], [boxShadow], [fontWeight] - Override styleType
+  /// [textAlign] - Text alignment (override styleType)
+  /// [textStyle] - TextStyle tùy chỉnh (override styleType)
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showError(
     BuildContext context,
@@ -383,6 +429,12 @@ class FlutterToast {
     Border? border,
     List<BoxShadow>? boxShadow,
     FontWeight? fontWeight,
+    TextAlign? textAlign,
+    TextStyle? textStyle,
+    CrossAxisAlignment? crossAxisAlignment,
+    double? width,
+    double? height,
+    Alignment? horizontalAlignment,
     Widget Function(
       BuildContext context,
       String message,
@@ -430,6 +482,12 @@ class FlutterToast {
       border: border,
       boxShadow: boxShadow,
       fontWeight: fontWeight,
+      textAlign: textAlign,
+      textStyle: textStyle,
+      crossAxisAlignment: crossAxisAlignment,
+      width: width,
+      height: height,
+      horizontalAlignment: horizontalAlignment,
       builder: builder,
     );
   }
@@ -450,6 +508,8 @@ class FlutterToast {
   /// [showText] - Hiển thị text (nếu null sẽ dùng từ style, mặc định true)
   /// [styleType] - Loại style - có thể override bằng các tham số khác
   /// [borderRadius], [padding], [margin], [border], [boxShadow], [fontWeight] - Override styleType
+  /// [textAlign] - Text alignment (override styleType)
+  /// [textStyle] - TextStyle tùy chỉnh (override styleType)
   /// [builder] - Builder tùy chỉnh để tạo widget toast theo ý người dùng
   void showWarning(
     BuildContext context,
@@ -476,6 +536,12 @@ class FlutterToast {
     Border? border,
     List<BoxShadow>? boxShadow,
     FontWeight? fontWeight,
+    TextAlign? textAlign,
+    TextStyle? textStyle,
+    CrossAxisAlignment? crossAxisAlignment,
+    double? width,
+    double? height,
+    Alignment? horizontalAlignment,
     Widget Function(
       BuildContext context,
       String message,
@@ -523,6 +589,12 @@ class FlutterToast {
       border: border,
       boxShadow: boxShadow,
       fontWeight: fontWeight,
+      textAlign: textAlign,
+      textStyle: textStyle,
+      crossAxisAlignment: crossAxisAlignment,
+      width: width,
+      height: height,
+      horizontalAlignment: horizontalAlignment,
       builder: builder,
     );
   }
@@ -569,6 +641,12 @@ class FlutterToast {
     Border? border,
     List<BoxShadow>? boxShadow,
     FontWeight? fontWeight,
+    TextAlign? textAlign,
+    TextStyle? textStyle,
+    CrossAxisAlignment? crossAxisAlignment,
+    double? width,
+    double? height,
+    Alignment? horizontalAlignment,
     Widget Function(
       BuildContext context,
       String message,
@@ -616,6 +694,12 @@ class FlutterToast {
       border: border,
       boxShadow: boxShadow,
       fontWeight: fontWeight,
+      textAlign: textAlign,
+      textStyle: textStyle,
+      crossAxisAlignment: crossAxisAlignment,
+      width: width,
+      height: height,
+      horizontalAlignment: horizontalAlignment,
       builder: builder,
     );
   }
@@ -957,6 +1041,12 @@ class _ToastWidget extends StatefulWidget {
   final EdgeInsets? textPadding;
   final EdgeInsets? textMargin;
   final FontWeight fontWeight;
+  final TextAlign? textAlign;
+  final TextStyle? textStyle;
+  final CrossAxisAlignment? crossAxisAlignment;
+  final double? width;
+  final double? height;
+  final Alignment? horizontalAlignment;
   final Border? border;
   final List<BoxShadow>? boxShadow;
   final bool showIcon;
@@ -982,10 +1072,16 @@ class _ToastWidget extends StatefulWidget {
     required this.borderRadius,
     required this.padding,
     required this.margin,
-    required this.fontSize,
+    required     this.fontSize,
     this.textPadding,
     this.textMargin,
     required this.fontWeight,
+    this.textAlign,
+    this.textStyle,
+    this.crossAxisAlignment,
+    this.width,
+    this.height,
+    this.horizontalAlignment,
     this.border,
     this.boxShadow,
     required this.showIcon,
@@ -1230,19 +1326,36 @@ class _ToastWidgetState extends State<_ToastWidget>
     // Text widget với responsive font size, padding và margin (chỉ hiển thị nếu showText = true)
     Widget? textWidget;
     if (widget.showText) {
-      textWidget = Text(
-        widget.message,
-        style: TextStyle(
+      // Tạo TextStyle: ưu tiên textStyle từ widget, nếu không có thì merge từ các thuộc tính cũ
+      TextStyle? finalTextStyle;
+      if (widget.textStyle != null) {
+        // Nếu có textStyle, merge với các override (fontSize, fontWeight, color)
+        finalTextStyle = widget.textStyle!.copyWith(
+          fontSize: responsiveFontSize,
+          fontWeight: widget.fontWeight,
+          color: widget.textColor,
+        );
+      } else {
+        // Nếu không có textStyle, tạo từ các thuộc tính cũ (backward compatibility)
+        finalTextStyle = TextStyle(
           color: widget.textColor,
           fontSize: responsiveFontSize,
           fontWeight: widget.fontWeight,
-        ),
-        textAlign:
-            widget.styleType == ToastStyleType.simple
-                ? TextAlign.center
-                : (widget.styleType != null
-                    ? TextAlign.left
-                    : TextAlign.center),
+        );
+      }
+
+      // Xác định textAlign: ưu tiên từ widget, nếu không có thì dùng logic cũ
+      TextAlign? finalTextAlign = widget.textAlign;
+      if (finalTextAlign == null) {
+        finalTextAlign = widget.styleType == ToastStyleType.simple
+            ? TextAlign.center
+            : (widget.styleType != null ? TextAlign.left : TextAlign.center);
+      }
+
+      textWidget = Text(
+        widget.message,
+        style: finalTextStyle,
+        textAlign: finalTextAlign,
         maxLines: 5,
         overflow: TextOverflow.ellipsis,
       );
@@ -1314,7 +1427,7 @@ class _ToastWidgetState extends State<_ToastWidget>
         }
 
         content = Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.center,
           children: rowChildren,
         );
       }
@@ -1335,6 +1448,7 @@ class _ToastWidgetState extends State<_ToastWidget>
           case IconPosition.left:
             content = Row(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.center,
               children: [
                 iconWidget,
                 if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
@@ -1345,7 +1459,7 @@ class _ToastWidgetState extends State<_ToastWidget>
           case IconPosition.right:
             content = Row(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.center,
               children: [
                 Expanded(child: textWidget),
                 if (hasIconSpacing && hasTextSpacing) const SizedBox(width: 12),
@@ -1406,12 +1520,14 @@ class _ToastWidgetState extends State<_ToastWidget>
     return Material(
       color: Colors.transparent,
       child: Container(
+        width: widget.width,
+        height: widget.height,
         constraints: BoxConstraints(
-          maxWidth:
-              screenWidth > 600
+          maxWidth: widget.width ??
+              (screenWidth > 600
                   ? 440.0 // Giống toastification: max width 440 cho desktop
                   : screenWidth *
-                      0.9, // Responsive: tối đa 90% chiều rộng màn hình cho mobile
+                      0.9), // Responsive: tối đa 90% chiều rộng màn hình cho mobile
           minWidth: 100,
         ),
         decoration: BoxDecoration(

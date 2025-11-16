@@ -14,6 +14,10 @@ A beautiful and powerful Flutter package for displaying toast notifications on a
 - 🎯 **Icon Customization**: Custom icon positions (left, right, top, bottom, center), sizes, colors, padding, and margins
 - 📱 **Responsive Design**: Automatic font size adjustment based on screen size
 - 🎨 **Full Customization**: Custom colors, fonts, borders, shadows, padding, and margins
+- 📐 **Size Control**: Custom width and height for toast notifications
+- 🔄 **Text Alignment**: Full control over text alignment (left, center, right, justify) and vertical alignment (crossAxisAlignment)
+- 📝 **TextStyle Customization**: Complete TextStyle customization with all properties (fontSize, fontWeight, color, letterSpacing, height, decoration, shadows, etc.)
+- ↔️ **Horizontal Position**: Control left/right position when using top/bottom/center positions with `horizontalAlignment`
 - 🔔 **Alert Toast**: Interactive alert-style toasts with titles, action buttons, and callbacks
 - 💬 **Dialog Toast**: Dialog-style toasts with TextField input and confirm/cancel buttons
 - 🎨 **Custom Builder**: Build your own toast widget with full control
@@ -85,6 +89,12 @@ toast.show(
   border: Border.all(color: Colors.green), // Overrides styleType default
   boxShadow: [...],                   // Overrides styleType default
   fontWeight: FontWeight.bold,         // Overrides styleType default
+  textAlign: TextAlign.center,        // Overrides styleType default
+  textStyle: TextStyle(...),          // Overrides styleType default
+  crossAxisAlignment: CrossAxisAlignment.center, // Vertical alignment
+  width: 300,                         // Custom width
+  height: 100,                        // Custom height
+  horizontalAlignment: Alignment.centerRight, // Horizontal position
   showIcon: true,
   showText: true,
 );
@@ -120,11 +130,30 @@ toast.showSuccess(context, 'Message', position: ToastPosition.topLeft);
 toast.showSuccess(context, 'Message', position: ToastPosition.topRight);
 toast.showSuccess(context, 'Message', position: ToastPosition.bottomLeft);
 toast.showSuccess(context, 'Message', position: ToastPosition.bottomRight);
+
+// Horizontal alignment for top/bottom/center positions (left/right/center)
+toast.showSuccess(
+  context,
+  'Message',
+  position: ToastPosition.bottom,
+  horizontalAlignment: Alignment.centerRight, // Nằm bên phải
+);
+
+toast.showSuccess(
+  context,
+  'Message',
+  position: ToastPosition.top,
+  horizontalAlignment: Alignment.centerLeft, // Nằm bên trái
+);
 ```
 
 ### Predefined Styles
 
-We have 4 predefined styles for toast messages, each offering a unique look and feel:
+We have 5 predefined styles for toast messages, each offering a unique look and feel:
+
+![Toast Types and Styles](images/types.png)
+
+*Grid showing all ToastTypes (success, info, warning, error) and ToastStyleTypes (flat, fillColored, flatColored, minimal)*
 
 #### 1. ToastStyleType.flat
 
@@ -233,6 +262,15 @@ toast.showSuccess(
   fontSize: 16,
   textPadding: EdgeInsets.all(8),
   textMargin: EdgeInsets.only(left: 12),
+  textAlign: TextAlign.center, // Text alignment (left, center, right, justify)
+  textStyle: TextStyle(         // Full TextStyle customization
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: Colors.green,
+    letterSpacing: 1.2,
+    height: 1.5,
+    decoration: TextDecoration.underline,
+  ),
 );
 ```
 
@@ -245,6 +283,54 @@ toast.showSuccess(
   backgroundColor: Colors.blue,
   textColor: Colors.white,
   iconColor: Colors.yellow,
+);
+```
+
+### Toast Size (Width & Height)
+
+```dart
+toast.showSuccess(
+  context,
+  'Message',
+  width: 300,    // Custom width
+  height: 100,   // Custom height (optional)
+);
+```
+
+### Vertical Alignment (CrossAxisAlignment)
+
+```dart
+toast.showSuccess(
+  context,
+  'Message',
+  crossAxisAlignment: CrossAxisAlignment.center, // center (default), start, end, stretch
+);
+```
+
+### Horizontal Position (Left/Right)
+
+```dart
+// Toast nằm bên phải khi ở vị trí bottom/top/center
+toast.showSuccess(
+  context,
+  'Message',
+  position: ToastPosition.bottom,
+  horizontalAlignment: Alignment.centerRight, // Bên phải
+);
+
+// Toast nằm bên trái
+toast.showSuccess(
+  context,
+  'Message',
+  position: ToastPosition.top,
+  horizontalAlignment: Alignment.centerLeft, // Bên trái
+);
+
+// Toast ở giữa (mặc định)
+toast.showSuccess(
+  context,
+  'Message',
+  position: ToastPosition.bottom, // Không set horizontalAlignment = mặc định center
 );
 ```
 
@@ -393,6 +479,12 @@ Show a custom toast message with full customization options.
 - `border` - Border (overrides styleType default)
 - `boxShadow` - Shadow (overrides styleType default)
 - `fontWeight` - Font weight (overrides styleType default)
+- `textAlign` - Text alignment (left, center, right, justify) (overrides styleType default)
+- `textStyle` - Custom TextStyle (overrides styleType default, supports all TextStyle properties)
+- `crossAxisAlignment` - Vertical alignment of content in Row (start, center, end, stretch) (overrides styleType default)
+- `width` - Custom toast width (null = auto, overrides styleType default)
+- `height` - Custom toast height (null = auto, overrides styleType default)
+- `horizontalAlignment` - Horizontal alignment for top/bottom/center positions (left, center, right) (overrides styleType default)
 - `backgroundColor` - Custom background color
 - `textColor` - Custom text color
 - `iconColor` - Custom icon color

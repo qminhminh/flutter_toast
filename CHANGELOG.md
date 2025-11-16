@@ -1,3 +1,18 @@
+## 1.1.0
+
+* **New Features:**
+  * Added `textAlign` parameter to customize text alignment (left, center, right, justify)
+  * Added `textStyle` parameter for full TextStyle customization with all properties (fontSize, fontWeight, color, letterSpacing, height, decoration, shadows, etc.)
+  * Added `crossAxisAlignment` parameter to vertically align content in toast (default: center)
+  * Added `width` and `height` parameters to customize toast dimensions
+  * Added `horizontalAlignment` parameter to position toast on left/right when using top/bottom/center positions
+  * Added `ToastStyleType.simple` - Simple style with light background, no icon, no close button
+
+* **Improvements:**
+  * Text in minimal style (and all styles) now vertically centered by default
+  * Better text vertical alignment in Row layouts
+  * Enhanced customization options for all toast styles
+
 ## 1.0.0
 
 * Initial release of flutter_toast_notification package

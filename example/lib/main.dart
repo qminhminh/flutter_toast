@@ -58,6 +58,8 @@ class ToastDemoPage extends StatelessWidget {
                     context,
                     'Component updates available.',
                     styleType: ToastStyleType.flat,
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
                   );
                 },
                 child: const Text('Flat Style - Success'),
@@ -69,6 +71,8 @@ class ToastDemoPage extends StatelessWidget {
                     context,
                     'Component updates available.',
                     styleType: ToastStyleType.flat,
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
                   );
                 },
                 child: const Text('Flat Style - Info'),
@@ -80,6 +84,8 @@ class ToastDemoPage extends StatelessWidget {
                     context,
                     'Component updates available.',
                     styleType: ToastStyleType.flat,
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
                   );
                 },
                 child: const Text('Flat Style - Warning'),
@@ -91,6 +97,8 @@ class ToastDemoPage extends StatelessWidget {
                     context,
                     'Component updates available.',
                     styleType: ToastStyleType.flat,
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
                   );
                 },
                 child: const Text('Flat Style - Error'),
@@ -104,6 +112,8 @@ class ToastDemoPage extends StatelessWidget {
                     context,
                     'Component updates available.',
                     styleType: ToastStyleType.fillColored,
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
                   );
                 },
                 child: const Text('Fill Colored - Success'),
@@ -115,6 +125,8 @@ class ToastDemoPage extends StatelessWidget {
                     context,
                     'Component updates available.',
                     styleType: ToastStyleType.fillColored,
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
                   );
                 },
                 child: const Text('Fill Colored - Info'),
@@ -126,6 +138,8 @@ class ToastDemoPage extends StatelessWidget {
                     context,
                     'Component updates available.',
                     styleType: ToastStyleType.fillColored,
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
                   );
                 },
                 child: const Text('Fill Colored - Warning'),
@@ -137,6 +151,8 @@ class ToastDemoPage extends StatelessWidget {
                     context,
                     'Component updates available.',
                     styleType: ToastStyleType.fillColored,
+                    position: ToastPosition.bottomRight,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
                   );
                 },
                 child: const Text('Fill Colored - Error'),
@@ -644,6 +660,324 @@ class ToastDemoPage extends StatelessWidget {
                   );
                 },
                 child: const Text('Icon Center'),
+              ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Horizontal Position (Trái/Phải):',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Toast nằm bên trái
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Toast nằm bên trái',
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerLeft, // Nằm bên trái
+                  );
+                },
+                child: const Text('Toast - Bên Trái'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast nằm bên phải
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Toast nằm bên phải',
+                    position: ToastPosition.bottom,
+                    horizontalAlignment: Alignment.centerRight, // Nằm bên phải
+                  );
+                },
+                child: const Text('Toast - Bên Phải'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast ở giữa (mặc định)
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Toast ở giữa (mặc định)',
+                    position: ToastPosition.bottom,
+                    // Không set horizontalAlignment = mặc định center
+                  );
+                },
+                child: const Text('Toast - Ở Giữa (Mặc định)'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast top-left
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Toast ở góc trên bên trái',
+                    position: ToastPosition.topLeft,
+                  );
+                },
+                child: const Text('Toast - Top Left'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast top-right
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Toast ở góc trên bên phải',
+                    position: ToastPosition.topRight,
+                  );
+                },
+                child: const Text('Toast - Top Right'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast bottom-left
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Toast ở góc dưới bên trái',
+                    position: ToastPosition.bottomLeft,
+                  );
+                },
+                child: const Text('Toast - Bottom Left'),
+              ),
+              const SizedBox(height: 12),
+
+              // Toast bottom-right
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Toast ở góc dưới bên phải',
+                    position: ToastPosition.bottomRight,
+                  );
+                },
+                child: const Text('Toast - Bottom Right'),
+              ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Text Alignment (textAlign):',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // Minimal style với textAlign center
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Minimal style với text căn giữa',
+                    styleType: ToastStyleType.minimal,
+                    textAlign: TextAlign.center,
+                  );
+                },
+                child: const Text('Minimal - Text Center'),
+              ),
+              const SizedBox(height: 12),
+
+              // Minimal style với textAlign right
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'Minimal style với text căn phải',
+                    styleType: ToastStyleType.minimal,
+                    textAlign: TextAlign.right,
+                  );
+                },
+                child: const Text('Minimal - Text Right'),
+              ),
+              const SizedBox(height: 12),
+
+              // Minimal style với textAlign justify
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Minimal style với text căn đều (justify). Text này sẽ được căn đều ở cả hai bên trái và phải.',
+                    styleType: ToastStyleType.minimal,
+                    textAlign: TextAlign.justify,
+                  );
+                },
+                child: const Text('Minimal - Text Justify'),
+              ),
+              const SizedBox(height: 12),
+
+              // Flat style với textAlign center
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'Flat style với text căn giữa',
+                    styleType: ToastStyleType.flat,
+                    textAlign: TextAlign.center,
+                  );
+                },
+                child: const Text('Flat Style - Text Center'),
+              ),
+              const SizedBox(height: 12),
+
+              // Fill colored với textAlign right
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'Fill colored với text căn phải',
+                    styleType: ToastStyleType.fillColored,
+                    textAlign: TextAlign.right,
+                  );
+                },
+                child: const Text('Fill Colored - Text Right'),
+              ),
+              const SizedBox(height: 32),
+
+              const Divider(),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Custom TextStyle (textStyle):',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              // TextStyle với fontSize và fontWeight
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'TextStyle với font lớn và đậm',
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
+                  );
+                },
+                child: const Text('Custom TextStyle - Bold & Large'),
+              ),
+              const SizedBox(height: 12),
+
+              // TextStyle với letterSpacing và height
+              ElevatedButton(
+                onPressed: () {
+                  toast.showError(
+                    context,
+                    'TextStyle với letterSpacing và height tùy chỉnh',
+                    textStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red.shade900,
+                      letterSpacing: 1.5,
+                      height: 1.5,
+                    ),
+                  );
+                },
+                child: const Text('TextStyle - Letter Spacing & Height'),
+              ),
+              const SizedBox(height: 12),
+
+              // TextStyle với decoration
+              ElevatedButton(
+                onPressed: () {
+                  toast.showWarning(
+                    context,
+                    'TextStyle với underline decoration',
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.orange,
+                      decorationThickness: 2,
+                    ),
+                  );
+                },
+                child: const Text('TextStyle - Underline Decoration'),
+              ),
+              const SizedBox(height: 12),
+
+              // TextStyle với textStyle kết hợp với styleType
+              ElevatedButton(
+                onPressed: () {
+                  toast.showInfo(
+                    context,
+                    'Minimal style với TextStyle tùy chỉnh',
+                    styleType: ToastStyleType.minimal,
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                      height: 1.8,
+                    ),
+                    textAlign: TextAlign.center,
+                  );
+                },
+                child: const Text('Minimal + Custom TextStyle'),
+              ),
+              const SizedBox(height: 12),
+
+              // TextStyle với wordSpacing và fontStyle
+              ElevatedButton(
+                onPressed: () {
+                  toast.show(
+                    context,
+                    'TextStyle với wordSpacing và italic',
+                    type: ToastType.custom,
+                    backgroundColor: Colors.purple.shade300,
+                    textStyle: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontStyle: FontStyle.italic,
+                      wordSpacing: 3,
+                      letterSpacing: 1,
+                    ),
+                    icon: Icons.format_italic,
+                    iconColor: Colors.white,
+                  );
+                },
+                child: const Text('TextStyle - Italic & Word Spacing'),
+              ),
+              const SizedBox(height: 12),
+
+              // TextStyle với decorationStyle và shadows
+              ElevatedButton(
+                onPressed: () {
+                  toast.showSuccess(
+                    context,
+                    'TextStyle với text shadows và strikethrough',
+                    textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green.shade900,
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: Colors.red,
+                      decorationThickness: 2,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withOpacity(0.3),
+                          offset: const Offset(2, 2),
+                          blurRadius: 3,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: const Text('TextStyle - Shadows & Strikethrough'),
               ),
               const SizedBox(height: 32),
 
